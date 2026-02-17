@@ -1,0 +1,67 @@
+import { createBrowserRouter } from "react-router-dom";
+
+import AuthLayout from "@/layouts//AuthLayout";
+import MainLayout from "@/layouts/MainLayout.jsx";
+import NotFound from "@/pages/NotFound/NotFound";
+
+// Public Pages
+import About from "@/pages/About/About";
+import Blog from "@/pages/Blog/Blog";
+import BlogDetails from "@/pages/Blog/BlogDetails";
+import Contact from "@/pages/Contact/Contact";
+import Home from "@/pages/Home/Home";
+import RoomDetails from "@/pages/Rooms/RoomDetails";
+import Rooms from "@/pages/Rooms/Rooms";
+import Services from "@/pages/Services/Services";
+
+// Auth Pages
+import ForgotPassword from "@/pages/Auth/ForgotPassword";
+import Login from "@/pages/Auth/Login";
+import Register from "@/pages/Auth/Register";
+import ResetPassword from "@/pages/Auth/ResetPassword";
+import ProtectedRoute from "./ProtectedRoute";
+
+
+export const routes = createBrowserRouter([
+  {
+    path: "/",
+    element: <MainLayout />,
+    errorElement: <NotFound />,
+    children: [
+      { index: true, element: <Home /> },
+      { path: "rooms", element: <Rooms /> },
+      { path: "rooms/:id", element: <RoomDetails /> },
+      { path: "services", element: <Services /> },
+      { path: "blog", element: <Blog /> },
+      { path: "blog/:id", element: <BlogDetails /> },
+      { path: "about", element: <About /> },
+      { path: "contact", element: <Contact /> },
+    ],
+  },
+
+  {
+    path: "/auth",
+    element: <AuthLayout />,
+    errorElement: <NotFound />,
+    children: [
+      { path: "login", element: <Login /> },
+      { path: "register", element: <Register /> },
+      { path: "forgot-password", element: <ForgotPassword /> },
+      { path: "reset-password", element: <ResetPassword /> },
+    ],
+  },
+
+  // {
+  //   path: "/account",
+  //   element: (
+  //     <ProtectedRoute>
+  //       <MainLayout />
+  //     </ProtectedRoute>
+  //   ),
+  //   errorElement: <NotFound />,
+  //   children: [
+  //     { path: "booking/:roomId", element: <Booking /> },
+  //     { path: "my-reservations", element: <MyReservations /> },
+  //   ],
+  // },
+]);

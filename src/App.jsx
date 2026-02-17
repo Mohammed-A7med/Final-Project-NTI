@@ -1,9 +1,13 @@
-import { Button } from "@/components/ui/button"
+import { ToastContainer } from "react-toastify";
+import { RouterProvider } from "react-router-dom";
+
+import { routes } from "./routes/AppRoutes";
 
 export default function App() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <Button>Click me</Button>
-    </div>
-  )
+    <>
+      <ToastContainer />
+      <RouterProvider router={routes} />
+    </>
+  );
 }
