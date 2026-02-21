@@ -15,7 +15,7 @@ export default function MobileNav({ navLinks, isOpen, onClose }) {
           transition={{ duration: 0.4, ease: "easeInOut" }}
           className="md:hidden absolute left-5 right-5 mt-4 overflow-hidden z-40"
         >
-          <div className="p-6 bg-white/10 dark:bg-black/20 backdrop-blur-2xl border border-white/20 dark:border-white/10 rounded-3xl shadow-2xl">
+          <div className="p-6 bg-black/30 dark:bg-white/10 backdrop-blur-2xl border border-white/20 dark:border-white/10 rounded-3xl shadow-2xl">
             <ul className="grid grid-cols-1 gap-3">
               {navLinks.map((link, idx) => (
                 <motion.li
