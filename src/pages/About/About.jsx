@@ -87,7 +87,7 @@ export default function About() {
           </svg>
         </div>
       </div>
-      
+
       <div className="achievements-container">
         <div className="achievements-header">
           <span className="achievements-subtitle">OUR ACHIEVEMENTS</span>
@@ -112,6 +112,57 @@ export default function About() {
           </div>
         </div>
       </div>
+
+      <div className="about-content-blocks">
+        {/* History Block */}
+        <div className="content-block history-block">
+          <div className="block-text">
+            <span className="block-tag">HISTORY</span>
+            <h2 className="block-title">Elevate Your Stay:<br />Luxury Room Systems<br />At Our Mountain Hotel</h2>
+            <p className="block-description">
+              Our high-end rooms are designed to offer unparalleled<br /> comfort and sophistication, ensuring a truly memorable<br /> stay.
+            </p>
+            <Button className="about-btn-outline">Read More History</Button>
+          </div>
+          <div className="block-images-grid">
+            <div className="main-image-v">
+              <img src="https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&q=80&w=800" alt="Luxury Room" />
+            </div>
+            <div className="sub-images">
+              <div className="sub-img-1">
+                <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&q=80&w=400" alt="Resort View" />
+              </div>
+              <div className="sub-img-2">
+                <img src="https://images.unsplash.com/photo-1566665797739-1674de7a421a?auto=format&fit=crop&q=80&w=800" alt="Lounge Area" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Development Block */}
+        <div className="content-block development-block">
+          <div className="block-images-grid">
+            <div className="main-image-v">
+              <img src="https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&q=80&w=1200" alt="Hospitality View" />
+            </div>
+            <div className="sub-images">
+              <div className="sub-img-1">
+                <img src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&q=80&w=400" alt="Outdoor Lounge" />
+              </div>
+            </div>
+          </div>
+          <div className="block-text">
+            <span className="block-tag">DEVELOPMENT</span>
+            <h2 className="block-title">Hospitality That Starts<br />With Ingenuity</h2>
+            <p className="block-description">
+              Our portfolio showcases a diverse range of<br /> exceptional properties, from breathtaking beach resorts to<br /> rejuvenating spa retreats in exclusive, private clubs,<br /> vibrant urban experiences, and vibrant...
+            </p>
+            <Button className="about-btn-outline">Read More</Button>
+          </div>
+        </div>
+      </div>
+
+
     </section >
   );
 }
