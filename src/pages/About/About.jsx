@@ -1,5 +1,15 @@
 import React from 'react'
 import { Button } from "@/components/ui/button"
+import { Card, CardContent } from "@/components/ui/card"
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel"
+// import Autoplay from "embla-carousel-autoplay"
+
 
 export default function About() {
   return (
@@ -136,7 +146,7 @@ export default function About() {
           </div>
         </div>
       </div>
-      
+
       {/* History Section */}
       <div className="py-24 px-4 md:px-10 bg-white">
         <div className="max-w-[1400px] mx-auto">
@@ -204,6 +214,105 @@ export default function About() {
                   Read More
                 </Button>
               </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+
+      {/* Winter Activities Section */}
+      <div className="relative py-24 bg-[#f0f7f9] overflow-hidden mt-8">
+        <div className="max-w-350 mx-auto px-4 relative z-10 text-center">
+          <p className="text-[#82917d] text-[10px] font-bold tracking-[0.2em] mb-12 uppercase">WINTER ACTIVITIES</p>
+
+          <div className="relative max-w-4xl mx-auto px-12 mb-20">
+            <Carousel className="w-full">
+              <CarouselContent>
+                {[
+                  {
+                    quote: " Lovely hotel, the staff are amazing! We had an amazing stay at Rixos Saadiyat Island! We loved every minute and didn't want to leave! We will definitely be back! ",
+                    author: "Ann Baptista",
+                    role: "Guest at Sellingmountain"
+                  },
+                  {
+                    quote: " The serenity here is unmatched. A perfect getaway for anyone looking to reconnect with nature and enjoy world-class hospitality. ",
+                    author: "John Doe",
+                    role: "Guest at Peak Retreat"
+                  },
+                  {
+                    quote: " The serenity here is unmatched. A perfect getaway for anyone looking to reconnect with nature and enjoy world-class hospitality. ",
+                    author: "John Doe",
+                    role: "Guest at Peak Retreat"
+                  }
+                ].map((testimonial, index) => (
+                  <CarouselItem key={index}>
+                    <div className="space-y-4 px-4">
+                      <h2 className="text-xl md:text-2xl lg:text-3xl font-light font-playfair italic text-[#1a1a1a] leading-relaxed">
+                        "{testimonial.quote}"
+                      </h2>
+                      <div className="space-y-1 pt-4">
+                        <p className="text-sm font-bold text-[#1a1a1a]">{testimonial.author}</p>
+                        <p className="text-[10px] text-gray-400 font-medium">{testimonial.role}</p>
+                      </div>
+                    </div>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <CarouselPrevious className="absolute left-[-40px] top-1/2 -translate-y-1/2 w-10 h-10 border border-gray-300 rounded-full flex items-center justify-center text-gray-400 hover:border-[#82917d] hover:text-[#82917d] transition-colors bg-transparent shadow-none" />
+              <CarouselNext className="absolute right-[-40px] top-1/2 -translate-y-1/2 w-10 h-10 border border-gray-300 rounded-full flex items-center justify-center text-gray-400 hover:border-[#82917d] hover:text-[#82917d] transition-colors bg-transparent shadow-none" />
+            </Carousel>
+          </div>
+
+
+          <div className="flex flex-wrap justify-center items-end gap-6 md:gap-8 lg:gap-12">
+
+            <div className="w-40 md:w-48 lg:w-60 h-44 md:h-52 lg:h-64 mb-6">
+              <img
+                src="https://images.unsplash.com/photo-1544027993-37dbfe43562a?auto=format&fit=crop&q=80&w=800"
+                alt="Laptop View"
+                className="w-full h-full object-cover rounded-2xl shadow-lg"
+              />
+            </div>
+            
+            <div className="w-44 md:w-56 lg:w-72 h-80 md:h-[450px] lg:h-[550px]">
+              <img
+                src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&q=80&w=1000"
+                alt="Mountain Village"
+                className="w-full h-full object-cover rounded-3xl shadow-xl"
+              />
+            </div>
+
+            <div className="w-40 md:w-48 lg:w-64 h-56 md:h-72 lg:h-80 mb-20 md:mb-40">
+              <img
+                src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&q=80&w=800"
+                alt="Mountain Scenery"
+                className="w-full h-full object-cover rounded-2xl shadow-lg"
+              />
+            </div>
+
+            <div className="w-44 md:w-56 lg:w-72 h-[350px] md:h-[450px] lg:h-[550px]">
+              <img
+                src="https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&q=80&w=800"
+                alt="Woman Relaxing"
+                className="w-full h-full object-cover rounded-3xl shadow-xl"
+              />
+            </div>
+
+            <div className="w-40 md:w-48 lg:w-60 h-44 md:h-52 lg:h-64 mb-10 md:mb-20">
+              <img
+                src="https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&q=80&w=800"
+                alt="Resort Lounging"
+                className="w-full h-full object-cover rounded-2xl shadow-lg"
+              />
+            </div>
+
+            <div className="w-40 md:w-52 lg:w-64 h-64 md:h-80 lg:h-[450px]">
+              <img
+                src="https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&q=80&w=800"
+                alt="Wine and View"
+                className="w-full h-full object-cover rounded-3xl shadow-xl"
+              />
             </div>
 
           </div>
