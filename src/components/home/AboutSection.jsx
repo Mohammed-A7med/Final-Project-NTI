@@ -65,7 +65,7 @@ export default function AboutSection() {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.1 }}
-              className="md:flex-[1] rounded-3xl overflow-hidden h-64 md:h-full shadow-lg"
+              className="md:flex-1 rounded-3xl overflow-hidden h-64 md:h-full shadow-lg"
             >
               <img 
                 src="https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?q=80&w=1470&auto=format&fit=crop" 
@@ -79,7 +79,7 @@ export default function AboutSection() {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.2 }}
-              className="md:flex-[2] rounded-3xl overflow-hidden h-64 md:h-full shadow-lg"
+              className="md:flex-2 rounded-3xl overflow-hidden h-64 md:h-full shadow-lg"
             >
               <img 
                 src="https://images.unsplash.com/photo-1540541338287-41700207dee6?q=80&w=1470&auto=format&fit=crop" 
@@ -95,7 +95,7 @@ export default function AboutSection() {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.3 }}
-              className="md:flex-[2] rounded-3xl overflow-hidden h-64 md:h-full shadow-lg"
+              className="md:flex-2 rounded-3xl overflow-hidden h-64 md:h-full shadow-lg"
             >
               <img 
                 src="https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?q=80&w=1470&auto=format&fit=crop" 
@@ -109,7 +109,7 @@ export default function AboutSection() {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.4 }}
-              className="md:flex-[1] rounded-3xl overflow-hidden h-auto md:h-full shadow-lg bg-secondary p-8 flex flex-col justify-center"
+              className="md:flex-1 rounded-3xl overflow-hidden h-auto md:h-full shadow-lg bg-secondary p-8 flex flex-col justify-center"
             >
               <ul className="space-y-6">
                 {[
