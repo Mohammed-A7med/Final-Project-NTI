@@ -414,7 +414,7 @@
     overflow: hidden;
     min-height: 800px;
     border-radius: 90px;
-    
+
 }
 
 .winter-container {
@@ -583,5 +583,47 @@
 
     .winter-activities {
         padding: 6rem 1rem;
+    }
+}
+
+.partners-section {
+    padding: 4rem 2rem 6rem;
+    background-color: #fff;
+    text-align: center;
+}
+
+
+.partners-grid {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 3rem;
+    flex-wrap: wrap;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.partner-logo {
+    max-width: 140px;
+    height: auto;
+    opacity: 0.4;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    filter: grayscale(100%);
+}
+
+.partner-logo:hover {
+    opacity: 1;
+    filter: grayscale(0%);
+    transform: scale(1.05);
+}
+
+@media (max-width: 768px) {
+    .partners-grid {
+        gap: 2.5rem;
+    }
+
+    .partner-logo {
+        max-width: 110px;
     }
 }

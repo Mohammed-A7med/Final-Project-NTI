@@ -233,6 +233,18 @@ export default function About() {
         </div>
       </section>
 
+      <section className="partners-section">
+        <h3 className="partners-title text-xl font-bold mb-5">Trust By 12,000+ World-Class Bands And Organization Of All Sizes</h3>
+        <div className="partners-grid">
+          <img src="https://sailing.thimpress.com/demo-mountain-hotel/wp-content/uploads/sites/27/2024/03/partner-01.png" alt="Partner 1" className="partner-logo" />
+          <img src="https://sailing.thimpress.com/demo-mountain-hotel/wp-content/uploads/sites/27/2024/03/partner-02.png" alt="Partner 2" className="partner-logo" />
+          <img src="https://sailing.thimpress.com/demo-mountain-hotel/wp-content/uploads/sites/27/2024/03/partner-03.png" alt="Partner 2" className="partner-logo" />
+          <img src="https://sailing.thimpress.com/demo-mountain-hotel/wp-content/uploads/sites/27/2024/03/partner-04.png" alt="Partner 2" className="partner-logo" />
+          <img src="https://sailing.thimpress.com/demo-mountain-hotel/wp-content/uploads/sites/27/2024/03/partner-05.png" alt="Partner 2" className="partner-logo" />
+          <img src="https://sailing.thimpress.com/demo-mountain-hotel/wp-content/uploads/sites/27/2024/03/partner-06.png" alt="Partner 2" className="partner-logo" />
+        </div>
+      </section>
+
 
     </section >
   );
