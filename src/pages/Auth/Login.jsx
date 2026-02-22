@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Eye, EyeOff } from "lucide-react";
 
-import loginSchema from "./authSchema";
+import {loginSchema} from "./authSchema";
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
