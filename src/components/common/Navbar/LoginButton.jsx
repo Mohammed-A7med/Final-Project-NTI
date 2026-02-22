@@ -7,11 +7,11 @@ export default function LoginButton() {
   return (
     <NavTooltip label="Login">
       <NavLink
-        to="/login"
+        to="/auth/login"
         className={({ isActive }) => `
-          flex items-center justify-center w-11 h-11 rounded-full border border-white/20
-          transition-all duration-300 hover:bg-white/20 dark:hover:bg-white/10
-          ${isActive ? "text-[var(--color-primary)] bg-white/20 shadow-inner" : "text-white/80 bg-white/5"}
+          flex items-center justify-center w-11 h-11 rounded-full border border-[#fefefe11]
+          transition-all duration-300 hover:bg-primary/20
+          ${isActive ? "text-primary bg-primary/20 shadow-inner" : "text-[#fefefea9] bg-primary/5"}
         `}
       >
         <motion.div

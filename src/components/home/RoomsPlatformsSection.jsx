@@ -25,10 +25,10 @@ const platforms = [
 
 export default function RoomsPlatformsSection() {
   return (
-    <section className="py-10 px-4 sm:px-6 bg-[var(--color-background)] overflow-hidden">
+    <section className="py-10 px-4 sm:px-6 bg-background overflow-hidden">
       <div className="max-w-7xl mx-auto">
-        <div className="pt-15 border-t border-[var(--color-border)]/50">
-          <h2 className="text-3xl md:text-4xl font-[family-name:var(--font-header)] text-[var(--color-foreground)] text-center mb-16 font-bold">
+        <div className="pt-15 border-t border-border/50">
+          <h2 className="text-3xl md:text-4xl font-header text-foreground text-center mb-16 font-bold">
             Book Rooms On Our Affiliate Platforms
           </h2>
           

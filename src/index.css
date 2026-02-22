@@ -1,4 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Philosopher:ital,wght@0,400;0,700;1,400;1,700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&family=Philosopher:ital,wght@0,400;0,700;1,400;1,700&display=swap');
 @import "tailwindcss";
 @plugin "tailwindcss-animate";
@@ -7,9 +6,11 @@
 
 @custom-variant dark (&:is(.dark *));
 
-@theme inline {
-    /*our var*/
-    --font-sans: var(--font-main);
+@theme {
+    /* our fonts */
+    --font-header: Philosopher, sans-serif;
+    --font-main: Comfortaa, sans-serif;
+    --font-sans: Comfortaa, sans-serif;
 
 
 
@@ -55,13 +56,10 @@
 
 :root {
     /*Our Root*/
-    --font-main: "Comfortaa", sans-serif;
-    --font-header: "Philosopher", sans-serif;
-
     --radius: 0.625rem;
     --background: oklch(1 0 0);
     --foreground: oklch(0.145 0 0);
-    --card: oklch(1 0 0);
+    --card: #f6f7f6;
     --card-foreground: oklch(0.145 0 0);
     --popover: oklch(1 0 0);
     --popover-foreground: oklch(0.145 0 0);

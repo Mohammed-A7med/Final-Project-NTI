@@ -15,8 +15,8 @@ export default function Logo() {
               p-2.5 rounded-full border border-white/10 transition-all
               flex items-center justify-center cursor-pointer overflow-hidden
               ${isActive
-                ? "bg-white/20 text-[var(--color-primary)]"
-                : "bg-white/10 hover:bg-white/20 text-white/90"}
+                ? "bg-primary/20 text-primary shadow-inner border border-primary/20"
+                : "bg-primary/10 hover:bg-primary/20 text-[#fefefea9]"}
             `}
           >
             <Hotel size={20} />

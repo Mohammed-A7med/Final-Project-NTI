@@ -8,7 +8,7 @@ export default function LanguageToggle() {
       <motion.button
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.9 }}
-        className="p-2.5 rounded-full bg-white/10 hover:bg-white/20 transition-all text-white/90 border border-white/10 cursor-pointer"
+        className="w-11 h-11 flex items-center justify-center rounded-full bg-primary/5 hover:bg-primary/20 transition-all text-[#fefefea9] border border-[#fefefe11] cursor-pointer"
         aria-label="Toggle Language"
       >
         <Languages size={20} />
