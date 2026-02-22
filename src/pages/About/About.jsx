@@ -274,7 +274,7 @@ export default function About() {
                 className="w-full h-full object-cover rounded-2xl shadow-lg"
               />
             </div>
-            
+
             <div className="w-44 md:w-56 lg:w-72 h-80 md:h-[450px] lg:h-[550px]">
               <img
                 src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&q=80&w=1000"
@@ -315,6 +315,35 @@ export default function About() {
               />
             </div>
 
+          </div>
+        </div>
+      </div>
+      {/* Partners Section */}
+      <div className="py-24 bg-white">
+        <div className="max-w-[1400px] mx-auto px-4 text-center">
+          <h2 className="text-xl md:text-2xl font-semibold text-[#1a1a1a] mb-12 max-w-3xl mx-auto leading-relaxed">
+            Trust By 12,000+ World-Class Brands And Organization Of All Sizes
+          </h2>
+
+          <div className="flex flex-wrap justify-center items-center gap-12 md:gap-16 lg:gap-20 opacity-60">
+            <div className="w-24 md:w-28 lg:w-32 grayscale hover:grayscale-0 transition-all cursor-pointer">
+              <img src="https://sailing.thimpress.com/demo-mountain-hotel/wp-content/uploads/sites/27/2024/03/partner-01.png" alt="Brand Logo" className="w-full h-auto" />
+            </div>
+            <div className="w-24 md:w-28 lg:w-32 grayscale hover:grayscale-0 transition-all cursor-pointer">
+              <img src="https://sailing.thimpress.com/demo-mountain-hotel/wp-content/uploads/sites/27/2024/03/partner-02.png" alt="Brand Logo" className="w-full h-auto" />
+            </div>
+            <div className="w-24 md:w-28 lg:w-32 grayscale hover:grayscale-0 transition-all cursor-pointer">
+              <img src="https://sailing.thimpress.com/demo-mountain-hotel/wp-content/uploads/sites/27/2024/03/partner-03.png" alt="Brand Logo" className="w-full h-auto" />
+            </div>
+            <div className="w-24 md:w-28 lg:w-32 grayscale hover:grayscale-0 transition-all cursor-pointer">
+              <img src="https://sailing.thimpress.com/demo-mountain-hotel/wp-content/uploads/sites/27/2024/03/partner-04.png" alt="Brand Logo" className="w-full h-auto" />
+            </div>
+            <div className="w-24 md:w-28 lg:w-32 grayscale hover:grayscale-0 transition-all cursor-pointer">
+              <img src="https://sailing.thimpress.com/demo-mountain-hotel/wp-content/uploads/sites/27/2024/03/partner-05.png" alt="Brand Logo" className="w-full h-auto" />
+            </div>
+            <div className="w-24 md:w-28 lg:w-32 grayscale hover:grayscale-0 transition-all cursor-pointer">
+              <img src="https://sailing.thimpress.com/demo-mountain-hotel/wp-content/uploads/sites/27/2024/03/partner-06.png" alt="Brand Logo" className="w-full h-auto" />
+            </div>
           </div>
         </div>
       </div>
