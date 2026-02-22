@@ -87,6 +87,31 @@ export default function About() {
           </svg>
         </div>
       </div>
+      
+      <div className="achievements-container">
+        <div className="achievements-header">
+          <span className="achievements-subtitle">OUR ACHIEVEMENTS</span>
+          <h2 className="achievements-main-title">Our Achievements At A Glance</h2>
+        </div>
+        <div className="achievements-grid">
+          <div className="achievement-card">
+            <h3 className="achievement-number">75</h3>
+            <p className="achievement-label">YEAR OF HOSPITALITY<br />EXCELLENCE</p>
+          </div>
+          <div className="achievement-card">
+            <h3 className="achievement-number">120k</h3>
+            <p className="achievement-label">GUESTS WELCOMED<br />WORLDWIDE</p>
+          </div>
+          <div className="achievement-card">
+            <h3 className="achievement-number">9.5k</h3>
+            <p className="achievement-label">UNIQUE LOCAL EXPERIENCES<br />HOSTED</p>
+          </div>
+          <div className="achievement-card">
+            <h3 className="achievement-number">45</h3>
+            <p className="achievement-label">INDUSTRY AWARDS &<br />RECOGNITIONS</p>
+          </div>
+        </div>
+      </div>
     </section >
   );
 }
