@@ -1,0 +1,239 @@
+import { useState, useRef, useEffect } from "react";
+import { motion, AnimatePresence, useMotionValue } from "framer-motion";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import RoomCard from "./RoomCard";
+
+const rooms = [
+  {
+    id: 1,
+    type: "DELUXE ROOM",
+    name: "Alpine King Deluxe",
+    price: 180,
+    beds: 1,
+    size: 50,
+    guests: 1,
+    image:
+      "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?q=80&w=1470&auto=format&fit=crop",
+  },
+  {
+    id: 2,
+    type: "DELUXE ROOM",
+    name: "Twin Peaks Tower",
+    price: 160,
+    beds: 1,
+    size: 60,
+    guests: 1,
+    image:
+      "https://images.unsplash.com/photo-1611892440504-42a792e24d32?q=80&w=1470&auto=format&fit=crop",
+  },
+  {
+    id: 3,
+    type: "SUITE",
+    name: "Mountain View Suite",
+    price: 280,
+    beds: 2,
+    size: 90,
+    guests: 2,
+    image:
+      "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?q=80&w=1470&auto=format&fit=crop",
+  },
+  {
+    id: 4,
+    type: "JUNIOR SUITE",
+    name: "Forest Retreat",
+    price: 220,
+    beds: 1,
+    size: 75,
+    guests: 2,
+    image:
+      "https://images.unsplash.com/photo-1560185893-a55cbc8c57e8?q=80&w=1470&auto=format&fit=crop",
+  },
+  {
+    id: 5,
+    type: "PENTHOUSE",
+    name: "Summit Penthouse",
+    price: 450,
+    beds: 3,
+    size: 150,
+    guests: 4,
+    image:
+      "https://images.unsplash.com/photo-1590490360182-c33d57733427?q=80&w=1470&auto=format&fit=crop",
+  },
+];
+
+export default function RoomCardsSection() {
+  const [current, setCurrent] = useState(0);
+  const [direction, setDirection] = useState(0);
+  const [visibleCount, setVisibleCount] = useState(2);
+  const dragX = useMotionValue(0);
+  const trackRef = useRef(null);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setVisibleCount(window.innerWidth < 1024 ? 1 : 2);
+    };
+    
+    handleResize(); 
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  const maxIndex = Math.max(0, rooms.length - visibleCount);
+
+  const prev = () => {
+    if (current === 0) return;
+    setDirection(-1);
+    setCurrent((p) => Math.max(0, p - 1));
+  };
+
+  const next = () => {
+    if (current >= maxIndex) return;
+    setDirection(1);
+    setCurrent((p) => Math.min(maxIndex, p + 1));
+  };
+
+  const handleDragEnd = (_, info) => {
+    const threshold = 80;
+    if (info.offset.x < -threshold) next();
+    else if (info.offset.x > threshold) prev();
+  };
+
+  return (
+    <section className="py-10 px-4 sm:px-6 bg-[var(--color-background)] overflow-hidden">
+      <div className="max-w-7xl mx-auto">
+        {/* Header */}
+        <div className="flex flex-col mb-8 px-4">
+          <span className="text-md uppercase text-gray-400 font-bold mb-3 block">
+            STAY IN STYLE
+          </span>
+          <div className="flex flex-col md:flex-row md:flex-wrap lg:flex-nowrap lg:items-center justify-between gap-8 lg:gap-16">
+            <h2 className="text-4xl md:text-4xl lg:text-3xl font-[family-name:var(--font-header)] text-[var(--color-foreground)] leading-tight whitespace-nowrap font-bold">
+              Take Your Time
+            </h2>
+            
+            <p className="text-sm md:text-base text-gray-500 flex-1 leading-relaxed font-medium lg:max-w-2xl">
+              Experience the natural beauty of our O'ahu resort in any setting — private oceanfront
+              bungalow, lavish suite, or ocean view room.
+            </p>
+
+            <motion.button
+              whileHover={{ scale: 1.05, filter: "brightness(1.1)" }}
+              whileTap={{ scale: 0.95 }}
+              className="shrink-0 px-8 py-4 bg-[#8A9D8A] text-white rounded-full text-sm font-bold shadow-md hover:shadow-xl transition-all duration-300 whitespace-nowrap self-start md:w-full lg:w-auto lg:self-center"
+            >
+              View All Accommodations
+            </motion.button>
+          </div>
+        </div>
+
+        {/* Carousel wrapper */}
+        <div className="relative px-4">
+          {/* Left Arrow */}
+          <motion.button
+            whileHover={{ scale: 1.1, backgroundColor: "#fff" }}
+            whileTap={{ scale: 0.9 }}
+            onClick={prev}
+            disabled={current === 0}
+            aria-label="Previous room"
+            className="hidden lg:flex absolute -left-6 top-1/2 -translate-y-1/2 z-10 w-12 h-12 rounded-full bg-white dark:bg-[#222] shadow-lg items-center justify-center text-gray-400 transition-all duration-300"
+          >
+            <ChevronLeft size={24} />
+          </motion.button>
+
+          {/* Track */}
+          <div className="overflow-hidden">
+            <motion.div
+              ref={trackRef}
+              drag="x"
+              dragConstraints={{ left: 0, right: 0 }}
+              dragElastic={0.15}
+              onDragEnd={handleDragEnd}
+              style={{ x: dragX }}
+              animate={{ x: 0 }}
+              className="flex gap-8 cursor-grab active:cursor-grabbing"
+            >
+              <AnimatePresence initial={false} custom={direction}>
+                {rooms.map((room, index) => {
+                  const offset = index - current;
+                  const isVisible = offset >= 0 && offset < visibleCount;
+
+                  return (
+                    <motion.div
+                      key={room.id}
+                      custom={direction}
+                      animate={{
+                        x: `calc(${-current * 100}% - ${current * 32}px)`,
+                        opacity: isVisible ? 1 : 0.4,
+                        scale: isVisible ? 1 : 0.98,
+                      }}
+                      transition={{ type: "spring", stiffness: 200, damping: 25 }}
+                      className="shrink-0"
+                      style={{ 
+                         width: visibleCount === 1 ? "100%" : "calc(50% - 16px)",
+                         minWidth: visibleCount === 1 ? "100%" : "calc(50% - 16px)"
+                      }}
+                    >
+                      <RoomCard room={room} />
+                    </motion.div>
+                  );
+                })}
+              </AnimatePresence>
+            </motion.div>
+          </div>
+
+          {/* Right Arrow */}
+          <motion.button
+            whileHover={{ scale: 1.1, backgroundColor: "#fff" }}
+            whileTap={{ scale: 0.9 }}
+            onClick={next}
+            disabled={current >= maxIndex}
+            aria-label="Next room"
+            className="hidden lg:flex absolute -right-6 top-1/2 -translate-y-1/2 z-10 w-12 h-12 rounded-full bg-white dark:bg-[#222] shadow-lg items-center justify-center text-gray-400 transition-all duration-300"
+          >
+            <ChevronRight size={24} />
+          </motion.button>
+        </div>
+
+        {/* Mobile swipe hint & dot indicators */}
+        <div className="flex items-center justify-center gap-2 mt-8">
+          {/* Prev arrow (mobile) */}
+          <motion.button
+            whileTap={{ scale: 0.9 }}
+            onClick={prev}
+            disabled={current === 0}
+            className="sm:hidden w-9 h-9 rounded-full bg-[var(--color-card)] border border-[var(--color-border)] flex items-center justify-center text-[var(--color-foreground)]"
+          >
+            <ChevronLeft size={16} />
+          </motion.button>
+
+          {/* Dots */}
+          {Array.from({ length: maxIndex + 1 }).map((_, i) => (
+            <button
+              key={i}
+              onClick={() => {
+                setDirection(i > current ? 1 : -1);
+                setCurrent(i);
+              }}
+              aria-label={`Go to room ${i + 1}`}
+              className={`rounded-full transition-all duration-300 ${
+                i === current
+                  ? "w-7 h-2.5 bg-[var(--color-primary)]"
+                  : "w-2.5 h-2.5 bg-[var(--color-border)] hover:bg-[var(--color-primary)]/50"
+              }`}
+            />
+          ))}
+
+          {/* Next arrow (mobile) */}
+          <motion.button
+            whileTap={{ scale: 0.9 }}
+            onClick={next}
+            disabled={current >= maxIndex}
+            className="sm:hidden w-9 h-9 rounded-full bg-[var(--color-card)] border border-[var(--color-border)] flex items-center justify-center text-[var(--color-foreground)]"
+          >
+            <ChevronRight size={16} />
+          </motion.button>
+        </div>
+      </div>
+    </section>
+  );
+}
