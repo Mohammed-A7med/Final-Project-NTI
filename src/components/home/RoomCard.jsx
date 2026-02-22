@@ -5,7 +5,7 @@ export default function RoomCard({ room }) {
   return (
     <div className="bg-[#f6f7f6] dark:bg-[#1a1b1a] rounded-3xl overflow-hidden shadow-sm flex flex-col h-full select-none group">
       {/* Image Container */}
-      <div className="relative overflow-hidden aspect-[4/3] rounded-t-3xl">
+      <div className="relative overflow-hidden aspect-4/3 rounded-t-3xl">
         <img
           src={room.image}
           alt={room.name}
@@ -19,7 +19,7 @@ export default function RoomCard({ room }) {
         
         {/* Price Tag Overlay - positioned at the bottom-left of the image */}
         <div className="absolute bottom-0 left-0 bg-[#f6f7f6] dark:bg-[#1a1b1a] px-5 py-3 rounded-tr-3xl shadow-sm">
-          <p className="text-[var(--color-foreground)] font-semibold text-base leading-none">
+          <p className="text-(--color-foreground) font-semibold text-base leading-none">
             <span className="text-xl font-bold">${room.price}.00</span>
             <span className="text-sm font-normal text-gray-500"> /night</span>
           </p>
@@ -29,7 +29,7 @@ export default function RoomCard({ room }) {
       {/* Info Section */}
       <div className="px-6 pb-6 pt-2 flex flex-col gap-4 flex-1">
         {/* Name */}
-        <h3 className="font-[family-name:var(--font-header)] text-2xl text-[var(--color-foreground)] leading-tight mt-2">
+        <h3 className="font-(--font-header) text-2xl text-(--color-foreground) leading-tight mt-2">
           {room.name}
         </h3>
 

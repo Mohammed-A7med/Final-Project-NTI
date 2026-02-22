@@ -99,7 +99,7 @@ export default function RoomCardsSection() {
   };
 
   return (
-    <section className="py-10 px-4 sm:px-6 bg-[var(--color-background)] overflow-hidden">
+    <section className="py-10 px-4 sm:px-6 bg-(--color-background) overflow-hidden">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="flex flex-col mb-8 px-4">
@@ -107,7 +107,7 @@ export default function RoomCardsSection() {
             STAY IN STYLE
           </span>
           <div className="flex flex-col md:flex-row md:flex-wrap lg:flex-nowrap lg:items-center justify-between gap-8 lg:gap-16">
-            <h2 className="text-4xl md:text-4xl lg:text-3xl font-[family-name:var(--font-header)] text-[var(--color-foreground)] leading-tight whitespace-nowrap font-bold">
+            <h2 className="text-4xl md:text-4xl lg:text-3xl font-(--font-header) text-(--color-foreground) leading-tight whitespace-nowrap font-bold">
               Take Your Time
             </h2>
             
@@ -201,7 +201,7 @@ export default function RoomCardsSection() {
             whileTap={{ scale: 0.9 }}
             onClick={prev}
             disabled={current === 0}
-            className="sm:hidden w-9 h-9 rounded-full bg-[var(--color-card)] border border-[var(--color-border)] flex items-center justify-center text-[var(--color-foreground)]"
+            className="sm:hidden w-9 h-9 rounded-full bg-(--color-card) border border-(--color-border) flex items-center justify-center text-(--color-foreground)"
           >
             <ChevronLeft size={16} />
           </motion.button>
@@ -217,8 +217,8 @@ export default function RoomCardsSection() {
               aria-label={`Go to room ${i + 1}`}
               className={`rounded-full transition-all duration-300 ${
                 i === current
-                  ? "w-7 h-2.5 bg-[var(--color-primary)]"
-                  : "w-2.5 h-2.5 bg-[var(--color-border)] hover:bg-[var(--color-primary)]/50"
+                  ? "w-7 h-2.5 bg-(--color-primary)"
+                  : "w-2.5 h-2.5 bg-(--color-border) hover:bg-(--color-primary)/50"
               }`}
             />
           ))}
@@ -228,7 +228,7 @@ export default function RoomCardsSection() {
             whileTap={{ scale: 0.9 }}
             onClick={next}
             disabled={current >= maxIndex}
-            className="sm:hidden w-9 h-9 rounded-full bg-[var(--color-card)] border border-[var(--color-border)] flex items-center justify-center text-[var(--color-foreground)]"
+            className="sm:hidden w-9 h-9 rounded-full bg-(--color-card) border border-(--color-border) flex items-center justify-center text-(--color-foreground)"
           >
             <ChevronRight size={16} />
           </motion.button>

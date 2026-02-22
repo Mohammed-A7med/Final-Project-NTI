@@ -17,7 +17,7 @@ export default function DesktopNav({ navLinks, onHover, onLeave }) {
               className={({ isActive }) => `
                 flex items-center justify-center w-11 h-11 rounded-full
                 transition-all duration-300 hover:bg-white/20 dark:hover:bg-white/10
-                ${isActive ? "text-[var(--color-primary)] bg-white/20 shadow-inner" : "text-white/80"}
+                ${isActive ? "text-(--color-primary) bg-white/20 shadow-inner" : "text-white/80"}
               `}
             >
               <motion.div

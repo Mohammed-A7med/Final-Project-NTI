@@ -29,7 +29,7 @@ export default function MobileNav({ navLinks, isOpen, onClose }) {
                     onClick={onClose}
                     className={({ isActive }) => `
                       flex items-center gap-4 p-4 rounded-2xl transition-all
-                      ${isActive ? "bg-[var(--color-primary)] text-white shadow-lg" : "text-white/80 hover:bg-white/10"}
+                      ${isActive ? "bg-(--color-primary) text-white shadow-lg" : "text-white/80 hover:bg-white/10"}
                     `}
                   >
                     {link.icon}
@@ -49,7 +49,7 @@ export default function MobileNav({ navLinks, isOpen, onClose }) {
                   onClick={onClose}
                   className={({ isActive }) => `
                     flex items-center gap-4 p-4 rounded-2xl transition-all
-                    ${isActive ? "bg-[var(--color-primary)] text-white shadow-lg" : "text-white/80 hover:bg-white/10"}
+                    ${isActive ? "bg-(--color-primary) text-white shadow-lg" : "text-white/80 hover:bg-white/10"}
                   `}
                 >
                   <LogIn size={22} />

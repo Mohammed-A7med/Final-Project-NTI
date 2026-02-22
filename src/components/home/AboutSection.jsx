@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 
 export default function AboutSection() {
   return (
-    <section className="py-20 px-6 bg-[var(--color-background)]">
+    <section className="py-20 px-6 bg-(--color-background)">
       <div className="max-w-7xl mx-auto text-center">
         <motion.span 
           initial={{ opacity: 0, y: 20 }}
@@ -19,7 +19,7 @@ export default function AboutSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="text-3xl md:text-4xl lg:text-5xl font-[family-name:var(--font-header)] text-[var(--color-foreground)] mb-8 leading-tight"
+          className="text-3xl md:text-4xl lg:text-5xl font-(--font-header) text-(--color-foreground) mb-8 leading-tight"
         >
           Alpine Hideaway In The Engadin. The <br className="hidden md:block" />
           Deepest Relaxation, The Highest Comfort
@@ -30,7 +30,7 @@ export default function AboutSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.4 }}
-          className="text-base md:text-lg text-gray-600 font-[family-name:var(--font-main)] leading-relaxed mb-12 max-w-3xl mx-auto"
+          className="text-base md:text-lg text-gray-600 font-(--font-main) leading-relaxed mb-12 max-w-3xl mx-auto"
         >
           Nestled in the Swiss mountains like a hidden edelweiss, our 5-star superior hotel in Samnaun blends tradition with modern luxury, following its renovation in 2022. Since 1965, the Sailing has epitomized a family atmosphere of well-being. We promise our guests first-class service, exquisite cuisine, and profound relaxation, ensuring an authentic experience that harmonizes cherished traditions with a desire for innovation.
         </motion.p>
@@ -45,7 +45,7 @@ export default function AboutSection() {
           <motion.button 
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="px-8 py-3 bg-[var(--color-primary)] text-white rounded-full font-medium shadow-lg hover:shadow-xl transition-all w-full sm:w-auto"
+            className="px-8 py-3 bg-(--color-primary) text-white rounded-full font-medium shadow-lg hover:shadow-xl transition-all w-full sm:w-auto"
           >
             More About Us
           </motion.button>
@@ -53,7 +53,7 @@ export default function AboutSection() {
           <motion.button 
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="px-8 py-3 bg-transparent border border-[var(--color-primary)] text-[var(--color-primary)] rounded-full font-medium hover:bg-[var(--color-primary)] hover:text-white transition-all w-full sm:w-auto"
+            className="px-8 py-3 bg-transparent border border-(--color-primary) text-(--color-primary) rounded-full font-medium hover:bg-(--color-primary) hover:text-white transition-all w-full sm:w-auto"
           >
             Explore Our Accommodations
           </motion.button>
@@ -111,7 +111,7 @@ export default function AboutSection() {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.4 }}
-              className="md:flex-[1] rounded-3xl overflow-hidden h-auto md:h-full shadow-lg bg-[var(--color-secondary)] p-8 flex flex-col justify-center"
+              className="md:flex-[1] rounded-3xl overflow-hidden h-auto md:h-full shadow-lg bg-(--color-secondary) p-8 flex flex-col justify-center"
             >
               <ul className="space-y-6">
                 {[
@@ -125,7 +125,7 @@ export default function AboutSection() {
                     whileHover={{ x: 10 }}
                     className="flex justify-between align-center group cursor-pointer border-b border-white/20 pb-4 last:border-0 last:pb-0"
                   >
-                    <span className="text-white text-sm sm:text-base md:text-xl font-[family-name:var(--font-header)] font-medium text-start">
+                    <span className="text-white text-sm sm:text-base md:text-xl font-(--font-header) font-medium text-start">
                       {item}
                     </span>
                     <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center group-hover:bg-white/40 transition-colors">

@@ -37,10 +37,10 @@ export default function MegaMenu({ content, isOpen, onMouseEnter, onMouseLeave }
                 className="group flex items-center gap-3 hover:opacity-80 transition-opacity duration-200"
               >
                 {/* Circular icon */}
-                <div className="flex-shrink-0 flex items-center justify-center w-10 h-10 rounded-full bg-black/5 dark:bg-white/10 text-black/60 dark:text-white/70 group-hover:bg-[var(--color-primary)]/10 group-hover:text-[var(--color-primary)] transition-colors duration-200">
+                <div className="shrink-0 flex items-center justify-center w-10 h-10 rounded-full bg-black/5 dark:bg-white/10 text-black/60 dark:text-white/70 group-hover:bg-(--color-primary)/10 group-hover:text-(--color-primary) transition-colors duration-200">
                   {link.icon}
                 </div>
-                <span className="text-sm font-medium text-black/80 dark:text-white/80 group-hover:text-[var(--color-primary)] transition-colors duration-200">
+                <span className="text-sm font-medium text-black/80 dark:text-white/80 group-hover:text-(--color-primary) transition-colors duration-200">
                   {link.label}
                 </span>
               </Link>
@@ -50,7 +50,7 @@ export default function MegaMenu({ content, isOpen, onMouseEnter, onMouseLeave }
 
         {/* Right Side: featured image with promo overlay */}
         {content.featuredImage && (
-          <div className="w-[45%] flex-shrink-0 pl-0">
+          <div className="w-[45%] shrink-0 pl-0">
             <div className="relative rounded-2xl overflow-hidden h-[300px]">
               <img
                 src={content.featuredImage}
@@ -58,7 +58,7 @@ export default function MegaMenu({ content, isOpen, onMouseEnter, onMouseLeave }
                 className="w-full h-full object-cover"
               />
               {/* Dark gradient overlay at bottom */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+              <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent" />
 
               {/* Promo caption */}
               {content.promotion && (
@@ -73,7 +73,7 @@ export default function MegaMenu({ content, isOpen, onMouseEnter, onMouseLeave }
                   </div>
                   <Link
                     to={content.promotion.href}
-                    className="flex-shrink-0 flex items-center justify-center w-9 h-9 rounded-full bg-white/20 hover:bg-white/40 backdrop-blur-sm transition-colors duration-200"
+                    className="shrink-0 flex items-center justify-center w-9 h-9 rounded-full bg-white/20 hover:bg-white/40 backdrop-blur-sm transition-colors duration-200"
                   >
                     <ArrowRight size={16} className="text-white" />
                   </Link>
