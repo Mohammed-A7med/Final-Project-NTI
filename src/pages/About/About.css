@@ -1,9 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Inter:wght@300;400;500;600&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Inter:wght@300;400;500;600&display=swap");
 
 .about-section {
     padding: 6rem 2rem;
     background-color: #fff;
-    font-family: 'Inter', sans-serif;
+    font-family: "Inter", sans-serif;
     max-width: 1400px;
     margin: 0 auto;
 }
@@ -23,7 +23,7 @@
 }
 
 .about-heading {
-    font-family: 'Playfair Display', serif;
+    font-family: "Playfair Display", serif;
     font-weight: 600;
     font-size: 3.25rem;
     line-height: 1.15;
@@ -164,3 +164,6 @@
         display: none;
     }
 }
+
+
+

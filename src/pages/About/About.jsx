@@ -87,6 +87,6 @@ export default function About() {
           </svg>
         </div>
       </div>
-    </section>
+    </section >
   );
 }
