@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import BookingBar from "./BookingBar";
 
 // Image data - using high quality Unsplash images
 const slides = [
@@ -98,7 +100,7 @@ export default function HeroCarousel() {
 
 
           {/* Text Content */}
-          <div className="absolute inset-0 flex flex-col items-center justify-center text-center text-white px-4">
+          <div className="absolute inset-0 flex flex-col items-center justify-center text-center text-white px-4 pb-[30vh] md:pb-0">
             <motion.h1 
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
@@ -121,28 +123,28 @@ export default function HeroCarousel() {
 
       {/* Navigation Buttons */}
       <div className="absolute bottom-8 right-8 flex gap-4 z-20">
-        <motion.button
-          whileHover={{ scale: 1.1, backgroundColor: "rgba(255, 255, 255, 0.3)" }}
-          whileTap={{ scale: 0.9 }}
+        <Button
+          variant="secondary"
+          size="icon"
           onClick={prevSlide}
-          className="p-3 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-white transition-colors"
           aria-label="Previous Slide"
+          className="bg-white/10 backdrop-blur-sm border-white/20 text-white hover:bg-white/30"
         >
           <ChevronLeft size={24} />
-        </motion.button>
-        <motion.button
-          whileHover={{ scale: 1.1, backgroundColor: "rgba(255, 255, 255, 0.3)" }}
-          whileTap={{ scale: 0.9 }}
+        </Button>
+        <Button
+          variant="secondary"
+          size="icon"
           onClick={nextSlide}
-          className="p-3 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-white transition-colors"
           aria-label="Next Slide"
+          className="bg-white/10 backdrop-blur-sm border-white/20 text-white hover:bg-white/30"
         >
           <ChevronRight size={24} />
-        </motion.button>
+        </Button>
       </div>
 
-      {/* Indicators */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-3 z-20">
+      {/* Indicators (Hidden on mobile when BookingBar is visible to save space) */}
+      <div className="hidden md:flex absolute bottom-8 left-1/2 -translate-x-1/2 gap-3 z-20">
         {slides.map((_, index) => (
           <button
             key={index}
@@ -159,6 +161,9 @@ export default function HeroCarousel() {
           />
         ))}
       </div>
+
+      {/* Booking Bar */}
+      <BookingBar />
     </div>
   );
 }

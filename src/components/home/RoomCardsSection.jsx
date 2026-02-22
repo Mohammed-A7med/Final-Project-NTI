@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence, useMotionValue } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import RoomCard from "./RoomCard";
 
 const rooms = [
@@ -99,49 +100,47 @@ export default function RoomCardsSection() {
   };
 
   return (
-    <section className="py-10 px-4 sm:px-6 bg-(--color-background) overflow-hidden">
+    <section className="py-10 px-4 sm:px-6 bg-background overflow-hidden">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="flex flex-col mb-8 px-4">
-          <span className="text-md uppercase text-gray-400 font-bold mb-3 block">
+          <span className="text-md uppercase text-muted-foreground font-bold mb-3 block">
             STAY IN STYLE
           </span>
           <div className="flex flex-col md:flex-row md:flex-wrap lg:flex-nowrap lg:items-center justify-between gap-8 lg:gap-16">
-            <h2 className="text-4xl md:text-4xl lg:text-3xl font-(--font-header) text-(--color-foreground) leading-tight whitespace-nowrap font-bold">
+            <h2 className="text-4xl md:text-4xl lg:text-3xl font-header text-foreground leading-tight whitespace-nowrap font-bold">
               Take Your Time
             </h2>
             
-            <p className="text-sm md:text-base text-gray-500 flex-1 leading-relaxed font-medium lg:max-w-2xl">
+            <p className="text-sm md:text-base text-muted-foreground flex-1 leading-relaxed font-medium lg:max-w-2xl">
               Experience the natural beauty of our O'ahu resort in any setting — private oceanfront
               bungalow, lavish suite, or ocean view room.
             </p>
 
-            <motion.button
-              whileHover={{ scale: 1.05, filter: "brightness(1.1)" }}
-              whileTap={{ scale: 0.95 }}
-              className="shrink-0 px-8 py-4 bg-[#8A9D8A] text-white rounded-full text-sm font-bold shadow-md hover:shadow-xl transition-all duration-300 whitespace-nowrap self-start md:w-full lg:w-auto lg:self-center"
+            <Button
+              className="shrink-0 self-start md:w-full lg:w-auto lg:self-center"
             >
               View All Accommodations
-            </motion.button>
+            </Button>
           </div>
         </div>
 
         {/* Carousel wrapper */}
         <div className="relative px-4">
           {/* Left Arrow */}
-          <motion.button
-            whileHover={{ scale: 1.1, backgroundColor: "#fff" }}
-            whileTap={{ scale: 0.9 }}
+          <Button
+            variant="secondary"
+            size="icon"
             onClick={prev}
             disabled={current === 0}
             aria-label="Previous room"
-            className="hidden lg:flex absolute -left-6 top-1/2 -translate-y-1/2 z-10 w-12 h-12 rounded-full bg-white dark:bg-[#222] shadow-lg items-center justify-center text-gray-400 transition-all duration-300"
+            className="hidden lg:flex absolute -left-6 top-1/2 -translate-y-1/2 z-10 bg-card shadow-lg border border-border/50 text-foreground"
           >
             <ChevronLeft size={24} />
-          </motion.button>
+          </Button>
 
           {/* Track */}
-          <div className="overflow-hidden">
+          <div className="overflow-hidden p-2">
             <motion.div
               ref={trackRef}
               drag="x"
@@ -182,16 +181,16 @@ export default function RoomCardsSection() {
           </div>
 
           {/* Right Arrow */}
-          <motion.button
-            whileHover={{ scale: 1.1, backgroundColor: "#fff" }}
-            whileTap={{ scale: 0.9 }}
+          <Button
+            variant="secondary"
+            size="icon"
             onClick={next}
             disabled={current >= maxIndex}
             aria-label="Next room"
-            className="hidden lg:flex absolute -right-6 top-1/2 -translate-y-1/2 z-10 w-12 h-12 rounded-full bg-white dark:bg-[#222] shadow-lg items-center justify-center text-gray-400 transition-all duration-300"
+            className="hidden lg:flex absolute -right-6 top-1/2 -translate-y-1/2 z-10 bg-card shadow-lg border border-border/50 text-foreground"
           >
             <ChevronRight size={24} />
-          </motion.button>
+          </Button>
         </div>
 
         {/* Mobile swipe hint & dot indicators */}
@@ -201,7 +200,7 @@ export default function RoomCardsSection() {
             whileTap={{ scale: 0.9 }}
             onClick={prev}
             disabled={current === 0}
-            className="sm:hidden w-9 h-9 rounded-full bg-(--color-card) border border-(--color-border) flex items-center justify-center text-(--color-foreground)"
+            className="sm:hidden w-9 h-9 rounded-full bg-card border border-border flex items-center justify-center text-foreground"
           >
             <ChevronLeft size={16} />
           </motion.button>
@@ -217,8 +216,8 @@ export default function RoomCardsSection() {
               aria-label={`Go to room ${i + 1}`}
               className={`rounded-full transition-all duration-300 ${
                 i === current
-                  ? "w-7 h-2.5 bg-(--color-primary)"
-                  : "w-2.5 h-2.5 bg-(--color-border) hover:bg-(--color-primary)/50"
+                  ? "w-7 h-2.5 bg-primary"
+                  : "w-2.5 h-2.5 bg-border hover:bg-primary/50"
               }`}
             />
           ))}
@@ -228,7 +227,7 @@ export default function RoomCardsSection() {
             whileTap={{ scale: 0.9 }}
             onClick={next}
             disabled={current >= maxIndex}
-            className="sm:hidden w-9 h-9 rounded-full bg-(--color-card) border border-(--color-border) flex items-center justify-center text-(--color-foreground)"
+            className="sm:hidden w-9 h-9 rounded-full bg-card border border-border flex items-center justify-center text-foreground"
           >
             <ChevronRight size={16} />
           </motion.button>

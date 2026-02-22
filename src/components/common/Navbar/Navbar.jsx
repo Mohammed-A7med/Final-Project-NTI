@@ -1,5 +1,5 @@
 import { useState, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "framer-motion";
 import { navLinks } from "./navLinks";
 import Logo from "./Logo";
 
@@ -15,7 +15,20 @@ import MegaMenu from "./MegaMenu";
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [activeMegaMenu, setActiveMegaMenu] = useState(null);
+  const [hidden, setHidden] = useState(false);
+  const { scrollY } = useScroll();
   const timeoutRef = useRef(null);
+
+  useMotionValueEvent(scrollY, "change", (latest) => {
+    const previous = scrollY.getPrevious();
+    if (latest > previous && latest > 150) {
+      setHidden(true);
+      setActiveMegaMenu(null); // Close mega menu if scrolling down
+      setIsOpen(false); // Close mobile menu if scrolling down
+    } else {
+      setHidden(false);
+    }
+  });
 
   const handleMouseEnter = (link) => {
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
@@ -40,9 +53,13 @@ export default function Navbar() {
     <header className="fixed top-0 left-0 right-0 z-50 px-5 py-3 transition-all duration-300">
       <div className="max-w-7xl mx-auto relative">
         <motion.nav
-          initial={{ y: -20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          className="relative flex items-center justify-between px-2 py-2 bg-black/30 dark:bg-white/10 backdrop-blur-xl border border-white/20 dark:border-white/10 rounded-full shadow-2xl z-20"
+          variants={{
+            visible: { y: 0, opacity: 1 },
+            hidden: { y: -100, opacity: 0 },
+          }}
+          animate={hidden ? "hidden" : "visible"}
+          transition={{ duration: 0.35, ease: "easeInOut" }}
+          className="relative flex items-center justify-between px-2 py-2 bg-primary/50 backdrop-blur-xl border border-primary/20 rounded-full shadow-2xl z-20"
         >
           <Logo />
           <DesktopNav 

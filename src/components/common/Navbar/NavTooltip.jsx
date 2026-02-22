@@ -21,7 +21,7 @@ export default function NavTooltip({ label, children }) {
             transition={{ duration: 0.2 }}
             className="absolute top-full left-1/2 mt-3 z-50 pointer-events-none"
           >
-            <div className="px-4 py-1.5 bg-black/20 border border-white/10 rounded-xl shadow-2xl whitespace-nowrap text-sm font-medium text-white tracking-wide">
+            <div className="px-4 py-1.5 bg-primary/90 border border-white/10 rounded-xl shadow-2xl whitespace-nowrap text-sm font-medium text-white tracking-wide">
               {label}
             </div>
           </motion.div>

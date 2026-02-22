@@ -14,17 +14,17 @@ export default function MegaMenu({ content, isOpen, onMouseEnter, onMouseLeave }
       onMouseLeave={onMouseLeave}
       className={`
         absolute top-full left-0 right-0 mt-4 overflow-hidden
-        bg-white/95 dark:bg-neutral-900/95 backdrop-blur-2xl
-        border border-white/20 dark:border-white/10 rounded-[2rem] shadow-2xl
+        bg-card backdrop-blur-2xl
+        border border-border/50 rounded-[2rem] shadow-2xl
         ${isOpen ? "pointer-events-auto" : "pointer-events-none"}
       `}
     >
       <div className="flex p-6 gap-6">
 
         {/* Left Side: title + 2-col links grid — 50% */}
-        <div className="w-[55%] pr-6 border-r border-black/10 dark:border-white/10">
+        <div className="w-[55%] pr-6 border-r border-border/50">
           {/* Section label */}
-          <p className="text-xs font-bold tracking-[0.2em] uppercase text-black/40 dark:text-white/40 pb-3 mb-8 border-b border-black/10 dark:border-white/10">
+          <p className="text-xs font-bold tracking-[0.2em] uppercase text-muted-foreground pb-3 mb-8 border-b border-primary/20">
             {content.title}
           </p>
 
@@ -37,10 +37,10 @@ export default function MegaMenu({ content, isOpen, onMouseEnter, onMouseLeave }
                 className="group flex items-center gap-3 hover:opacity-80 transition-opacity duration-200"
               >
                 {/* Circular icon */}
-                <div className="shrink-0 flex items-center justify-center w-10 h-10 rounded-full bg-black/5 dark:bg-white/10 text-black/60 dark:text-white/70 group-hover:bg-(--color-primary)/10 group-hover:text-(--color-primary) transition-colors duration-200">
+                <div className="shrink-0 flex items-center justify-center w-10 h-10 rounded-full bg-primary/20 text-primary group-hover:bg-primary/10 group-hover:text-primary transition-colors duration-200">
                   {link.icon}
                 </div>
-                <span className="text-sm font-medium text-black/80 dark:text-white/80 group-hover:text-(--color-primary) transition-colors duration-200">
+                <span className="text-sm font-medium text-foreground group-hover:text-primary transition-colors duration-200">
                   {link.label}
                 </span>
               </Link>
@@ -73,9 +73,9 @@ export default function MegaMenu({ content, isOpen, onMouseEnter, onMouseLeave }
                   </div>
                   <Link
                     to={content.promotion.href}
-                    className="shrink-0 flex items-center justify-center w-9 h-9 rounded-full bg-white/20 hover:bg-white/40 backdrop-blur-sm transition-colors duration-200"
+                    className="shrink-0 flex items-center justify-center w-9 h-9 rounded-full bg-primary/20 hover:bg-primary/40 backdrop-blur-sm transition-colors duration-200"
                   >
-                    <ArrowRight size={16} className="text-white" />
+                    <ArrowRight size={16} className="text-[#fefefe]" />
                   </Link>
                 </div>
               )}
