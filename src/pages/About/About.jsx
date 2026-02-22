@@ -1,7 +1,37 @@
+import { useState } from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import "./About.css";
 
 export default function About() {
+  const testimonials = [
+    {
+      quote: "Lovely hotel, the staff are amazing! We had an amazing stay at Rixos Saadiyat Island! We loved every minute and didn't want to leave! We will definitely be back!",
+      author: "Ana Bayne",
+      title: "Executive Manager"
+    },
+    {
+      quote: "The winter activities were beyond our expectations. From skiing to cozy evenings by the fire, everything was perfect. A truly magical experience!",
+      author: "Mark J.",
+      title: "Travel Blogger"
+    },
+    {
+      quote: "Absolute luxury in the heart of the mountains. The attention to detail and hospitality made our winter retreat unforgettable. Highly recommend!",
+      author: "Sarah L.",
+      title: "Guest"
+    }
+  ];
+
+  const [currentTestimonial, setCurrentTestimonial] = useState(0);
+
+  const nextTestimonial = () => {
+    setCurrentTestimonial((prev) => (prev + 1) % testimonials.length);
+  };
+
+  const prevTestimonial = () => {
+    setCurrentTestimonial((prev) => (prev - 1 + testimonials.length) % testimonials.length);
+  };
+
   return (
     <section className="about-section">
       <div className="about-hero-grid">
@@ -114,7 +144,6 @@ export default function About() {
       </div>
 
       <div className="about-content-blocks">
-        {/* History Block */}
         <div className="content-block history-block">
           <div className="block-text">
             <span className="block-tag">HISTORY</span>
@@ -139,7 +168,6 @@ export default function About() {
           </div>
         </div>
 
-        {/* Development Block */}
         <div className="content-block development-block">
           <div className="block-images-grid">
             <div className="main-image-v">
@@ -157,10 +185,53 @@ export default function About() {
             <p className="block-description">
               Our portfolio showcases a diverse range of<br /> exceptional properties, from breathtaking beach resorts to<br /> rejuvenating spa retreats in exclusive, private clubs,<br /> vibrant urban experiences, and vibrant...
             </p>
-            <Button className="about-btn-outline">Read More</Button>
           </div>
         </div>
       </div>
+
+      <section className="winter-activities">
+        <div className="winter-container">
+          <div className="testimonial-section">
+            <span className="winter-tag">WINTER ACTIVITIES</span>
+            <div className="carousel-wrapper">
+              <button className="carousel-btn prev" onClick={prevTestimonial}>
+                <ChevronLeft size={24} />
+              </button>
+              <div className="testimonial-content">
+                <p className="testimonial-quote">
+                  " {testimonials[currentTestimonial].quote} "
+                </p>
+                <h4 className="testimonial-author">{testimonials[currentTestimonial].author}</h4>
+                <p className="testimonial-title">{testimonials[currentTestimonial].title}</p>
+              </div>
+              <button className="carousel-btn next" onClick={nextTestimonial}>
+                <ChevronRight size={24} />
+              </button>
+            </div>
+          </div>
+
+          <div className="activities-gallery">
+            <div className="act-img item-1">
+              <img src="https://images.unsplash.com/photo-1544198365-f5d60b6d8190?auto=format&fit=crop&q=80&w=600" alt="Winter View 1" />
+            </div>
+            <div className="act-img item-2">
+              <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&q=80&w=600" alt="Winter View 2" />
+            </div>
+            <div className="act-img item-3">
+              <img src="https://images.unsplash.com/photo-1518780664697-55e3ad937233?auto=format&fit=crop&q=80&w=600" alt="Winter Hotel" />
+            </div>
+            <div className="act-img item-4">
+              <img src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&q=80&w=600" alt="Winter Forest" />
+            </div>
+            <div className="act-img item-5">
+              <img src="https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&q=80&w=600" alt="Winter Landscape" />
+            </div>
+            <div className="act-img item-6">
+              <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&q=80&w=600" alt="Winter Peak" />
+            </div>
+          </div>
+        </div>
+      </section>
 
 
     </section >
