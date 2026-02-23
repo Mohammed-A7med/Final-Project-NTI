@@ -1,12 +1,16 @@
 import { Home, BedSingle, ConciergeBell, Palmtree, Gem, Waves, Utensils, Bell, Dumbbell, CalendarDays, ShoppingBag } from "lucide-react";
 
 export const navLinks = [
-  { label: "Home", href: "/", icon: <Home size={22} /> },
-  { label: "Rooms", href: "/rooms", icon: <BedSingle size={22} /> },
+  { label: "Home", href: "/", icon: <Home size={20} /> },
+  { 
+    label: "Rooms", 
+    href: "/rooms", 
+    icon: <BedSingle size={20} />,
+  },
   {
     label: "Services",
     href: "/services",
-    icon: <ConciergeBell size={22} />,
+    icon: <ConciergeBell size={20} />,
     megaMenu: {
       title: "Our Premium Services",
       description: "Experience the ultimate luxury and comfort with our wide range of services.",
@@ -26,6 +30,24 @@ export const navLinks = [
       ]
     }
   },
-  { label: "Activities", href: "/activities", icon: <Palmtree size={22} /> },
-  { label: "Features", href: "/features", icon: <Gem size={22} /> },
+  { 
+    label: "Activities", 
+    href: "/activities", 
+    icon: <Palmtree size={20} />,
+    dropdown: [
+      { label: "Winter Sports", href: "/activities/winter" },
+      { label: "Mountain Hiking", href: "/activities/hiking" },
+      { label: "Spa & Wellness", href: "/activities/spa" },
+      { label: "Local Tours", href: "/activities/tours" },
+    ]
+  },
+  { 
+    label: "Features", 
+    href: "/features", 
+    icon: <Gem size={20} />,
+    dropdown: [
+      { label: "About Us", href: "/about" },
+      { label: "Contact Us", href: "/contact" },
+    ]
+  },
 ];
