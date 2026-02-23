@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 
@@ -44,16 +45,18 @@ export default function AboutSection() {
           className="flex flex-col sm:flex-row items-center justify-center gap-4"
         >
           <Button 
+            asChild
             className="w-full sm:w-auto"
           >
-            More About Us
+            <Link to="/about">More About Us</Link>
           </Button>
           
           <Button 
+            asChild
             variant="outline"
             className="w-full sm:w-auto"
           >
-            Explore Our Accommodations
+            <Link to="/rooms">Explore Our Accommodations</Link>
           </Button>
         </motion.div>
 

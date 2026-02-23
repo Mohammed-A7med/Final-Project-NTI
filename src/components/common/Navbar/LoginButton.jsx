@@ -9,7 +9,7 @@ export default function LoginButton() {
       <NavLink
         to="/auth/login"
         className={({ isActive }) => `
-          flex items-center justify-center w-11 h-11 rounded-full border border-[#fefefe11]
+          flex items-center justify-center w-10 h-10 rounded-full border border-[#fefefe11]
           transition-all duration-300 hover:bg-primary/20
           ${isActive ? "text-primary bg-primary/20 shadow-inner" : "text-[#fefefea9] bg-primary/5"}
         `}
@@ -18,7 +18,7 @@ export default function LoginButton() {
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
         >
-          <LogIn size={22} />
+          <LogIn size={18} />
         </motion.div>
       </NavLink>
     </NavTooltip>
