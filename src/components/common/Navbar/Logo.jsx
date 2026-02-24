@@ -38,7 +38,7 @@ export default function Logo() {
           <div className="flex flex-col">
             <span className={`
               text-lg font-header tracking-tight font-bold leading-none transition-colors duration-300
-              ${isActive ? "text-primary" : "text-foreground group-hover:text-primary"}
+              ${isActive ? "text-primary" : "text-[#fefefeb3] group-hover:text-primary"}
             `}>
               Palm Mirage
             </span>
