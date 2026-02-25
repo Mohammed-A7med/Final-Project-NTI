@@ -21,7 +21,7 @@ export default function FormInputField({
         id={id}
         type={type}
         placeholder={placeholder}
-        className="bg-background border-border focus:ring-2 focus:ring-primary py-6"
+        className="bg-background border-border focus:ring-2 focus:ring-primary md:py-6"
         {...register}
       />
 
