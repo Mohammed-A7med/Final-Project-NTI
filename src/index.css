@@ -156,5 +156,5 @@ body{
     background-color: var(--background);
     color: var(--foreground);
     scroll-behavior: smooth;
-    overflow-x: hidden;
+    overflow-x: hidden !important;
 }

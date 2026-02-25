@@ -44,11 +44,11 @@ const Checkout = () => {
     <div className="min-h-screen bg-background pt-20 pb-12">
       {/* Header Section */}
       <div className="text-center mb-16 px-4">
-        <h1 className="text-5xl font-serif text-foreground mb-4">Checkout</h1>
+        <h1 className="text-5xl font-header text-foreground mb-4">Checkout</h1>
         <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
           <span className="hover:text-foreground cursor-pointer transition-colors">Home</span>
           <span>/</span>
-          <span className="text-muted/60">Checkout</span>
+          <span className="text-foreground/30">Checkout</span>
         </div>
       </div>
 
