@@ -7,9 +7,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 import { emailValidator } from "./authSchema";
 import AuthButton from "../../components/auth/AuthButton";
+import AuthHeader from "../../components/auth/AuthHeader";
 
 const emailSchema = z.object({
-  email: emailValidator
+  email: emailValidator,
 });
 
 export default function ForgotPassword() {
@@ -33,21 +34,13 @@ export default function ForgotPassword() {
   return (
     <section className="w-full max-w-md mx-auto flex flex-col gap-6">
       {/* -------------------- Header Section  -------------------- */}
-      <div className="flex flex-col gap-2 text-center">
-        <h4 className="text-2xl font-bold text-foreground">Forgot Password</h4>
-        <p className="text-sm text-muted-foreground">
-          Enter your email to receive a reset link
-        </p>
-        <p className="text-sm text-muted-foreground">
-          Remember your password?
-          <Link
-            to="/auth/login"
-            className="text-primary font-medium hover:text-secondary transition ml-1"
-          >
-            Login
-          </Link>
-        </p>
-      </div>
+      <AuthHeader
+        title="Forgot Password"
+        description="Enter your email to receive a reset link"
+        questionText="Remember your password?"
+        linkText="Login"
+        linkTo="/login"
+      />
 
       {/* -------------------- Forgot Password Form --------------------  */}
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">
@@ -71,7 +64,7 @@ export default function ForgotPassword() {
         </Field>
 
         {/*  ---------- Submit Button  ---------- */}
-         <AuthButton isSubmitting={isSubmitting}>Send mail</AuthButton>
+        <AuthButton isSubmitting={isSubmitting}>Send mail</AuthButton>
       </form>
     </section>
   );

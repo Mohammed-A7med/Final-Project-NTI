@@ -8,6 +8,7 @@ import { Field, FieldDescription, FieldLabel } from "@/components/ui/field";
 
 import { loginSchema } from "./authSchema";
 import AuthButton from "../../components/auth/AuthButton";
+import AuthHeader from "../../components/auth/AuthHeader";
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
@@ -32,21 +33,13 @@ export default function Login() {
   return (
     <section className="w-full max-w-md mx-auto flex flex-col gap-6">
       {/* -------------------- Header Section  -------------------- */}
-      <div className="flex flex-col gap-2 text-center">
-        <h4 className="text-2xl font-bold text-foreground">Welcome Back</h4>
-        <p className="text-sm text-muted-foreground">
-          Sign in to continue to your account
-        </p>
-        <p className="text-sm text-muted-foreground">
-          Don’t have an account?
-          <Link
-            to="/auth/register"
-            className="text-primary font-medium hover:text-secondary transition"
-          >
-            Register
-          </Link>
-        </p>
-      </div>
+      <AuthHeader
+        title="Welcome Back"
+        description="Sign in to continue to your account"
+        questionText="Don’t have an account?"
+        linkText="Register"
+        linkTo="/register"
+      />
 
       {/* -------------------- Login Form --------------------  */}
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">
@@ -106,7 +99,7 @@ export default function Login() {
         </Link>
 
         {/*  ---------- Submit Button  ---------- */}
-          <AuthButton isSubmitting={isSubmitting}>Login</AuthButton>
+        <AuthButton isSubmitting={isSubmitting}>Login</AuthButton>
       </form>
     </section>
   );

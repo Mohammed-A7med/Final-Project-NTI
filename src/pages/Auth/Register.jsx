@@ -8,6 +8,7 @@ import { Field, FieldDescription, FieldLabel } from "@/components/ui/field";
 
 import { registerSchema } from "./authSchema";
 import AuthButton from "../../components/auth/AuthButton";
+import AuthHeader from "../../components/auth/AuthHeader";
 
 export default function Register() {
   const [showPassword, setShowPassword] = useState(false);
@@ -40,19 +41,13 @@ export default function Register() {
   return (
     <section className="w-full max-w-md mx-auto flex flex-col gap-6">
       {/* -------------------- Header Section  -------------------- */}
-      <div className="flex flex-col gap-2 text-center">
-        <h4 className="text-2xl font-bold text-foreground">Create Account</h4>
-        <p className="text-sm text-muted-foreground">Sign up to get started</p>
-        <p className="text-sm text-muted-foreground">
-          Already have an account?
-          <Link
-            to="/auth/login"
-            className="text-primary font-medium hover:text-secondary transition ml-1"
-          >
-            Login
-          </Link>
-        </p>
-      </div>
+      <AuthHeader
+        title="Create Account"
+        description="Sign up to get started"
+        questionText="Already have an account?"
+        linkText="Login"
+        linkTo="/login"
+      />
 
       {/* -------------------- Sign up Form --------------------  */}
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">

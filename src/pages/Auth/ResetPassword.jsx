@@ -8,6 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 import AuthButton from "../../components/auth/AuthButton";
 import { resetPasswordSchema } from "./authSchema";
+import AuthHeader from "../../components/auth/AuthHeader";
 
 export default function ResetPassword() {
   const [showPassword, setShowPassword] = useState(false);
@@ -33,21 +34,13 @@ export default function ResetPassword() {
   return (
     <section className="w-full max-w-md mx-auto flex flex-col gap-6">
       {/* -------------------- Header Section  -------------------- */}
-      <div className="flex flex-col gap-2 text-center">
-        <h4 className="text-2xl font-bold text-foreground">Reset Password</h4>
-        <p className="text-sm text-muted-foreground">
-          Enter the code sent to your email and set a new password
-        </p>
-        <p className="text-sm text-muted-foreground">
-          Back to
-          <Link
-            to="/auth/login"
-            className="text-primary font-medium hover:text-secondary transition ml-1"
-          >
-            Login
-          </Link>
-        </p>
-      </div>
+      <AuthHeader
+        title="Reset Password"
+        description="Enter the code sent to your email and set a new password"
+        questionText="Back to"
+        linkText="Login"
+        linkTo="/login"
+      />
 
       {/* -------------------- Reset Password Form --------------------  */}
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">
