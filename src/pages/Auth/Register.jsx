@@ -1,7 +1,4 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { Eye, EyeOff } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Field, FieldDescription, FieldLabel } from "@/components/ui/field";
@@ -9,11 +6,9 @@ import { Field, FieldDescription, FieldLabel } from "@/components/ui/field";
 import { registerSchema } from "./authSchema";
 import AuthButton from "../../components/auth/AuthButton";
 import AuthHeader from "../../components/auth/AuthHeader";
+import PasswordField from "../../components/auth/PasswordField";
 
 export default function Register() {
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-
   const {
     register,
     handleSubmit,
@@ -131,60 +126,17 @@ export default function Register() {
         </Field>
 
         {/* ----------  Password Input Field  ---------- */}
-        <Field>
-          <FieldLabel htmlFor="password" className="text-foreground">
-            Password
-          </FieldLabel>
-          <div className="relative">
-            <Input
-              id="password"
-              type={showPassword ? "text" : "password"}
-              placeholder="Enter your password"
-              className="bg-background border-border focus:ring-2 focus:ring-primary pr-12"
-              {...register("password")}
-            />
-            <button
-              type="button"
-              onClick={() => setShowPassword((prev) => !prev)}
-              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-sm text-muted-foreground hover:text-primary transition"
-            >
-              {showPassword ? <Eye /> : <EyeOff />}
-            </button>
-          </div>
-          {errors.password && (
-            <FieldDescription className="text-red-400">
-              {errors.password.message}
-            </FieldDescription>
-          )}
-        </Field>
+        <PasswordField
+          register={register("password")}
+          error={errors.password}
+        />
 
         {/* ----------  Confirm Password Input Field  ---------- */}
-        <Field>
-          <FieldLabel htmlFor="confirmPassword" className="text-foreground">
-            Confirm Password
-          </FieldLabel>
-          <div className="relative">
-            <Input
-              id="confirmPassword"
-              type={showConfirmPassword ? "text" : "password"}
-              placeholder="Confirm your password"
-              className="bg-background border-border focus:ring-2 focus:ring-primary pr-12"
-              {...register("confirmPassword")}
-            />
-            <button
-              type="button"
-              onClick={() => setShowConfirmPassword((prev) => !prev)}
-              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-sm text-muted-foreground hover:text-primary transition"
-            >
-              {showConfirmPassword ? <Eye /> : <EyeOff />}
-            </button>
-          </div>
-          {errors.confirmPassword && (
-            <FieldDescription className="text-red-400">
-              {errors.confirmPassword.message}
-            </FieldDescription>
-          )}
-        </Field>
+
+        <PasswordField
+          register={register("confirmPassword")}
+          error={errors.confirmPassword}
+        />
 
         {/*  ---------- Submit Button  ---------- */}
         <AuthButton isSubmitting={isSubmitting}>Sign up</AuthButton>
