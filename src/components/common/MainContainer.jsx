@@ -1,0 +1,30 @@
+import React from 'react';
+import { useLocation } from 'react-router-dom';
+import AppBreadcrumb from './AppBreadcrumb';
+import { cn } from "@/lib/utils";
+import DynamicTitle from './DynamicTitle';
+
+
+const MainContainer = ({ children, className = "", showBreadcrumb = true, title: customTitle }) => {
+  const { pathname } = useLocation();
+  const isHomePage = pathname === "/";
+
+  return (
+    <div className={cn(
+      `w-full max-w-7xl mx-auto px-3 sm:px-4 lg:px-2 ${!isHomePage && "pt-30"}`,
+      className
+    )}>
+      {!isHomePage && (
+        <div className="flex flex-col items-center text-center mb-10">
+          <DynamicTitle customTitle={customTitle} />
+          {showBreadcrumb && <AppBreadcrumb />}
+        </div>
+      )}
+      <div className={cn(!isHomePage && "mt-0")}>
+        {children}
+      </div>
+    </div>
+  );
+};
+
+export default MainContainer;
