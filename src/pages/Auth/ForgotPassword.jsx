@@ -1,18 +1,20 @@
-import z from "zod";
-import { Link } from "react-router-dom";
-import { useForm } from "react-hook-form";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Field, FieldDescription, FieldLabel } from "@/components/ui/field";
+import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
+import z from "zod";
 
+import AuthButton from "../../components/auth/AuthButton";
+import AuthHeader from "../../components/auth/AuthHeader";
+import FormInputField from "../../components/auth/FormInputField";
 import { emailValidator } from "./authSchema";
 
 const emailSchema = z.object({
-  email: emailValidator
+  email: emailValidator,
 });
 
 export default function ForgotPassword() {
+  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
@@ -25,6 +27,7 @@ export default function ForgotPassword() {
   const onSubmit = (data) => {
     try {
       console.log(data);
+      navigate("/auth/reset-password");
     } catch (error) {
       console.log(error);
     }
@@ -33,51 +36,21 @@ export default function ForgotPassword() {
   return (
     <section className="w-full max-w-md mx-auto flex flex-col gap-6">
       {/* -------------------- Header Section  -------------------- */}
-      <div className="flex flex-col gap-2 text-center">
-        <h4 className="text-2xl font-bold text-foreground">Forgot Password</h4>
-        <p className="text-sm text-muted-foreground">
-          Enter your email to receive a reset link
-        </p>
-        <p className="text-sm text-muted-foreground">
-          Remember your password?
-          <Link
-            to="/auth/login"
-            className="text-primary font-medium hover:text-secondary transition ml-1"
-          >
-            Login
-          </Link>
-        </p>
-      </div>
+      <AuthHeader
+        title="Forgot Password"
+        description="Enter your email to receive a reset link"
+        questionText="Remember your password?"
+        linkText="Login"
+        linkTo="/login"
+      />
 
       {/* -------------------- Forgot Password Form --------------------  */}
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">
         {/* ---------- Email Input Field ---------- */}
-        <Field>
-          <FieldLabel htmlFor="email" className="text-foreground">
-            Email
-          </FieldLabel>
-          <Input
-            id="email"
-            type="text"
-            placeholder="Enter your email"
-            className="bg-background border-border focus:ring-2 focus:ring-primary"
-            {...register("email")}
-          />
-          {errors.email && (
-            <FieldDescription className="text-red-400">
-              {errors.email.message}
-            </FieldDescription>
-          )}
-        </Field>
+        <FormInputField register={register("email")} error={errors.email} />
 
         {/*  ---------- Submit Button  ---------- */}
-        <Button
-          type="submit"
-          disabled={isSubmitting}
-          className="bg-primary text-primary-foreground py-2.5 rounded-lg hover:bg-secondary transition-all duration-300 shadow-sm hover:shadow-md"
-        >
-          Send mail
-        </Button>
+        <AuthButton isSubmitting={isSubmitting}>Send mail</AuthButton>
       </form>
     </section>
   );
