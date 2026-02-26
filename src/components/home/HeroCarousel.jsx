@@ -105,7 +105,7 @@ export default function HeroCarousel() {
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.3, duration: 0.8 }}
-              className="text-4xl md:text-6xl lg:text-7xl font-bold mb-4 tracking-tight drop-shadow-lg"
+              className="text-4xl md:text-6xl lg:text-7xl font-header mb-4 tracking-tight drop-shadow-lg"
             >
               {slides[currentIndex].title}
             </motion.h1>
@@ -154,8 +154,8 @@ export default function HeroCarousel() {
             }}
             className={`w-3 h-3 rounded-full transition-all duration-300 ${
               index === currentIndex 
-                ? "bg-white w-8" 
-                : "bg-white/50 hover:bg-white/80"
+                ? "bg-primary w-8" 
+                : "bg-primary/40 hover:bg-primary/70"
             }`}
             aria-label={`Go to slide ${index + 1}`}
           />

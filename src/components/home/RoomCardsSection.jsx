@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence, useMotionValue } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
@@ -118,9 +119,10 @@ export default function RoomCardsSection() {
             </p>
 
             <Button
+              asChild
               className="shrink-0 self-start md:w-full lg:w-auto lg:self-center"
             >
-              View All Accommodations
+              <Link to="/rooms">View All Accommodations</Link>
             </Button>
           </div>
         </div>
