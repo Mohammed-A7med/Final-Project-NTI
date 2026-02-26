@@ -5,6 +5,7 @@ import MainLayout from "@/layouts/MainLayout.jsx";
 import NotFound from "@/pages/NotFound/NotFound";
 
 // Public Pages
+<<<<<<< HEAD
 import About from "@/pages/About/About";
 import Blog from "@/pages/Blog/Blog";
 import BlogDetails from "@/pages/Blog/BlogDetails";
@@ -17,6 +18,20 @@ import Wellness from "@/pages/Services/Wellness";
 import Menu from "@/pages/menu/Menu";
 import ShopCart from "@/pages/shopcart/ShopCart";
 import Checkout from "@/pages/Checkout/Checkout";
+=======
+import About from '@/pages/About/About';
+import Blog from '@/pages/Blog/Blog';
+import BlogDetails from '@/pages/Blog/BlogDetails';
+import Contact from '@/pages/Contact/Contact';
+import Home from '@/pages/Home/Home';
+import RoomDetails from '@/pages/Rooms/RoomDetails';
+import Rooms from '@/pages/Rooms/Rooms';
+// import Services from '@/pages/Services/Services';
+import Wellness from '@/pages/Services/Wellness';
+import Menu from '@/pages/menu/Menu';
+import ShopCart from '@/pages/shopcart/ShopCart';
+import Checkout from '@/pages/Checkout/Checkout';
+>>>>>>> 3ef96f269851b3678e88533a7b992c4798caf19e
 
 // Auth Pages
 import ForgotPassword from "@/pages/Auth/ForgotPassword";
@@ -33,18 +48,18 @@ export const routes = createBrowserRouter([
     errorElement: <NotFound />,
     children: [
       { index: true, element: <Home /> },
-      { path: "rooms", element: <Rooms /> },
-      { path: "rooms/:id", element: <RoomDetails /> },
-      { path: "services", element: <Services /> },
-      { path: "services/wellness", element: <Wellness /> },
-      { path: "services/menu", element: <Menu /> },
-      { path: "services/restaurant", element: <Restaurant /> },
-      { path: "blog", element: <Blog /> },
-      { path: "blog/:id", element: <BlogDetails /> },
-      { path: "about", element: <About /> },
-      { path: "contact", element: <Contact /> },
-      { path: "cart", element: <ShopCart /> },
-      { path: "checkout", element: <Checkout /> },
+      { path: 'rooms', element: <Rooms /> },
+      { path: 'rooms/:id', element: <RoomDetails /> },
+      // { path: 'services', element: <Services /> }, //changed for demo
+      { path: 'services', element: <Wellness /> },
+      { path: 'services/wellness', element: <Wellness /> },
+      { path: 'services/menu', element: <Menu /> },
+      { path: 'blog', element: <Blog /> },
+      { path: 'blog/:id', element: <BlogDetails /> },
+      { path: 'about', element: <About /> },
+      { path: 'contact', element: <Contact /> },
+      { path: 'cart', element: <ShopCart /> },
+      { path: 'checkout', element: <Checkout /> },
     ],
   },
 
