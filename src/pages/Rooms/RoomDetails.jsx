@@ -146,30 +146,7 @@ export default function RoomDetails() {
 
   return (
     <div className="min-h-screen bg-background text-foreground transition-colors duration-300">
-      <div className="container mx-auto px-4 pt-28 pb-8 max-w-6xl font-main">
-
-        {/* Breadcrumb */}
-        <div className="flex justify-center mb-8 relative z-10">
-          <Breadcrumb>
-            <BreadcrumbList className="text-xs sm:text-sm flex items-center justify-center">
-              <BreadcrumbItem>
-                <BreadcrumbLink asChild>
-                  <Link to="/" className="text-muted-foreground hover:text-primary transition-colors font-medium">Home</Link>
-                </BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator className="text-border px-1">/</BreadcrumbSeparator>
-              <BreadcrumbItem>
-                <BreadcrumbLink asChild>
-                  <Link to="/rooms" className="text-muted-foreground hover:text-primary transition-colors font-medium">Room</Link>
-                </BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator className="text-border px-1">/</BreadcrumbSeparator>
-              <BreadcrumbItem>
-                <BreadcrumbPage className="text-muted-foreground font-medium">{room.name}</BreadcrumbPage>
-              </BreadcrumbItem>
-            </BreadcrumbList>
-          </Breadcrumb>
-        </div>
+      <div className="container pb-8 font-main">
 
         {/* Hero Carousel */}
         <div className="relative group mb-12">
@@ -189,7 +166,7 @@ export default function RoomDetails() {
 
             {/* Room Summary Card */}
             <div className="absolute bottom-0 left-0 w-full sm:w-auto sm:min-w-[550px]">
-              <div className="bg-card text-card-foreground p-6 sm:p-10 rounded-tr-xl shadow-lg relative z-20 transition-colors duration-300">
+              <div className="bg-background text-card-foreground p-6 sm:p-10 rounded-tr-xl relative z-20 transition-colors duration-300">
                 <h1 className="text-3xl sm:text-4xl font-bold mb-8 font-header leading-tight text-foreground">
                   {room.name}
                 </h1>
