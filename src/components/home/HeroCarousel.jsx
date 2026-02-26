@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import BookingBar from "./BookingBar";
+import BookingBar from "@/components/rooms/BookingBar";
 
 // Image data - using high quality Unsplash images
 const slides = [
@@ -76,7 +76,7 @@ export default function HeroCarousel() {
   };
 
   return (
-    <div className="relative w-full h-screen overflow-hidden bg-black">
+    <div className="relative w-screen left-1/2 -translate-x-1/2 h-screen overflow-hidden bg-black">
       <AnimatePresence initial={false} custom={direction}>
         <motion.div
           key={currentIndex}
@@ -100,12 +100,12 @@ export default function HeroCarousel() {
 
 
           {/* Text Content */}
-          <div className="absolute inset-0 flex flex-col items-center justify-center text-center text-white px-4 pb-[30vh] md:pb-0">
+          <div className="absolute inset-0 flex flex-col items-center justify-center text-center text-white px-4 pb-[35vh] md:pb-0">
             <motion.h1 
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.3, duration: 0.8 }}
-              className="text-4xl md:text-6xl lg:text-7xl font-bold mb-4 tracking-tight drop-shadow-lg"
+              className="text-4xl md:text-6xl lg:text-7xl font-header mb-4 tracking-tight drop-shadow-lg"
             >
               {slides[currentIndex].title}
             </motion.h1>
@@ -121,8 +121,8 @@ export default function HeroCarousel() {
         </motion.div>
       </AnimatePresence>
 
-      {/* Navigation Buttons */}
-      <div className="absolute bottom-8 right-8 flex gap-4 z-20">
+      {/* Navigation Buttons (commented out for now) */}
+      {/* <div className="absolute bottom-8 right-8 flex gap-4 z-20">
         <Button
           variant="secondary"
           size="icon"
@@ -141,7 +141,7 @@ export default function HeroCarousel() {
         >
           <ChevronRight size={24} />
         </Button>
-      </div>
+      </div> */}
 
       {/* Indicators (Hidden on mobile when BookingBar is visible to save space) */}
       <div className="hidden md:flex absolute bottom-8 left-1/2 -translate-x-1/2 gap-3 z-20">
@@ -154,8 +154,8 @@ export default function HeroCarousel() {
             }}
             className={`w-3 h-3 rounded-full transition-all duration-300 ${
               index === currentIndex 
-                ? "bg-white w-8" 
-                : "bg-white/50 hover:bg-white/80"
+                ? "bg-primary w-8" 
+                : "bg-primary/40 hover:bg-primary/70"
             }`}
             aria-label={`Go to slide ${index + 1}`}
           />
@@ -163,7 +163,7 @@ export default function HeroCarousel() {
       </div>
 
       {/* Booking Bar */}
-      <BookingBar />
+      <BookingBar variant="overlay" className="bottom-10 md:bottom-16" />
     </div>
   );
 }

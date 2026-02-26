@@ -1,7 +1,7 @@
 import { Moon, Sun } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useSelector, useDispatch } from "react-redux";
-import { toggleTheme, selectIsDark } from "@/store/themeSlice";
+import { toggleTheme, selectIsDark } from "@/store/slices/themeSlice";
 import NavTooltip from "./NavTooltip";
 
 const iconVariants = {
@@ -24,7 +24,7 @@ export default function ThemeToggle({ mobile = false }) {
         exit="exit"
         style={{ display: "flex" }}
       >
-        {isDark ? <Sun size={20} /> : <Moon size={20} />}
+        {isDark ? <Sun size={18} /> : <Moon size={18} />}
       </motion.span>
     </AnimatePresence>
   );
@@ -33,10 +33,10 @@ export default function ThemeToggle({ mobile = false }) {
     return (
       <button
         onClick={() => dispatch(toggleTheme())}
-        className="flex items-center gap-3 text-white/80 shrink-0 cursor-pointer overflow-hidden"
+        className="flex items-center gap-4 p-4 rounded-2xl w-full text-white/80 hover:bg-white/10 transition-all cursor-pointer overflow-hidden"
       >
-        {icon}
-        <span>{isDark ? "Light Mode" : "Dark Mode"}</span>
+        <div className="shrink-0">{icon}</div>
+        <span className="font-semibold">{isDark ? "Light Mode" : "Dark Mode"}</span>
       </button>
     );
   }
@@ -44,10 +44,8 @@ export default function ThemeToggle({ mobile = false }) {
   return (
     <NavTooltip label={isDark ? "Light Mode" : "Dark Mode"}>
       <motion.button
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.9 }}
         onClick={() => dispatch(toggleTheme())}
-        className="w-11 h-11 flex items-center justify-center rounded-full bg-primary/5 hover:bg-primary/20 transition-all text-[#fefefea9] border border-[#fefefe11] cursor-pointer overflow-hidden"
+        className="w-10 h-10 flex items-center justify-center rounded-full bg-primary/5 hover:bg-primary/20 transition-all text-[#fefefea9] border border-[#fefefe11] cursor-pointer overflow-hidden"
         aria-label="Toggle Theme"
       >
         {icon}

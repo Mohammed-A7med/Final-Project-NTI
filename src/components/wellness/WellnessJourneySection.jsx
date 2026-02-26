@@ -89,12 +89,12 @@ function WellnessCarousel() {
 
 export default function WellnessJourneySection() {
   return (
-    <section className="py-[100px] bg-white">
-      <div className="container mx-auto max-w-[1280px] px-5 md:px-10">
+    <section className="py-[100px] bg-background">
+      <div className="">
         {/* Header row */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-[60px] mb-[60px] items-start">
           <div>
-            <div className="text-[13px] font-semibold tracking-[0.2em] uppercase text-accentGreen mb-4">
+            <div className="text-[13px] font-semibold tracking-[0.2em] uppercase text-foreground/50 mb-4">
               ENJOY YOUR WELLNESS JOURNEY
             </div>
             <h2 className="font-[family-name:var(--font-header)] text-[clamp(36px,4vw,52px)] leading-[1.1] font-bold text-primaryDark">

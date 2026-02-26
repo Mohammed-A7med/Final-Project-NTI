@@ -1,15 +1,16 @@
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
-import { Link } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 
-export default function MegaMenu({ content, isOpen, onMouseEnter, onMouseLeave }) {
+export default function MegaMenu({ content, isOpen, onMouseEnter, onMouseLeave, onItemClick }) {
   if (!content) return null;
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20, scale: 0.95 }}
-      animate={isOpen ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: 10, scale: 0.95 }}
-      transition={{ type: "spring", damping: 20, stiffness: 300 }}
+      initial={{ opacity: 0, y: 15 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: 10 }}
+      transition={{ type: "spring", damping: 25, stiffness: 200 }}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
       className={`
@@ -31,19 +32,26 @@ export default function MegaMenu({ content, isOpen, onMouseEnter, onMouseLeave }
           {/* 2-column grid of links */}
           <div className="grid grid-cols-2 gap-x-6 gap-y-8">
             {content.links.map((link) => (
-              <Link
+              <NavLink
                 key={link.label}
                 to={link.href}
-                className="group flex items-center gap-3 hover:opacity-80 transition-opacity duration-200"
+                onClick={onItemClick}
+                className={({ isActive }) =>
+                  `group flex items-center gap-3 transition-opacity duration-200 ${isActive ? "opacity-100" : "hover:opacity-80"}`
+                }
               >
-                {/* Circular icon */}
-                <div className="shrink-0 flex items-center justify-center w-10 h-10 rounded-full bg-primary/20 text-primary group-hover:bg-primary/10 group-hover:text-primary transition-colors duration-200">
-                  {link.icon}
-                </div>
-                <span className="text-sm font-medium text-foreground group-hover:text-primary transition-colors duration-200">
-                  {link.label}
-                </span>
-              </Link>
+                {({ isActive }) => (
+                  <>
+                    {/* Circular icon */}
+                    <div className={`shrink-0 flex items-center justify-center w-10 h-10 rounded-full transition-colors duration-200 ${isActive ? "bg-primary/30 text-primary" : "bg-primary/20 text-primary group-hover:bg-primary/10"}`}>
+                      {link.icon}
+                    </div>
+                    <span className={`text-sm font-medium transition-colors duration-200 ${isActive ? "text-primary font-semibold" : "text-foreground group-hover:text-primary"}`}>
+                      {link.label}
+                    </span>
+                  </>
+                )}
+              </NavLink>
             ))}
           </div>
         </div>
@@ -73,6 +81,7 @@ export default function MegaMenu({ content, isOpen, onMouseEnter, onMouseLeave }
                   </div>
                   <Link
                     to={content.promotion.href}
+                    onClick={onItemClick}
                     className="shrink-0 flex items-center justify-center w-9 h-9 rounded-full bg-primary/20 hover:bg-primary/40 backdrop-blur-sm transition-colors duration-200"
                   >
                     <ArrowRight size={16} className="text-[#fefefe]" />

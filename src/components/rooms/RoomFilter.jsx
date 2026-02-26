@@ -56,7 +56,7 @@ export default function RoomFilter({ onFilter }) {
   };
 
   return (
-    <div className="bg-white rounded-2xl shadow-md p-6 space-y-7 w-full">
+    <div className="space-y-7">
       {/* Price Range */}
       <div className="space-y-2">
         <h4 className="text-xl text-left font-header font-bold text-accent-foreground">

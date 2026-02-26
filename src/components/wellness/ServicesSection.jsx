@@ -27,13 +27,13 @@ const SERVICES = [
 export default function ServicesSection() {
   return (
     <section className="pt-20 pb-24">
-      <div className="container mx-auto max-w-[1280px] px-5 md:px-10">
+      <div className="">
         <Fade>
           <div className="text-center mb-[52px]">
-            <p className="text-[12px] font-semibold tracking-[0.18em] uppercase text-accentGreen mb-[14px] leading-none">
+            <p className="text-[12px] tracking-[0.18em] uppercase text-accentGreen mb-[14px] leading-none">
               Enjoy Your Wellness Journey
             </p>
-            <h2 className="font-[family-name:var(--font-header)] text-[clamp(28px,3vw,44px)] font-bold text-primaryDark leading-[1.12]">
+            <h2 className="font-header text-[clamp(28px,3vw,44px)] font-bold text-primaryDark leading-[1.12]">
               Enjoy Your Wellness Journey
             </h2>
           </div>
@@ -41,23 +41,23 @@ export default function ServicesSection() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7 items-start">
           {SERVICES.map((s, i) => (
             <Fade key={s.title} delay={i * 0.1}>
-              <div>
-                <div className="rounded-[8px] overflow-hidden h-[290px] group">
+              <div className='bg-card rounded-[8px] overflow-hidden'>
+                <div className="h-[290px] group">
                   <img
                     src={s.img}
                     alt={s.title}
-                    className="w-full h-full object-cover block transition-transform duration-500 group-hover:scale-105"
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                   />
                 </div>
-                <div className="pt-6">
-                  <p className="text-[11px] font-semibold tracking-[0.18em] uppercase text-accentGreen mb-2">
+                <div className="p-6">
+                  <p className="text-[11px] tracking-[0.18em] uppercase text-accentGreen mb-2">
                     {s.tag}
                   </p>
-                  <h3 className="font-[family-name:var(--font-header)] text-[clamp(22px,1.9vw,28px)] font-bold text-primaryDark leading-[1.15] mb-3">
+                  <h3 className="font-header text-[clamp(22px,1.9vw,28px)] font-bold text-primaryDark leading-[1.15] mb-3">
                     {s.title}
                   </h3>
-                  <p className="text-[15px] text-[#555] leading-[1.78] mb-[14px]">{s.desc}</p>
-                  <p className="text-[15px] text-[#888] mb-[18px]">
+                  <p className="text-[15px] text-foreground/40 leading-[1.78] mb-[14px]">{s.desc}</p>
+                  <p className="text-[15px] text-foreground/40 mb-[18px]">
                     Opening hours: {s.hours}
                   </p>
                   <a

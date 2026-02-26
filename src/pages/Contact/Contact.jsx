@@ -1,16 +1,6 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Facebook, Instagram, Linkedin, Twitter } from "lucide-react";
-import { NavLink } from "react-router-dom";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
-
 import { contactSchema } from "./contactSchema";
 
 export default function Contact() {
@@ -36,43 +26,16 @@ export default function Contact() {
 
   return (
     <>
-      <section className="container bg-background mt-16 text-center">
+      <section className="container bg-background text-center">
         {/* Header */}
-        <div className="flex flex-col items-center py-16 justify-center">
+        {/* <div className="flex flex-col items-center mb-16 justify-center">
           <h1 className="text-5xl font-header text-foreground font-medium mb-6">
             Contact Us
           </h1>
-
-          <Breadcrumb>
-            <BreadcrumbList className="text-lg">
-              <BreadcrumbItem>
-                <BreadcrumbLink asChild>
-                  <NavLink
-                    to="/"
-                    className={({ isActive }) =>
-                      isActive
-                        ? "text-primary"
-                        : "text-muted-foreground hover:text-primary transition-colors"
-                    }
-                  >
-                    Home
-                  </NavLink>
-                </BreadcrumbLink>
-              </BreadcrumbItem>
-
-              <BreadcrumbSeparator />
-
-              <BreadcrumbItem>
-                <BreadcrumbPage className="font-medium text-foreground">
-                  Contact Us
-                </BreadcrumbPage>
-              </BreadcrumbItem>
-            </BreadcrumbList>
-          </Breadcrumb>
-        </div>
+        </div> */}
 
         {/* Map */}
-        <div className="w-full h-112.5 relative overflow-hidden">
+        <div className="relative w-screen left-1/2 -translate-x-1/2 h-screen overflow-hidden">
           <div className="absolute inset-0 grayscale invert opacity-80 contrast-125">
             <iframe
               src="https://www.google.com/maps/embed?pb=..."
@@ -87,7 +50,7 @@ export default function Contact() {
         </div>
 
         {/* Contact Section */}
-        <div className="container p-6 md:p-10 lg:px-24 text-left flex flex-col lg:flex-row justify-center items-center gap-10 lg:gap-16">
+        <div className="md:pt-10 text-left flex flex-col lg:flex-row justify-center items-center gap-10 lg:gap-16">
           {/* Left — Info */}
           <div className="w-full lg:w-1/2">
             <div className="space-y-4">

@@ -1,49 +1,57 @@
-import { useState } from "react";
-import { mockCartItems } from "./mockData";
-import CartHeader from "./CartHeader";
-import CartItem from "./CartItem";
-import CartEmpty from "./CartEmpty";
-import OrderSummary from "./OrderSummary";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  selectCartItems,
+  selectCartTotal,
+  updateQuantity,
+  removeItem,
+  clearCart,
+} from "@/store/slices/cartSlice";
+import { toast } from "react-toastify";
+import CartItem from "@/components/shopcart/CartItem";
+import CartEmpty from "@/components/shopcart/CartEmpty";
+import OrderSummary from "@/components/shopcart/OrderSummary";
 
 export default function ShopCart() {
-  const [cartItems, setCartItems] = useState(mockCartItems);
+  const dispatch = useDispatch();
+  const cartItems = useSelector(selectCartItems);
+  const totalPrice = useSelector(selectCartTotal);
 
-  const increase = (id) =>
-    setCartItems((prev) =>
-      prev.map((item) =>
-        item.id === id ? { ...item, quantity: item.quantity + 1 } : item
-      )
-    );
+  const increase = (id) => {
+    const item = cartItems.find((i) => i.id === id);
+    if (item) {
+      dispatch(updateQuantity({ id, quantity: item.quantity + 1 }));
+      toast.info(`Updated ${item.name} quantity`);
+    }
+  };
 
-  const decrease = (id) =>
-    setCartItems((prev) =>
-      prev
-        .map((item) =>
-          item.id === id ? { ...item, quantity: item.quantity - 1 } : item
-        )
-        .filter((item) => item.quantity > 0)
-    );
+  const decrease = (id) => {
+    const item = cartItems.find((i) => i.id === id);
+    if (item) {
+      dispatch(updateQuantity({ id, quantity: item.quantity - 1 }));
+      if (item.quantity - 1 === 0) {
+        toast.warning(`${item.name} removed from cart`);
+      } else {
+        toast.info(`Updated ${item.name} quantity`);
+      }
+    }
+  };
 
-  const remove = (id) =>
-    setCartItems((prev) => prev.filter((item) => item.id !== id));
+  const remove = (id) => {
+    const item = cartItems.find((i) => i.id === id);
+    if (item) {
+      dispatch(removeItem(id));
+      toast.warning(`${item.name} removed from cart`);
+    }
+  };
 
-  const clearAll = () => setCartItems([]);
-
-  const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
-  const totalPrice = cartItems.reduce(
-    (sum, item) => sum + item.price * item.quantity,
-    0
-  );
+  const clearAll = () => {
+    dispatch(clearCart());
+    toast.error("Cart cleared");
+  };
 
   return (
-    <div className="min-h-screen bg-white dark:bg-[#0f0f0f] transition-colors duration-300">
-      <div className="container mx-auto px-4 pt-28 pb-16 font-main">
-
-        <CartHeader
-          totalItems={totalItems}
-          hasItems={cartItems.length > 0}
-          onClearAll={clearAll}
-        />
+    <div className="min-h-screen bg-background transition-colors duration-300">
+      <div className="">
 
         {cartItems.length === 0 ? (
           <CartEmpty />

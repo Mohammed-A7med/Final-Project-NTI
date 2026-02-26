@@ -1,5 +1,8 @@
 import { Link, useParams } from "react-router-dom";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { addItem } from "@/store/slices/cartSlice";
+import { toast } from "react-toastify";
 import {
   Bed,
   Maximize2,
@@ -32,14 +35,6 @@ import {
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
 import {
   Carousel,
   CarouselContent,
@@ -209,6 +204,7 @@ const similarRooms = [
 export default function RoomDetails() {
   const { id } = useParams();
   const room = mockRoomData;
+  const dispatch = useDispatch();
 
   // Booking State
   const [checkIn, setCheckIn] = useState("2026/02/23");
@@ -254,36 +250,36 @@ export default function RoomDetails() {
 
   const handleBooking = async () => {
     setIsLoading(true);
-    // Simulate a booking process
-    await new Promise((resolve) => setTimeout(resolve, 2000));
+    
+    // Calculate nights
+    let nights = 1;
+    if (checkIn && checkOut) {
+      const start = new Date(checkIn);
+      const end = new Date(checkOut);
+      const diffTime = Math.abs(end - start);
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+      if (diffDays > 0) nights = diffDays;
+    }
+
+    // Add exactly one entry to the cart with the computed details
+    dispatch(
+      addItem({
+        id: room.id,
+        name: room.name,
+        image: room.images[0],
+        price: room.price,
+        category: room.bedType,
+        quantity: parseInt(roomsCount) || 1,
+        nights: nights,
+      })
+    );
+    
+    toast.success(`${room.name} added to cart`);
     setIsLoading(false);
   };
 
   return (
     <div className="container mx-auto px-4 pt-28 pb-8 max-w-6xl font-main">
-      {/* Breadcrumb Section */}
-      <div className="flex justify-center mb-8 relative z-10">
-        <Breadcrumb>
-          <BreadcrumbList className="text-xs sm:text-sm flex items-center justify-center">
-            <BreadcrumbItem>
-              <BreadcrumbLink asChild>
-                <Link to="/" className="text-gray-500 hover:text-primary transition-colors font-medium">Home</Link>
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator className="text-gray-300 px-1">/</BreadcrumbSeparator>
-            <BreadcrumbItem>
-              <BreadcrumbLink asChild>
-                <Link to="/rooms" className="text-gray-500 hover:text-primary transition-colors font-medium">Room</Link>
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator className="text-gray-300 px-1">/</BreadcrumbSeparator>
-            <BreadcrumbItem>
-              <BreadcrumbPage className="text-gray-400 font-medium">{room.name}</BreadcrumbPage>
-            </BreadcrumbItem>
-          </BreadcrumbList>
-        </Breadcrumb>
-      </div>
-
       {/* Hero Section with Carousel */}
       <div className="relative group mb-12">
         <Carousel className="w-full">

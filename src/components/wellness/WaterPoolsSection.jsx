@@ -36,17 +36,17 @@ function AmenityIcon({ type }) {
 export default function WaterPoolsSection() {
   return (
     <section className="pb-[28px] rounded-[10px]">
-      <div className="container mx-auto max-w-[1280px] px-5 md:px-10">
+      <div className="">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch">
           <Fade>
-            <div className="bg-[#F6F7F6] rounded-[15px] p-[52px_48px] h-full box-border">
+            <div className="bg-foreground/5 rounded-[15px] p-[52px_48px] h-full box-border">
               <p className="text-[14px] tracking-wide uppercase text-[#777] mb-3">
                 Water Pools
               </p>
-              <h2 className="font-[family-name:var(--font-header)] text-[clamp(26px,2.5vw,36px)] font-bold text-primaryDark leading-[1.15] mb-[20px]">
+              <h2 className="font-header text-[clamp(26px,2.5vw,36px)] font-bold text-primaryDark leading-[1.15] mb-[20px]">
                 Wellness At Mountain Hotel
               </h2>
-              <p className="text-[16px] text-[#555] leading-[1.8]">
+              <p className="text-[16px] text-foreground/70 leading-[1.8]">
                 Step in and enjoy life with all your senses. In a fast paced
                 world, the luxurious 2000m2 Kulm Spa St. Moritz presents itself
                 as a haven and ideal hideaway for those seeking ultimate
@@ -59,7 +59,7 @@ export default function WaterPoolsSection() {
                 {AMENITIES.map((a) => (
                   <div
                     key={a.label}
-                    className="flex items-start gap-[9px] text-[15px] text-[#444]"
+                    className="flex items-start gap-[9px] text-[15px] text-foreground/50"
                   >
                     <AmenityIcon type={a.icon} />
                     {a.label}

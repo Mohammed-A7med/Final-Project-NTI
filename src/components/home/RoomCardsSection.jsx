@@ -1,8 +1,9 @@
+import { Link } from "react-router-dom";
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence, useMotionValue } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import RoomCard from "./RoomCard";
+import RoomCard from "@/components/rooms/RoomCard";
 
 const rooms = [
   {
@@ -100,10 +101,10 @@ export default function RoomCardsSection() {
   };
 
   return (
-    <section className="py-10 px-4 sm:px-6 bg-background overflow-hidden">
-      <div className="max-w-7xl mx-auto">
+    <section className="py-10 bg-background overflow-hidden">
+      <div className="">
         {/* Header */}
-        <div className="flex flex-col mb-8 px-4">
+        <div className="flex flex-col mb-8">
           <span className="text-md uppercase text-muted-foreground font-bold mb-3 block">
             STAY IN STYLE
           </span>
@@ -118,15 +119,16 @@ export default function RoomCardsSection() {
             </p>
 
             <Button
+              asChild
               className="shrink-0 self-start md:w-full lg:w-auto lg:self-center"
             >
-              View All Accommodations
+              <Link to="/rooms">View All Accommodations</Link>
             </Button>
           </div>
         </div>
 
         {/* Carousel wrapper */}
-        <div className="relative px-4">
+        <div className="relative">
           {/* Left Arrow */}
           <Button
             variant="secondary"
@@ -134,13 +136,13 @@ export default function RoomCardsSection() {
             onClick={prev}
             disabled={current === 0}
             aria-label="Previous room"
-            className="hidden lg:flex absolute -left-6 top-1/2 -translate-y-1/2 z-10 bg-card shadow-lg border border-border/50 text-foreground"
+            className="hidden lg:flex absolute left-5 top-1/2 -translate-y-1/2 z-10 bg-card shadow-lg border border-border/50 text-foreground"
           >
             <ChevronLeft size={24} />
           </Button>
 
           {/* Track */}
-          <div className="overflow-hidden p-2">
+          <div className="overflow-hidden p-1">
             <motion.div
               ref={trackRef}
               drag="x"
@@ -187,7 +189,7 @@ export default function RoomCardsSection() {
             onClick={next}
             disabled={current >= maxIndex}
             aria-label="Next room"
-            className="hidden lg:flex absolute -right-6 top-1/2 -translate-y-1/2 z-10 bg-card shadow-lg border border-border/50 text-foreground"
+            className="hidden lg:flex absolute right-5 top-1/2 -translate-y-1/2 z-10 bg-card border border-border/50 text-foreground"
           >
             <ChevronRight size={24} />
           </Button>
@@ -197,7 +199,6 @@ export default function RoomCardsSection() {
         <div className="flex items-center justify-center gap-2 mt-8">
           {/* Prev arrow (mobile) */}
           <motion.button
-            whileTap={{ scale: 0.9 }}
             onClick={prev}
             disabled={current === 0}
             className="sm:hidden w-9 h-9 rounded-full bg-card border border-border flex items-center justify-center text-foreground"
@@ -224,7 +225,6 @@ export default function RoomCardsSection() {
 
           {/* Next arrow (mobile) */}
           <motion.button
-            whileTap={{ scale: 0.9 }}
             onClick={next}
             disabled={current >= maxIndex}
             className="sm:hidden w-9 h-9 rounded-full bg-card border border-border flex items-center justify-center text-foreground"
