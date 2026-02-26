@@ -46,7 +46,7 @@ export default function ResetPassword() {
         <FormInputField
           type="text"
           id="otp"
-          label="User Name"
+          label="OTP"
           placeholder="Enter 6-digit code"
           register={register("otp")}
           error={errors.otp}
