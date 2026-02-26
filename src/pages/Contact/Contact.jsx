@@ -29,7 +29,7 @@ export default function Contact() {
 
   return (
     <>
-      <section className="container bg-background text-center">
+      <section className="container bg-background text-center my-10">
         {/* Header */}
         {/* <div className="flex flex-col items-center mb-16 justify-center">
           <h1 className="text-5xl font-header text-foreground font-medium mb-6">
