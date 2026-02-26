@@ -1,6 +1,7 @@
 import { NavLink } from "react-router-dom";
 import { useState } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
+import { toast } from "react-toastify";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -34,6 +35,7 @@ const CAROUSEL_IMAGES = [
 
 export default function Meetings() {
   const [current, setCurrent] = useState(0);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const total = CAROUSEL_IMAGES.length;
 
   const prev = () => setCurrent((c) => (c - 1 + total) % total);
@@ -44,6 +46,25 @@ export default function Meetings() {
     CAROUSEL_IMAGES[current % total],
     CAROUSEL_IMAGES[(current + 1) % total],
   ];
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    // Simulate API call
+    try {
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      toast.success("Consultation request sent successfully! We'll contact you soon.", {
+        position: "top-right",
+        autoClose: 3000,
+      });
+      e.target.reset();
+    } catch (error) {
+      toast.error("Failed to send request. Please try again later.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
   return (
     <div className="min-h-screen bg-background text-foreground transition-colors duration-300 font-main">
 
@@ -206,7 +227,123 @@ export default function Meetings() {
 
       </section>
 
+      <section className="container mx-auto px-4 max-w-6xl py-16 sm:py-24 border-t border-border/10">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-start">
+          <div className="max-w-md">
+            <span className="block text-[11px] font-bold uppercase tracking-[0.2em] text-[#8c9e8d] mb-4">
+              Book a Consultation
+            </span>
+            <h2 className="text-3xl sm:text-4xl font-black font-header text-foreground mb-6 leading-tight">
+              Plan Your Event With Us
+            </h2>
+            <div className="space-y-6 text-[14px] sm:text-[15px] text-muted-foreground leading-relaxed">
+              <p>
+                Looking to host a meeting or special event? Fill out the form below
+                and our event specialists will get in touch with you shortly to
+                discuss your needs and help you book the perfect space.
+              </p>
+              <p>
+                We typically respond within 24 hours. For urgent inquiries, please
+                call our events team at <span className="text-[#8c9e8d] font-bold">[Hotel Phone Number]</span>.
+              </p>
+            </div>
+          </div>
+
+          <form onSubmit={handleSubmit} className="space-y-6 w-full">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <div className="space-y-2">
+                <label className="block text-[12px] font-bold text-muted-foreground">Name*</label>
+                <input
+                  type="text"
+                  required
+                  className="w-full h-12 px-4 rounded-xl bg-card border border-border/40 focus:border-[#8c9e8d] focus:ring-1 focus:ring-[#8c9e8d] outline-none transition-all placeholder:text-muted-foreground/30"
+                />
+              </div>
+              <div className="space-y-2">
+                <label className="block text-[12px] font-bold text-muted-foreground">Email*</label>
+                <input
+                  type="email"
+                  required
+                  className="w-full h-12 px-4 rounded-xl bg-card border border-border/40 focus:border-[#8c9e8d] focus:ring-1 focus:ring-[#8c9e8d] outline-none transition-all placeholder:text-muted-foreground/30"
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <div className="space-y-2">
+                <label className="block text-[12px] font-bold text-muted-foreground">Phone Number*</label>
+                <input
+                  type="tel"
+                  required
+                  className="w-full h-12 px-4 rounded-xl bg-card border border-border/40 focus:border-[#8c9e8d] focus:ring-1 focus:ring-[#8c9e8d] outline-none transition-all placeholder:text-muted-foreground/30"
+                />
+              </div>
+              <div className="space-y-2">
+                <label className="block text-[12px] font-bold text-muted-foreground">Preferred Event Date</label>
+                <div className="relative">
+                  <input
+                    type="date"
+                    className="w-full h-12 px-4 rounded-xl bg-card border border-border/40 focus:border-[#8c9e8d] focus:ring-1 focus:ring-[#8c9e8d] outline-none transition-all appearance-none"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <div className="space-y-2">
+                <label className="block text-[12px] font-bold text-muted-foreground">Type of Event*</label>
+                <select className="w-full h-12 px-4 rounded-xl bg-card border border-border/40 focus:border-[#8c9e8d] focus:ring-1 focus:ring-[#8c9e8d] outline-none transition-all appearance-none text-muted-foreground">
+                  <option>—Please choose an option—</option>
+                  <option>Meeting</option>
+                  <option>Conference</option>
+                  <option>Wedding</option>
+                  <option>Private Party</option>
+                  <option>Other</option>
+                </select>
+              </div>
+              <div className="space-y-2">
+                <label className="block text-[12px] font-bold text-muted-foreground">Estimated Number of Guests*</label>
+                <select className="w-full h-12 px-4 rounded-xl bg-card border border-border/40 focus:border-[#8c9e8d] focus:ring-1 focus:ring-[#8c9e8d] outline-none transition-all appearance-none text-muted-foreground">
+                  <option>—Please choose an option—</option>
+                  <option>Less than 20</option>
+                  <option>20 - 50</option>
+                  <option>50 - 100</option>
+                  <option>100+</option>
+                </select>
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <label className="block text-[12px] font-bold text-muted-foreground">Additional Requests / Notes</label>
+              <textarea
+                rows={5}
+                className="w-full p-4 rounded-xl bg-card border border-border/40 focus:border-[#8c9e8d] focus:ring-1 focus:ring-[#8c9e8d] outline-none transition-all placeholder:text-muted-foreground/30 resize-none"
+              ></textarea>
+            </div>
+
+            <div className="flex justify-center pt-4">
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="px-10 py-4 bg-[#8c9e8d] hover:bg-[#7a8c7b] disabled:bg-muted disabled:text-muted-foreground disabled:cursor-not-allowed text-white font-bold rounded-full transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-1 uppercase tracking-widest text-[13px] flex items-center gap-2"
+              >
+                {isSubmitting ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    Sending...
+                  </>
+                ) : (
+                  "Book A Consultation"
+                )}
+              </button>
+            </div>
+          </form>
+        </div>
+      </section>
+
     </div>
   );
 }
+
+
 
