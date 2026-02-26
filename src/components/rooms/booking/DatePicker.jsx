@@ -53,7 +53,7 @@ const DatePicker = ({ checkIn, checkOut, setBookingState, setActivePopover }) =>
   const hasRange = checkIn && checkOut;
 
   return (
-    <div className="p-4 w-full md:w-[320px]">
+    <div className="p-4 w-full md:w-[320px] max-w-[calc(100vw-32px)] mx-auto">
       <div className="flex items-center justify-between mb-4 px-2">
         <button 
           onClick={(e) => { e.stopPropagation(); prevMonth(); }} 

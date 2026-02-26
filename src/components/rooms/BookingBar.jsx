@@ -78,8 +78,8 @@ export default function BookingBar({ className, variant = "overlay" }) {
       animate={{ y: 0, opacity: 1 }}
       transition={{ delay: 0.8, duration: 0.6 }}
       className={cn(
-        " z-30",
-        variant === "overlay" ? "absolute bottom-6 md:bottom-16 left-1/2 -translate-x-1/2" : "relative pb-0 pt-0",
+        "w-full max-w-7xl mx-auto px-4 z-30",
+        variant === "overlay" ? "absolute bottom-6 md:bottom-16 left-1/2 -translate-x-1/2" : "relative py-4",
         className
       )}
       ref={barRef}
@@ -119,12 +119,12 @@ export default function BookingBar({ className, variant = "overlay" }) {
               <AnimatePresence>
                 {activePopover === segment.id && (
                   <motion.div
-                    initial={{ opacity: 0, y: 10, scale: 0.95 }}
-                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                    exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.95 }}
                     transition={{ duration: 0.2 }}
-                    className="absolute bottom-full mb-4 left-0 md:left-auto md:right-0 lg:left-0 lg:right-auto bg-card border border-border shadow-2xl rounded-3xl overflow-hidden z-50 w-full md:w-auto"
-                    style={{ minWidth: segment.id === 'dates' ? '320px' : '260px' }}
+                    className="absolute top-full mt-4 md:bottom-full md:mb-4 md:top-auto md:mt-0 left-1/2 -translate-x-1/2 md:left-auto md:translate-x-0 md:right-0 lg:left-0 lg:right-auto bg-card border border-border shadow-2xl rounded-3xl overflow-hidden z-50 w-[95vw] md:w-auto"
+                    style={{ minWidth: segment.id === 'dates' ? 'min(320px, 90vw)' : 'min(260px, 90vw)' }}
                     onClick={(e) => e.stopPropagation()}
                   >
                     <div className="p-2">

@@ -33,8 +33,8 @@ const activities = [
 
 export default function ActivitiesSection() {
   return (
-    <section className="py-20 bg-background space-y-20 lg:space-y-32">
-      <div className="">
+    <section className="py-20 bg-background space-y-20 lg:space-y-32 overflow-hidden w-full relative">
+      <div className="px-4 md:px-0">
         {activities.map((activity, index) => (
           <div 
             key={activity.type} 
@@ -44,9 +44,9 @@ export default function ActivitiesSection() {
           >
             {/* Text Content */}
             <motion.div 
-              initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
               transition={{ duration: 0.8, ease: "easeOut" }}
               className="lg:basis-[35%] space-y-8"
             >
@@ -88,9 +88,9 @@ export default function ActivitiesSection() {
 
             {/* Image Content */}
             <motion.div 
-              initial={{ opacity: 0, scale: 0.9, x: index % 2 === 0 ? 50 : -50 }}
-              whileInView={{ opacity: 1, scale: 1, x: 0 }}
-              viewport={{ once: true }}
+              initial={{ opacity: 0, y: 30, scale: 0.95 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              viewport={{ once: true, margin: "-100px" }}
               transition={{ duration: 0.8, ease: "easeOut" }}
               className="lg:basis-[65%] w-full"
             >

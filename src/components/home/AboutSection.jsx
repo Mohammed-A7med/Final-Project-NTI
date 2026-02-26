@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 
 export default function AboutSection() {
   return (
-    <section className="py-20 bg-background">
+    <section className="py-20 bg-background overflow-hidden relative w-full">
       <div className="text-center">
         <motion.span 
           initial={{ opacity: 0, y: 20 }}
@@ -64,10 +64,10 @@ export default function AboutSection() {
           
           <div className="flex flex-col md:flex-row gap-6 h-auto md:h-85">
             <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.1 }}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.6, delay: 0.1 }}
               className="md:flex-1 rounded-3xl overflow-hidden h-64 md:h-full shadow-lg"
             >
               <img 
@@ -78,10 +78,10 @@ export default function AboutSection() {
             </motion.div>
 
             <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.2 }}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.6, delay: 0.2 }}
               className="md:flex-2 rounded-3xl overflow-hidden h-64 md:h-full shadow-lg"
             >
               <img 
@@ -94,10 +94,10 @@ export default function AboutSection() {
 
           <div className="flex flex-col md:flex-row gap-6 h-auto md:h-80">
             <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.3 }}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.6, delay: 0.3 }}
               className="md:flex-2 rounded-3xl overflow-hidden h-64 md:h-full shadow-lg"
             >
               <img 
@@ -108,10 +108,10 @@ export default function AboutSection() {
             </motion.div>
 
             <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.4 }}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.6, delay: 0.4 }}
               className="md:flex-1 rounded-3xl overflow-hidden h-auto md:h-full shadow-lg bg-secondary p-8 flex flex-col justify-center"
             >
               <ul className="space-y-6">

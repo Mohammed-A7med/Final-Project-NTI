@@ -100,7 +100,7 @@ export default function HeroCarousel() {
 
 
           {/* Text Content */}
-          <div className="absolute inset-0 flex flex-col items-center justify-center text-center text-white px-4 pb-[30vh] md:pb-0">
+          <div className="absolute inset-0 flex flex-col items-center justify-center text-center text-white px-4 pb-[35vh] md:pb-0">
             <motion.h1 
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
@@ -163,7 +163,7 @@ export default function HeroCarousel() {
       </div>
 
       {/* Booking Bar */}
-      <BookingBar variant="overlay" />
+      <BookingBar variant="overlay" className="bottom-10 md:bottom-16" />
     </div>
   );
 }
