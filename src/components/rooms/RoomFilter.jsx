@@ -56,7 +56,7 @@ export default function RoomFilter({ onFilter }) {
   };
 
   return (
-    <div className="bg-card rounded-2xl p-6 border border-foreground/10 space-y-7 w-full">
+    <div className="space-y-7">
       {/* Price Range */}
       <div className="space-y-2">
         <h4 className="text-xl text-left font-header font-bold text-accent-foreground">

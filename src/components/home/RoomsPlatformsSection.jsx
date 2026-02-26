@@ -26,7 +26,7 @@ const platforms = [
 export default function RoomsPlatformsSection() {
   return (
     <section className="py-10 mb-20 bg-background overflow-hidden">
-      <div className="max-w-7xl mx-auto">
+      <div className="">
         <div className="pt-15 border-t border-border/50">
           <h2 className="text-3xl md:text-4xl font-header text-foreground text-center mb-16 font-bold">
             Book Rooms On Our Affiliate Platforms

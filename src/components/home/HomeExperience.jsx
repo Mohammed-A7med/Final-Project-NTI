@@ -71,51 +71,50 @@ export default function HomeExperience() {
   const currentExp = experiences.find(e => e.id === activeTab) || experiences[0];
 
   return (
-    <section className="relative w-screen left-1/2 -translate-x-1/2 h-screen min-h-[800px] overflow-hidden transition-colors duration-300">
+    <section className="relative w-screen left-1/2 -translate-x-1/2 min-h-screen lg:h-screen overflow-hidden transition-colors duration-300">
       {/* Background Image Layer */}
-      <AnimatePresence mode="wait">
+      <AnimatePresence>
         <motion.div
           key={activeTab}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 1 }}
+          transition={{ duration: 0.8 }}
           className="absolute inset-0"
         >
           <img
             src={currentExp.image}
             alt={currentExp.title}
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover scale-105"
           />
         </motion.div>
       </AnimatePresence>
 
       {/* Gradient Overlay for Legibility */}
-      <div className="absolute inset-0 bg-linear-to-t from-[#687E69] via-[#687E69]/40 to-black/10 transition-colors duration-700" />
+      <div className="absolute inset-0 bg-linear-to-t from-[#687E69] via-[#687E69]/50 to-black/20 md:via-[#687E69]/40 md:to-black/10 transition-colors duration-700" />
 
       {/* Content Container */}
-      <div className="relative h-full w-full flex flex-col justify-end pb-12 md:pb-20 max-w-[1400px] mx-auto px-4 md:px-10">
+      <div className="relative h-full min-h-screen w-full flex flex-col justify-end pt-32 pb-12 md:pb-20 max-w-[1400px] mx-auto px-4 md:px-10">
         
         {/* Tab Navigation - Floating Overlay */}
-        <div className="flex flex-wrap items-center justify-center md:justify-start gap-4 mb-12 md:mb-16">
+        <div className="flex flex-nowrap md:flex-wrap items-center justify-start md:justify-start gap-4 mb-10 md:mb-16 overflow-x-auto py-4 scrollbar-hide px-4 -mx-4">
           {experiences.map((exp) => (
             <button
               key={exp.id}
               onClick={() => setActiveTab(exp.id)}
-              className={`flex flex-col items-center gap-2 px-6 py-4 rounded-2xl transition-all duration-300 min-w-[140px] md:min-w-[180px]
+              className={`flex flex-row md:flex-col items-center gap-3 md:gap-2 px-6 py-4 rounded-xl md:rounded-2xl transition-all duration-300 min-w-max md:min-w-[180px] shrink-0
                 ${activeTab === exp.id 
                   ? 'bg-white/20 backdrop-blur-md border border-white/30 text-white scale-105 shadow-xl' 
-                  : 'text-white/60 hover:text-white hover:bg-white/5'
+                  : 'bg-white/5 md:bg-transparent text-white/50 hover:text-white hover:bg-white/10'
                 }`}
             >
-              <span className="shrink-0">{exp.icon}</span>
-              <span className="text-sm font-header font-bold uppercase tracking-wider">{exp.title}</span>
+              <span className="shrink-0 scale-75 md:scale-100">{exp.icon}</span>
+              <span className="text-[10px] md:text-sm font-header font-bold uppercase tracking-wider">{exp.title}</span>
             </button>
           ))}
         </div>
 
         {/* Detailed Experience Info */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-end">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-end">
           
           {/* Left: Text Content */}
           <motion.div 
@@ -123,22 +122,22 @@ export default function HomeExperience() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="space-y-6 text-white"
+            className="space-y-4 md:space-y-6 text-white"
           >
             <div className="space-y-2">
               <p className="text-white/80 text-[10px] md:text-[12px] font-bold tracking-[0.2em] uppercase">
                 {currentExp.label}
               </p>
-              <h2 className="text-4xl md:text-5xl lg:text-6xl font-header font-bold leading-tight drop-shadow-lg">
+              <h2 className="text-3xl md:text-5xl lg:text-6xl font-header font-bold leading-tight drop-shadow-lg">
                 {currentExp.heading}
               </h2>
             </div>
             <p className="text-white/80 text-sm md:text-base leading-relaxed max-w-xl font-medium">
               {currentExp.description}
             </p>
-            <div className="pt-4 flex flex-wrap gap-4">
-              <Button className="bg-white text-[#687E69] hover:bg-white/90 rounded-full px-10 py-6 text-sm font-bold h-auto shadow-xl transition-transform hover:scale-105">
-                Book Now
+            <div className="pt-2 md:pt-4 flex flex-wrap gap-4">
+              <Button className="bg-white text-[#687E69] hover:bg-white/90 rounded-full px-8 md:px-10 py-5 md:py-6 text-xs md:text-sm font-bold h-auto shadow-xl transition-transform hover:scale-105">
+                Visit Now
               </Button>
             </div>
           </motion.div>
@@ -149,13 +148,13 @@ export default function HomeExperience() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="bg-white/10 backdrop-blur-lg border border-white/20 p-8 md:p-10 rounded-3xl shadow-2xl"
+            className="bg-white/10 backdrop-blur-lg border border-white/20 p-6 md:p-10 rounded-2xl md:rounded-3xl shadow-2xl mb-4 md:mb-0"
           >
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-y-5 gap-x-4">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-y-4 md:gap-y-5 gap-x-4">
               {currentExp.amenities.map((amenity, idx) => (
                 <div key={idx} className="flex items-center gap-3">
                   <Check size={14} className="text-white shrink-0" />
-                  <span className="text-[11px] md:text-[12px] font-bold text-white whitespace-nowrap">
+                  <span className="text-[10px] md:text-[12px] font-bold text-white leading-tight">
                     {amenity}
                   </span>
                 </div>

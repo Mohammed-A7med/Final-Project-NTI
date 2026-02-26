@@ -4,8 +4,9 @@ import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
 import DatePicker from "./booking/DatePicker";
 import BookingCounter from "./booking/BookingCounter";
+import { cn } from "@/lib/utils";
 
-export default function BookingBar() {
+export default function BookingBar({ className, variant = "overlay" }) {
   const [activePopover, setActivePopover] = useState(null);
   const [bookingState, setBookingState] = useState({
     checkIn: new Date(),
@@ -73,13 +74,20 @@ export default function BookingBar() {
 
   return (
     <motion.div
-      initial={{ y: 50, opacity: 0 }}
+      initial={{ y: 20, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ delay: 0.8, duration: 0.6 }}
-      className="w-full max-w-7xl mx-auto px-4 absolute bottom-6 md:bottom-16 left-1/2 -translate-x-1/2 z-30"
+      className={cn(
+        " z-30",
+        variant === "overlay" ? "absolute bottom-6 md:bottom-16 left-1/2 -translate-x-1/2" : "relative pb-0 pt-0",
+        className
+      )}
       ref={barRef}
     >
-      <div className="bg-card/80 backdrop-blur-xl border border-border/50 rounded-[2.5rem] p-3 shadow-2xl flex flex-col lg:flex-row items-stretch lg:items-center gap-4 lg:gap-0 relative">
+      <div className={cn(
+        "border border-border/50 rounded-[2.5rem] p-3 flex flex-col lg:flex-row items-stretch lg:items-center gap-4 lg:gap-0 relative transition-all duration-300",
+        variant === "overlay" ? "bg-card/90 backdrop-blur-xl" : "bg-card"
+      )}>
         <div className="flex-1 flex flex-col md:flex-row items-stretch md:items-center">
           {segments.map((segment, index) => (
             <div 

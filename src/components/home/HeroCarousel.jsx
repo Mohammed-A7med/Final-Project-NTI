@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import BookingBar from "./BookingBar";
+import BookingBar from "@/components/rooms/BookingBar";
 
 // Image data - using high quality Unsplash images
 const slides = [
@@ -163,7 +163,7 @@ export default function HeroCarousel() {
       </div>
 
       {/* Booking Bar */}
-      <BookingBar />
+      <BookingBar variant="overlay" />
     </div>
   );
 }

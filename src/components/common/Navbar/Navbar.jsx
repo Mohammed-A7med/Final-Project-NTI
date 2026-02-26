@@ -93,11 +93,9 @@ export default function Navbar() {
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 px-5 py-3">
-      <div className="max-w-7xl mx-auto relative">
-        {/* Flex wrapper centers the nav when it's a small circle */}
+      <div className="max-w-7xl mx-auto relative px-2">
         <div className="flex justify-center">
         <motion.nav
-          // Intro phase
           variants={introStage !== "done" ? introVariants : scrollVariants}
           initial={introStage !== "done" ? "initial" : false}
           animate={
@@ -123,7 +121,6 @@ export default function Navbar() {
           }
           className={`relative flex items-center justify-between px-2 h-14 bg-primary/50 backdrop-blur-xl border border-primary/20 rounded-full shadow-2xl z-20 ${introStage !== "done" ? "overflow-hidden" : ""}`}
         >
-          {/* Content fades in and staggers AFTER the circle has expanded into the pill shape */}
           <motion.div
             className="flex items-center justify-between w-full h-full"
             initial="hidden"

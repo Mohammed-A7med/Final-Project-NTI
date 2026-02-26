@@ -3,7 +3,7 @@ import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence, useMotionValue } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import RoomCard from "./RoomCard";
+import RoomCard from "@/components/rooms/RoomCard";
 
 const rooms = [
   {
