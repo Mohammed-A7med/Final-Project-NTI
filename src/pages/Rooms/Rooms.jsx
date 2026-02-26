@@ -3,7 +3,6 @@ import { SlidersHorizontal } from "lucide-react";
 import RoomCard from "../../components/rooms/RoomCard";
 import RoomFilter from "../../components/rooms/RoomFilter";
 import BookingBar from "../../components/rooms/BookingBar";
-import MainContainer from "../../components/common/MainContainer";
 import Sidebar from "../../components/common/Sidebar";
 import MobileDrawer from "../../components/common/MobileDrawer";
 // import AppBreadcrumb from "../../components/common/AppBreadcrumb";
@@ -30,13 +29,15 @@ export default function Rooms() {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
   return (
-    <MainContainer showBreadcrumb={false}>
       <section className="bg-background text-center">
         {/* Header */}
         <div className="mb-10">
-          <h1 className="text-6xl font-header text-foreground font-medium">
+          {/* <h1 className="text-6xl font-header text-foreground font-medium">
             Rooms
           </h1>
+          <div className="flex justify-center">
+            <AppBreadcrumb />
+          </div> */}
           <div className="mt-12">
             <BookingBar variant="default" className="max-w-full! px-0!" />
           </div>
@@ -77,6 +78,5 @@ export default function Rooms() {
         <RoomFilter onFilter={() => setIsFilterOpen(false)} />
       </MobileDrawer>
       </section>
-    </MainContainer>
   );
 }

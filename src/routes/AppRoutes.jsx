@@ -23,7 +23,7 @@ import ForgotPassword from '@/pages/Auth/ForgotPassword';
 import Login from '@/pages/Auth/Login';
 import Register from '@/pages/Auth/Register';
 import ResetPassword from '@/pages/Auth/ResetPassword';
-import ProtectedRoute from './ProtectedRoute'
+// import ProtectedRoute from './ProtectedRoute'
 
 export const routes = createBrowserRouter([
   {
@@ -36,12 +36,12 @@ export const routes = createBrowserRouter([
       { path: 'rooms/:id', element: <RoomDetails /> },
       { path: 'services', element: <Services /> },
       { path: 'services/wellness', element: <Wellness /> },
+      { path: 'services/menu', element: <Menu /> },
       { path: 'blog', element: <Blog /> },
       { path: 'blog/:id', element: <BlogDetails /> },
       { path: 'about', element: <About /> },
       { path: 'contact', element: <Contact /> },
-      { path: 'menu', element: <Menu /> },
-      { path: 'shopcart', element: <ShopCart /> },
+      { path: 'cart', element: <ShopCart /> },
       { path: 'checkout', element: <Checkout /> },
     ],
   },

@@ -1,20 +1,44 @@
+import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { addItem } from "@/store/slices/cartSlice";
+import { toast } from "react-toastify";
 import { Button } from "@/components/ui/button";
-import { BedDouble, Maximize2, Users } from "lucide-react";
+import { BedDouble, Maximize2, Users, ShoppingCart } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export default function RoomCard({ room, className }) {
+  const dispatch = useDispatch();
+
   if (!room) return null;
+
+  const handleAddToCart = (e) => {
+    e.preventDefault();
+    dispatch(
+      addItem({
+        id: room.id,
+        name: room.name,
+        image: room.image,
+        price: room.price,
+        category: room.type,
+        quantity: 1,
+        nights: 1,
+      })
+    );
+    toast.success(`${room.name} added to cart`);
+  };
 
   return (
     <div className={cn("bg-card rounded-3xl overflow-hidden shadow-sm flex flex-col h-full select-none group border border-transparent hover:border-primary transition-all duration-300", className)}>
       {/* Image Container */}
-      <div className="relative overflow-hidden aspect-4/3 rounded-t-3xl">
-        <img
-          src={room.image}
-          alt={room.name}
-          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 pointer-events-none"
-          draggable={false}
-        />
+      <div className="relative overflow-hidden aspect-4/3 rounded-t-3xl text-left">
+        <Link to={`/rooms/${room.id}`} className="block w-full h-full">
+          <img
+            src={room.image}
+            alt={room.name}
+            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 pointer-events-none"
+            draggable={false}
+          />
+        </Link>
         {/* Type badge */}
         <span className="absolute top-0 left-0 bg-primary backdrop-blur-sm text-white text-[10px] font-bold tracking-widest uppercase px-6 py-2.5 rounded-br-2xl">
           {room.type}
@@ -32,9 +56,11 @@ export default function RoomCard({ room, className }) {
       {/* Info Section */}
       <div className="flex flex-1 flex-col gap-4 px-6 pt-2 pb-6 box-border">
         {/* Name */}
-        <h3 className="font-header text-2xl text-foreground leading-tight mt-2 text-left group-hover:text-primary transition-colors">
-          {room.name}
-        </h3>
+        <Link to={`/rooms/${room.id}`}>
+          <h3 className="font-header text-2xl text-foreground leading-tight mt-2 text-left group-hover:text-primary transition-colors">
+            {room.name}
+          </h3>
+        </Link>
 
         {/* Details */}
         <div className="flex flex-col gap-2">
@@ -58,13 +84,26 @@ export default function RoomCard({ room, className }) {
 
         {/* Buttons & Partners */}
         <div className="flex items-center justify-between gap-4 mt-auto pt-2">
-          <Button
-            variant="outline"
-            size="sm"
-            className="px-8 font-bold border-2 hover:bg-primary hover:text-white transition-all rounded-xl"
-          >
-            Book Now
-          </Button>
+          <div className="flex items-center gap-2">
+            <Button
+              asChild
+              variant="outline"
+              size="sm"
+              className="px-8 font-bold border-2 hover:bg-primary hover:text-white transition-all rounded-xl"
+            >
+              <Link to={`/rooms/${room.id}`}>Book Now</Link>
+            </Button>
+            <Button
+              onClick={handleAddToCart}
+              variant="outline"
+              size="icon"
+              className="h-9 w-9 shrink-0 rounded-xl border-2 hover:bg-primary hover:text-white transition-all"
+              aria-label="Add to cart"
+              title="Add to cart"
+            >
+              <ShoppingCart size={16} />
+            </Button>
+          </div>
           
           {room.partners && room.partners.length > 0 && (
             <div className="flex items-center gap-2">

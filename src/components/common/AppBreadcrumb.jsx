@@ -16,7 +16,7 @@ export default function AppBreadcrumb() {
   if (pathnames.length === 0) return null;
 
   return (
-    <Breadcrumb className="mt-15 mb-5 px-5">
+    <Breadcrumb className="my-5 px-5">
       <BreadcrumbList>
         <BreadcrumbItem>
           <BreadcrumbLink asChild>

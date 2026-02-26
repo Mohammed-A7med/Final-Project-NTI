@@ -151,10 +151,56 @@
     --sidebar-ring: oklch(0.556 0 0);
 }
 
-body{
-    font-family: var(--font-main);
-    background-color: var(--background);
-    color: var(--foreground);
-    scroll-behavior: smooth;
-    overflow-x: hidden !important;
+body {
+  font-family: var(--font-main);
+  background-color: var(--background);
+  color: var(--foreground);
+  scroll-behavior: smooth;
+  overflow-x: hidden !important;
+}
+
+/* ==========================================================================
+   Global Custom Scrollbar Styles
+   ========================================================================== */
+
+/* For Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--primary) transparent;
+}
+
+/* For Chrome, Edge, and Safari */
+::-webkit-scrollbar {
+  width: 8px; /* Slightly thinner than default for modern look */
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent; /* Keep track invisible or very subtle */
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: color-mix(in srgb, var(--primary) 70%, transparent);
+  border-radius: 10px;
+  border: 2px solid transparent; /* Creates padding effect within track */
+  background-clip: content-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--primary);
+}
+
+/* Specific styling for scrollable containers (like CartSidebar) */
+.scrollbar-thin::-webkit-scrollbar {
+  width: 6px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background-color: color-mix(in srgb, var(--primary) 50%, transparent);
+  border-radius: 10px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background-color: var(--primary);
 }

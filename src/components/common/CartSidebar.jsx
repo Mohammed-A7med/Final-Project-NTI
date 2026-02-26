@@ -11,6 +11,7 @@ import {
   selectCartTotal,
 } from "@/store/slices/cartSlice";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 
 export default function CartSidebar() {
   const dispatch = useDispatch();
@@ -108,7 +109,10 @@ export default function CartSidebar() {
                             {item.name}
                           </p>
                           <motion.button
-                            onClick={() => dispatch(removeItem(item.id))}
+                            onClick={() => {
+                              dispatch(removeItem(item.id));
+                              toast.warning(`${item.name} removed from cart`);
+                            }}
                             className="shrink-0 text-muted-foreground hover:text-destructive transition-colors"
                           >
                             <Trash2 size={14} />
@@ -125,14 +129,24 @@ export default function CartSidebar() {
                           {/* Quantity Controls */}
                           <div className="flex items-center gap-2 bg-background/60 rounded-full px-2 py-1 border border-border/40">
                             <motion.button
-                              onClick={() => dispatch(updateQuantity({ id: item.id, quantity: item.quantity - 1 }))}
+                              onClick={() => {
+                                dispatch(updateQuantity({ id: item.id, quantity: item.quantity - 1 }));
+                                if (item.quantity - 1 === 0) {
+                                  toast.warning(`${item.name} removed from cart`);
+                                } else {
+                                  toast.info(`Updated ${item.name} quantity`);
+                                }
+                              }}
                               className="w-5 h-5 flex items-center justify-center rounded-full hover:bg-primary/10 transition-colors text-foreground/70"
                             >
                               <Minus size={11} />
                             </motion.button>
                             <span className="text-xs font-bold w-4 text-center">{item.quantity}</span>
                             <motion.button
-                              onClick={() => dispatch(updateQuantity({ id: item.id, quantity: item.quantity + 1 }))}
+                              onClick={() => {
+                                dispatch(updateQuantity({ id: item.id, quantity: item.quantity + 1 }));
+                                toast.info(`Updated ${item.name} quantity`);
+                              }}
                               className="w-5 h-5 flex items-center justify-center rounded-full hover:bg-primary/10 transition-colors text-foreground/70"
                             >
                               <Plus size={11} />
@@ -165,7 +179,10 @@ export default function CartSidebar() {
                 {/* Clear + Checkout */}
                 <div className="flex gap-3">
                   <motion.button
-                    onClick={() => dispatch(clearCart())}
+                    onClick={() => {
+                      dispatch(clearCart());
+                      toast.error("Cart cleared");
+                    }}
                     className="flex-1 py-3 rounded-2xl text-sm font-medium border border-border/50
                                text-foreground/70 hover:bg-muted transition-colors"
                   >
@@ -174,13 +191,13 @@ export default function CartSidebar() {
 
                   <motion.div className="flex-2">
                     <Link
-                      to="/checkout"
+                      to="/cart"
                       onClick={() => dispatch(closeCart())}
                       className="flex items-center justify-center gap-2 w-full py-3 rounded-2xl
                                  bg-primary text-white font-semibold text-sm shadow-lg
                                  hover:bg-primary/90 transition-colors"
                     >
-                      Checkout
+                      Go To Cart
                       <ArrowRight size={16} />
                     </Link>
                   </motion.div>

@@ -41,7 +41,7 @@ export default function OrderSummary({ cartItems, totalPrice }) {
       </p>
 
       <Button className="w-full h-12 bg-[#8c9e8d] hover:bg-[#7a8c7b] text-white font-bold rounded-xl text-sm transition-colors shadow-sm">
-        Proceed to Checkout
+        <Link to="/checkout">Proceed to Checkout</Link>
       </Button>
 
     

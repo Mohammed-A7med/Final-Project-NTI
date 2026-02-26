@@ -1,7 +1,6 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Facebook, Instagram, Linkedin, Twitter } from "lucide-react";
-import { NavLink } from "react-router-dom";
 import { contactSchema } from "./contactSchema";
 
 export default function Contact() {
@@ -29,11 +28,11 @@ export default function Contact() {
     <>
       <section className="container bg-background text-center">
         {/* Header */}
-        <div className="flex flex-col items-center mb-16 justify-center">
+        {/* <div className="flex flex-col items-center mb-16 justify-center">
           <h1 className="text-5xl font-header text-foreground font-medium mb-6">
             Contact Us
           </h1>
-        </div>
+        </div> */}
 
         {/* Map */}
         <div className="relative w-screen left-1/2 -translate-x-1/2 h-screen overflow-hidden">
