@@ -13,9 +13,9 @@ import RoomFilter from "../../components/rooms/RoomFilter";
 
 export default function Rooms() {
   return (
-    <section className="container bg-background my-16 text-center">
+    <section className="container bg-background text-center">
       {/* Header */}
-      <div className="flex flex-col items-center py-16 justify-center">
+      <div className="flex flex-col items-center mb-16 justify-center">
         <h1 className="text-5xl font-header text-foreground font-medium mb-6">
           Rooms
         </h1>

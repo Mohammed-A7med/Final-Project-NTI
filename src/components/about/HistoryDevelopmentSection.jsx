@@ -3,16 +3,16 @@ import { Button } from "@/components/ui/button"
 
 export default function HistoryDevelopmentSection() {
   return (
-    <div className="py-24 px-4 md:px-10 bg-white">
-      <div className="max-w-[1400px] mx-auto">
+    <div className="py-24 bg-background">
+      <div className="">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-24 items-start">
           <div className="space-y-12">
             <div className="max-w-md space-y-6">
-              <p className="text-[#82917d] text-[12px] font-extralight tracking-[0.2em] uppercase">HISTORY</p>
-              <h2 className="text-3xl md:text-4xl font-semibold leading-tight text-[#1a1a1a]">
+              <p className="text-primary/70 text-[12px] font-extralight tracking-[0.2em] uppercase">HISTORY</p>
+              <h2 className="text-3xl md:text-4xl font-semibold leading-tight text-foreground">
                 Elevate Your Stay: <br /> Luxury Room Systems <br /> At Our Mountain Hotel
               </h2>
-              <p className="text-gray-400 text-xs leading-relaxed">
+              <p className="text-foreground/50 text-xs leading-relaxed">
                 Our high-end rooms are designed to offer personalized comfort and sophistication, ensuring a truly memorable stay.
               </p>
               <Button variant="outline" className="border-[#82917d] text-[#82917d] hover:bg-[#82917d] hover:text-white rounded-full px-8 py-2 text-xs font-semibold h-auto">
@@ -57,11 +57,11 @@ export default function HistoryDevelopmentSection() {
             </div>
 
             <div className="max-w-md space-y-6 pt-12">
-              <p className="text-[#82917d] text-[12px] font-extralight tracking-[0.2em] uppercase">DEVELOPMENT</p>
-              <h2 className="text-3xl md:text-4xl font-semibold font-playfair leading-tight text-[#1a1a1a]">
+              <p className="text-primary/70 text-[12px] font-extralight tracking-[0.2em] uppercase">DEVELOPMENT</p>
+              <h2 className="text-3xl md:text-4xl font-semibold font-playfair leading-tight text-foreground">
                 Hospitality That Starts <br /> With Ingenuity
               </h2>
-              <p className="text-gray-400 text-xs leading-relaxed">
+              <p className="text-foreground/50 text-xs leading-relaxed">
                 Our portfolio showcases a diverse landscape of exceptional properties, from breathtaking resort layouts and rejuvenating spa retreats to exclusive private clubs, vibrant urban experiences, and opulent...
               </p>
               <Button variant="outline" className="border-[#82917d] text-[#82917d] hover:bg-[#82917d] hover:text-white rounded-full px-8 py-2 text-xs font-semibold h-auto">

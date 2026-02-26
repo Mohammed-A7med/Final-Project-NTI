@@ -14,7 +14,7 @@ const POOL_STAIRS =
 export default function GalleryHoursSection() {
   return (
     <section className="pb-0">
-      <div className="container mx-auto max-w-[1280px] px-5 md:px-10">
+      <div className="">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-[30px] items-stretch">
           <div className="rounded-lg overflow-hidden min-h-[300px]">
             <img

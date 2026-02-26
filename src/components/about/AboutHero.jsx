@@ -3,10 +3,10 @@ import { Button } from "@/components/ui/button"
 
 export default function AboutHero() {
   return (
-    <div className="max-w-[1400px] mx-auto px-4 md:px-10">
+    <div className="">
       <div className="grid grid-cols-1 md:grid-cols-5 gap-6 items-end mb-8">
         <div className="md:col-span-2 space-y-4 mb-4">
-          <h1 className="text-2xl md:text-4xl lg:text-5xl font-bold font-playfair leading-tight text-[#1a1a1a]">
+          <h1 className="text-2xl md:text-4xl lg:text-5xl font-bold font-playfair leading-tight text-foreground">
             Discover Serenity At <br /> Mountain Hotel: Your <br /> Peak Retreat Awaits!
           </h1>
           <p className="text-gray-400 text-[10px] md:text-xs max-w-[250px] font-medium leading-relaxed">

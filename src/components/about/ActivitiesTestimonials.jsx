@@ -28,7 +28,7 @@ export default function ActivitiesTestimonials() {
   ]
 
   return (
-    <div className="relative py-24 bg-card overflow-hidden transition-colors duration-300">
+    <div className="relative w-screen left-1/2 -translate-x-1/2  py-24 bg-card overflow-hidden transition-colors duration-300">
       <style dangerouslySetInnerHTML={{ __html: `
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }

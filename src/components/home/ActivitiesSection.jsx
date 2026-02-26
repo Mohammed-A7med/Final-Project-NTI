@@ -33,7 +33,7 @@ const activities = [
 
 export default function ActivitiesSection() {
   return (
-    <section className="py-20 px-6 bg-background space-y-20 lg:space-y-32">
+    <section className="py-20 bg-background space-y-20 lg:space-y-32">
       <div className="max-w-7xl mx-auto">
         {activities.map((activity, index) => (
           <div 

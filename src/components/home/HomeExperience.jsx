@@ -71,7 +71,7 @@ export default function HomeExperience() {
   const currentExp = experiences.find(e => e.id === activeTab) || experiences[0];
 
   return (
-    <section className="relative h-screen min-h-[800px] w-full overflow-hidden transition-colors duration-300">
+    <section className="relative w-screen left-1/2 -translate-x-1/2 h-screen min-h-[800px] overflow-hidden transition-colors duration-300">
       {/* Background Image Layer */}
       <AnimatePresence mode="wait">
         <motion.div

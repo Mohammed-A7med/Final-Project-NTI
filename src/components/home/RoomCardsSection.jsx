@@ -101,10 +101,10 @@ export default function RoomCardsSection() {
   };
 
   return (
-    <section className="py-10 px-4 sm:px-6 bg-background overflow-hidden">
-      <div className="max-w-7xl mx-auto">
+    <section className="py-10 bg-background overflow-hidden">
+      <div className="">
         {/* Header */}
-        <div className="flex flex-col mb-8 px-4">
+        <div className="flex flex-col mb-8">
           <span className="text-md uppercase text-muted-foreground font-bold mb-3 block">
             STAY IN STYLE
           </span>
@@ -128,7 +128,7 @@ export default function RoomCardsSection() {
         </div>
 
         {/* Carousel wrapper */}
-        <div className="relative px-4">
+        <div className="relative">
           {/* Left Arrow */}
           <Button
             variant="secondary"
@@ -136,13 +136,13 @@ export default function RoomCardsSection() {
             onClick={prev}
             disabled={current === 0}
             aria-label="Previous room"
-            className="hidden lg:flex absolute -left-6 top-1/2 -translate-y-1/2 z-10 bg-card shadow-lg border border-border/50 text-foreground"
+            className="hidden lg:flex absolute left-5 top-1/2 -translate-y-1/2 z-10 bg-card shadow-lg border border-border/50 text-foreground"
           >
             <ChevronLeft size={24} />
           </Button>
 
           {/* Track */}
-          <div className="overflow-hidden p-2">
+          <div className="overflow-hidden p-1">
             <motion.div
               ref={trackRef}
               drag="x"
@@ -189,7 +189,7 @@ export default function RoomCardsSection() {
             onClick={next}
             disabled={current >= maxIndex}
             aria-label="Next room"
-            className="hidden lg:flex absolute -right-6 top-1/2 -translate-y-1/2 z-10 bg-card shadow-lg border border-border/50 text-foreground"
+            className="hidden lg:flex absolute right-5 top-1/2 -translate-y-1/2 z-10 bg-card border border-border/50 text-foreground"
           >
             <ChevronRight size={24} />
           </Button>

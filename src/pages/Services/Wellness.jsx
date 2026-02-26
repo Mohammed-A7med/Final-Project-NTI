@@ -6,8 +6,8 @@ import ServicesSection from '@/components/wellness/ServicesSection';
 
 export default function WellnessSpa() {
   return (
-    <div className="bg-white text-primaryDark antialiased overflow-x-hidden">
-      <main className="pt-[72px]">
+    <div className="bg-background text-foreground antialiased overflow-x-hidden">
+      <main className="">
         <WellnessBreadcrumb />
         <WaterPoolsSection />
         <GalleryHoursSection />

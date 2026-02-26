@@ -7,7 +7,7 @@ import PartnersSection from '@/components/about/PartnersSection'
 
 export default function About() {
   return (
-    <section className="py-12 bg-white min-h-screen overflow-hidden font-inter relative">
+    <section className="">
       <AboutHero />
       <AchievementsSection />
       <HistoryDevelopmentSection />

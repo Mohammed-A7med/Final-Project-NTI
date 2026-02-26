@@ -4,8 +4,8 @@ import { Button } from "@/components/ui/button";
 
 export default function AboutSection() {
   return (
-    <section className="py-20 px-6 bg-background">
-      <div className="max-w-7xl mx-auto text-center">
+    <section className="py-20 bg-background">
+      <div className="text-center">
         <motion.span 
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}

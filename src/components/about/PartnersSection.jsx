@@ -11,9 +11,9 @@ export default function PartnersSection() {
   ]
 
   return (
-    <div className="py-24 bg-white">
+    <div className="py-24 bg-background">
       <div className="max-w-[1400px] mx-auto px-4 text-center">
-        <h2 className="text-xl md:text-2xl font-semibold text-[#1a1a1a] mb-12 max-w-3xl mx-auto leading-relaxed">
+        <h2 className="text-xl md:text-2xl font-semibold text-foreground mb-12 max-w-3xl mx-auto leading-relaxed">
           Trust By 12,000+ World-Class Brands And Organization Of All Sizes
         </h2>
 
