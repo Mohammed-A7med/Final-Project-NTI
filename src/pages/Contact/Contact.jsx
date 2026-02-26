@@ -2,15 +2,6 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Facebook, Instagram, Linkedin, Twitter } from "lucide-react";
 import { NavLink } from "react-router-dom";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
-
 import { contactSchema } from "./contactSchema";
 
 export default function Contact() {
@@ -42,33 +33,6 @@ export default function Contact() {
           <h1 className="text-5xl font-header text-foreground font-medium mb-6">
             Contact Us
           </h1>
-
-          <Breadcrumb>
-            <BreadcrumbList className="text-lg">
-              <BreadcrumbItem>
-                <BreadcrumbLink asChild>
-                  <NavLink
-                    to="/"
-                    className={({ isActive }) =>
-                      isActive
-                        ? "text-primary"
-                        : "text-muted-foreground hover:text-primary transition-colors"
-                    }
-                  >
-                    Home
-                  </NavLink>
-                </BreadcrumbLink>
-              </BreadcrumbItem>
-
-              <BreadcrumbSeparator />
-
-              <BreadcrumbItem>
-                <BreadcrumbPage className="font-medium text-foreground">
-                  Contact Us
-                </BreadcrumbPage>
-              </BreadcrumbItem>
-            </BreadcrumbList>
-          </Breadcrumb>
         </div>
 
         {/* Map */}

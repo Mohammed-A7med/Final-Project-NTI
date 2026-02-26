@@ -33,14 +33,6 @@ import {
   ChevronRight,
 } from "lucide-react";
 import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
-import {
   Carousel,
   CarouselContent,
   CarouselItem,
@@ -261,29 +253,6 @@ export default function RoomDetails() {
 
   return (
     <div className="container mx-auto px-4 pt-28 pb-8 max-w-6xl font-main">
-      {/* Breadcrumb Section */}
-      <div className="flex justify-center mb-8 relative z-10">
-        <Breadcrumb>
-          <BreadcrumbList className="text-xs sm:text-sm flex items-center justify-center">
-            <BreadcrumbItem>
-              <BreadcrumbLink asChild>
-                <Link to="/" className="text-gray-500 hover:text-primary transition-colors font-medium">Home</Link>
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator className="text-gray-300 px-1">/</BreadcrumbSeparator>
-            <BreadcrumbItem>
-              <BreadcrumbLink asChild>
-                <Link to="/rooms" className="text-gray-500 hover:text-primary transition-colors font-medium">Room</Link>
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator className="text-gray-300 px-1">/</BreadcrumbSeparator>
-            <BreadcrumbItem>
-              <BreadcrumbPage className="text-gray-400 font-medium">{room.name}</BreadcrumbPage>
-            </BreadcrumbItem>
-          </BreadcrumbList>
-        </Breadcrumb>
-      </div>
-
       {/* Hero Section with Carousel */}
       <div className="relative group mb-12">
         <Carousel className="w-full">

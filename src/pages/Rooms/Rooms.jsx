@@ -1,13 +1,3 @@
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
-import { NavLink } from "react-router-dom";
-
 import RoomCard from "../../components/rooms/Roomcard";
 import RoomFilter from "../../components/rooms/RoomFilter";
 
@@ -19,33 +9,6 @@ export default function Rooms() {
         <h1 className="text-5xl font-header text-foreground font-medium mb-6">
           Rooms
         </h1>
-
-        <Breadcrumb>
-          <BreadcrumbList className="text-lg">
-            <BreadcrumbItem>
-              <BreadcrumbLink asChild>
-                <NavLink
-                  to="/"
-                  className={({ isActive }) =>
-                    isActive
-                      ? "text-primary"
-                      : "text-muted-foreground hover:text-primary transition-colors"
-                  }
-                >
-                  Home
-                </NavLink>
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-
-            <BreadcrumbSeparator />
-
-            <BreadcrumbItem>
-              <BreadcrumbPage className="font-medium text-foreground">
-                Rooms
-              </BreadcrumbPage>
-            </BreadcrumbItem>
-          </BreadcrumbList>
-        </Breadcrumb>
       </div>
 
       <div className="grid grid-cols-12 gap-4">
