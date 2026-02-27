@@ -71,24 +71,28 @@ export default function HomeExperience() {
   const currentExp = experiences.find(e => e.id === activeTab) || experiences[0];
 
   return (
-    <section className="relative w-screen left-1/2 -translate-x-1/2 min-h-screen lg:h-screen overflow-hidden transition-colors duration-300">
+    <section className="relative w-screen left-1/2 -translate-x-1/2 min-h-screen lg:h-screen overflow-hidden bg-black transition-colors duration-300">
       {/* Background Image Layer */}
-      <AnimatePresence>
-        <motion.div
-          key={activeTab}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.8 }}
-          className="absolute inset-0"
-        >
-          <img
-            src={currentExp.image}
-            alt={currentExp.title}
-            className="w-full h-full object-cover scale-105 filter brightness-90"
-          />
-        </motion.div>
-      </AnimatePresence>
+      <div className="absolute inset-0">
+        <AnimatePresence mode="popLayout">
+          <motion.div
+            key={activeTab}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ 
+              opacity: { duration: 1.2, ease: [0.4, 0, 0.2, 1] } 
+            }}
+            className="absolute inset-0"
+          >
+            <img
+              src={currentExp.image}
+              alt={currentExp.title}
+              className="w-full h-full object-cover scale-105 filter brightness-75"
+            />
+          </motion.div>
+        </AnimatePresence>
+      </div>
 
       {/* Gradient Overlay for Legibility */}
       <div className="absolute inset-0 bg-linear-to-t from-black/90 via-black/40 to-transparent transition-colors duration-700 pointer-events-none" />

@@ -79,14 +79,14 @@ export default function BookingBar({ className, variant = "overlay" }) {
       transition={{ delay: 0.8, duration: 0.6 }}
       className={cn(
         "w-full max-w-7xl mx-auto px-4 z-30",
-        variant === "overlay" ? "absolute bottom-6 md:bottom-16 left-1/2 -translate-x-1/2" : "relative py-4",
+        variant === "overlay" ? "absolute bottom-6 md:bottom-10 left-1/2 -translate-x-1/2" : "relative py-4",
         className
       )}
       ref={barRef}
     >
       <div className={cn(
         "border border-border/50 rounded-[2.5rem] p-3 flex flex-col lg:flex-row items-stretch lg:items-center gap-4 lg:gap-0 relative transition-all duration-300",
-        variant === "overlay" ? "bg-card/90 backdrop-blur-xl" : "bg-card"
+        variant === "overlay" ? "dark:bg-background/50 bg-background/90 backdrop-blur-xl" : "bg-card"
       )}>
         <div className="flex-1 flex flex-col md:flex-row items-stretch md:items-center">
           {segments.map((segment, index) => (

@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 
 export default function AboutSection() {
   return (
-    <section className="py-20 bg-background overflow-hidden relative w-full">
+    <section className="py-20 overflow-hidden relative w-full">
       <div className="text-center">
         <motion.span 
           initial={{ opacity: 0, y: 20 }}
