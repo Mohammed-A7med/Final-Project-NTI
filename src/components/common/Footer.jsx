@@ -3,6 +3,7 @@ import { NavLink } from "react-router-dom";
 import { MapPin, Phone, Mail, Facebook, Twitter, Linkedin, Instagram, Hotel, ChevronUp } from "lucide-react";
 import { motion } from "framer-motion";
 import AnimatedScrollToTop from "./AnimatedScrollToTop";
+import logoImg from "@/assets/logo.png";
 
 // ─── Animation variants ────────────────────────────────────────────────────
 const fadeUp = {
@@ -53,8 +54,8 @@ export default function Footer() {
         >
           {/* Logo */}
           <NavLink to="/" className="flex items-center gap-3 mb-5 group">
-            <div className="w-12 h-12 rounded-full border border-[#8a9d8a]/50 flex items-center justify-center bg-[#8a9d8a]/10 group-hover:bg-[#8a9d8a]/20 transition-colors">
-              <Hotel size={22} className="text-[#8a9d8a]" />
+            <div className="w-14 h-14 flex items-center justify-center shrink-0">
+              <img src={logoImg} alt="Palm Mirage Logo" className="w-full h-full object-contain" />
             </div>
             <span className="text-2xl font-header font-semibold tracking-wide text-white">Palm Mirage Hotel</span>
           </NavLink>

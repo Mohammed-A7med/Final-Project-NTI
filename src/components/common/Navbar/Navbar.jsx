@@ -119,7 +119,7 @@ export default function Navbar() {
               ? { duration: 0.35, ease: "easeInOut" }
               : undefined
           }
-          className={`relative flex items-center justify-between px-2 h-14 bg-primary/50 backdrop-blur-xl border border-primary/20 rounded-full shadow-2xl z-20 ${introStage !== "done" ? "overflow-hidden" : ""}`}
+          className={`relative flex items-center justify-between px-2 h-14 bg-primary/20 backdrop-blur-xl backdrop-brightness-50 border border-white/20 rounded-full shadow-2xl z-20 ${introStage !== "done" ? "overflow-hidden" : ""}`}
         >
           <motion.div
             className="flex items-center justify-between w-full h-full"

@@ -112,7 +112,7 @@ export default function AboutSection() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-50px" }}
               transition={{ duration: 0.6, delay: 0.4 }}
-              className="md:flex-1 rounded-3xl overflow-hidden h-auto md:h-full shadow-lg bg-secondary p-8 flex flex-col justify-center"
+              className="md:flex-1 rounded-3xl overflow-hidden h-auto md:h-full shadow-lg bg-secondary/70 p-8 flex flex-col justify-center"
             >
               <ul className="space-y-6">
                 {[

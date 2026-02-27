@@ -78,25 +78,26 @@ export default function HomeExperience() {
           key={activeTab}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
           transition={{ duration: 0.8 }}
           className="absolute inset-0"
         >
           <img
             src={currentExp.image}
             alt={currentExp.title}
-            className="w-full h-full object-cover scale-105"
+            className="w-full h-full object-cover scale-105 filter brightness-90"
           />
         </motion.div>
       </AnimatePresence>
 
       {/* Gradient Overlay for Legibility */}
-      <div className="absolute inset-0 bg-linear-to-t from-primary via-primary/50 to-black/20 md:via-primary/40 md:to-black/10 transition-colors duration-700" />
+      <div className="absolute inset-0 bg-linear-to-t from-black/90 via-black/40 to-transparent transition-colors duration-700 pointer-events-none" />
 
       {/* Content Container */}
       <div className="relative h-full min-h-screen w-full flex flex-col justify-end pt-32 pb-12 md:pb-20 max-w-[1400px] mx-auto px-4 md:px-10">
         
         {/* Tab Navigation - Floating Overlay */}
-        <div className="flex flex-nowrap md:flex-wrap items-center justify-start md:justify-start gap-4 mb-10 md:mb-16 overflow-x-auto py-4 scrollbar-hide px-4 -mx-4">
+        <div className="flex flex-nowrap md:flex-wrap items-center justify-start md:justify-start gap-4 mb-10 md:mb-16 overflow-x-auto overflow-y-hidden py-4 px-4 -mx-4 hide-scrollbar">
           {experiences.map((exp) => (
             <button
               key={exp.id}
@@ -114,55 +115,52 @@ export default function HomeExperience() {
         </div>
 
         {/* Detailed Experience Info */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-end">
-          
-          {/* Left: Text Content */}
+        <AnimatePresence mode="wait">
           <motion.div 
-            key={`${activeTab}-text`}
+            key={activeTab}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="space-y-4 md:space-y-6 text-white"
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.4 }}
+            className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-end w-full"
           >
-            <div className="space-y-2">
-              <p className="text-white/80 text-[10px] md:text-[12px] font-bold tracking-[0.2em] uppercase">
-                {currentExp.label}
+            
+            {/* Left: Text Content */}
+            <div className="space-y-4 md:space-y-6 text-white">
+              <div className="space-y-2">
+                <p className="text-white/80 text-[10px] md:text-[12px] font-bold tracking-[0.2em] uppercase">
+                  {currentExp.label}
+                </p>
+                <h2 className="text-3xl md:text-5xl lg:text-6xl font-header font-bold leading-tight drop-shadow-lg">
+                  {currentExp.heading}
+                </h2>
+              </div>
+              <p className="text-white/80 text-sm md:text-base leading-relaxed max-w-xl font-medium">
+                {currentExp.description}
               </p>
-              <h2 className="text-3xl md:text-5xl lg:text-6xl font-header font-bold leading-tight drop-shadow-lg">
-                {currentExp.heading}
-              </h2>
+              <div className="pt-2 md:pt-4 flex flex-wrap gap-4">
+                <Button className="bg-white text-primary hover:bg-white/90 rounded-full px-8 md:px-10 py-5 md:py-6 text-xs md:text-sm font-bold h-auto shadow-xl transition-transform hover:scale-105">
+                  Visit Now
+                </Button>
+              </div>
             </div>
-            <p className="text-white/80 text-sm md:text-base leading-relaxed max-w-xl font-medium">
-              {currentExp.description}
-            </p>
-            <div className="pt-2 md:pt-4 flex flex-wrap gap-4">
-              <Button className="bg-white text-[#687E69] hover:bg-white/90 rounded-full px-8 md:px-10 py-5 md:py-6 text-xs md:text-sm font-bold h-auto shadow-xl transition-transform hover:scale-105">
-                Visit Now
-              </Button>
-            </div>
-          </motion.div>
 
-          {/* Right: Amenity Grid (Glassmorphism) */}
-          <motion.div
-            key={`${activeTab}-grid`}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="bg-white/10 backdrop-blur-lg border border-white/20 p-6 md:p-10 rounded-2xl md:rounded-3xl shadow-2xl mb-4 md:mb-0"
-          >
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-y-4 md:gap-y-5 gap-x-4">
-              {currentExp.amenities.map((amenity, idx) => (
-                <div key={idx} className="flex items-center gap-3">
-                  <Check size={14} className="text-white shrink-0" />
-                  <span className="text-[10px] md:text-[12px] font-bold text-white leading-tight">
-                    {amenity}
-                  </span>
-                </div>
-              ))}
+            {/* Right: Amenity Grid (Glassmorphism) */}
+            <div className="bg-white/10 backdrop-blur-lg border border-white/20 p-6 md:p-10 rounded-2xl md:rounded-3xl shadow-2xl mb-4 md:mb-0">
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-y-4 md:gap-y-5 gap-x-4">
+                {currentExp.amenities.map((amenity, idx) => (
+                  <div key={idx} className="flex items-center gap-3">
+                    <Check size={14} className="text-white shrink-0" />
+                    <span className="text-[10px] md:text-[12px] font-bold text-white leading-tight">
+                      {amenity}
+                    </span>
+                  </div>
+                ))}
+              </div>
             </div>
-          </motion.div>
 
-        </div>
+          </motion.div>
+        </AnimatePresence>
       </div>
     </section>
   );
