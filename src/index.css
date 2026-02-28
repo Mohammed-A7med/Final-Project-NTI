@@ -88,7 +88,7 @@
 .dark {
   --background: #0F1115;
   --foreground: #E5E7EB;
-  --card: #161a20;
+  --card: #18181b; /*old => #0F1115*/
   --card-foreground: #E5E7EB;
   --popover: #161A20;
   --popover-foreground: #E5E7EB;

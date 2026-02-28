@@ -7,24 +7,24 @@ import { Button } from "@/components/ui/button";
 const slides = [
   {
     id: 1,
-    image: "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?fm=webp&w=1920&q=75&auto=format&fit=crop",
-    title: "The Heritage of Luxor",
-    subtitle: "Step into a world where ancient majesty meets contemporary luxury.",
-    accent: "text-amber-200"
+    image: "https://images.unsplash.com/photo-1553913861-c0fddf2619ee?fm=webp&w=1920&q=75&auto=format&fit=crop",
+    title: "Royal Gastronomy",
+    subtitle: "A culinary journey through the finest flavors of the Nile.",
+    accent: "text-rose-200"
   },
   {
     id: 2,
-    image: "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?fm=webp&w=1920&q=75&auto=format&fit=crop",
+    image: "https://images.unsplash.com/photo-1590073844006-33379778ae09?fm=webp&w=1920&q=75&auto=format&fit=crop",
     title: "Sanctuary of Silence",
-    subtitle: "Find your peace in our meticulously designed garden suites.",
+    subtitle: "Find your peace in our sanctuary overlooking the eternal Nile.",
     accent: "text-emerald-200"
   },
   {
     id: 3,
-    image: "https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?fm=webp&w=1920&q=75&auto=format&fit=crop",
-    title: "Royal Gastronomy",
-    subtitle: "A culinary journey through the finest flavors of the Nile.",
-    accent: "text-rose-200"
+    image: "https://images.unsplash.com/photo-1572252009286-268acec5ca0a?fm=webp&w=1920&q=75&auto=format&fit=crop",
+    title: "The Heritage of Luxor",
+    subtitle: "Step into a world where ancient majesty meets contemporary luxury.",
+    accent: "text-amber-200"
   }
 ];
 
@@ -79,6 +79,7 @@ export default function HeroCarousel() {
   return (
     <div 
       ref={containerRef}
+      id="hero"
       className="relative w-screen left-1/2 -translate-x-1/2 h-screen  overflow-hidden bg-[#0a0a0a]"
     >
       <AnimatePresence initial={false}>
@@ -112,9 +113,11 @@ export default function HeroCarousel() {
               />
             </div>
             
-            {/* Elegant Vignette Overlay */}
-            <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black/80 z-10" />
-            <div className="absolute inset-0 bg-black/30 backdrop-blur-[1px] z-10" />
+            {/* Elegant Vignette Overlay (Top, Bottom, Left, Right) */}
+            <div className="absolute inset-0 bg-linear-to-b from-black/60 via-transparent to-black/80 z-10 pointer-events-none" />
+            <div className="absolute inset-0 bg-linear-to-r from-black/20 via-transparent to-black/20 z-10 pointer-events-none" />
+            
+            <div className="absolute inset-0 bg-black/30 backdrop-blur-[1px] z-10 pointer-events-none" />
           </motion.div>
 
           {/* Layer 2: Architectural "Arch" Overlay */}
@@ -179,17 +182,17 @@ export default function HeroCarousel() {
       </AnimatePresence>
 
       {/* Slide Indicators - Architectural Style (Vertical stack, safe positioning) */}
-      <div className="absolute bottom-12 right-6 md:bottom-16 md:right-12 lg:right-12 lg:top-1/2 lg:bottom-auto lg:-translate-y-1/2 flex flex-col gap-6 z-30">
+      <div className="absolute bottom-12 right-6 md:bottom-16 md:right-12 lg:right-12 lg:top-1/2 lg:bottom-auto lg:-translate-y-1/2 flex flex-col gap-4 z-30">
         {slides.map((_, index) => (
           <button
             key={index}
             onClick={() => setCurrentIndex(index)}
-            className="group relative flex items-center justify-end"
+            className="group relative flex items-center justify-end w-32 pl-4 py-2 cursor-pointer"
           >
-            <span className={`mr-4 text-[10px] tracking-widest uppercase transition-opacity duration-300 ${index === currentIndex ? "opacity-100 text-amber-200" : "opacity-0 group-hover:opacity-100 text-white/60"}`}>
+            <span className={`mr-4 text-xs lg:text-sm font-bold tracking-[0.2em] lg:tracking-widest uppercase transition-opacity duration-300 ${index === currentIndex ? "opacity-100 text-amber-200" : "opacity-0 group-hover:opacity-100 text-white/60"}`}>
               0{index + 1}
             </span>
-            <div className={`h-px transition-all duration-500 ${index === currentIndex ? "w-12 bg-amber-200" : "w-6 bg-white/20 group-hover:w-8 group-hover:bg-white/40"}`} />
+            <div className={`h-[2px] transition-all duration-500 rounded-full ${index === currentIndex ? "w-16 lg:w-20 bg-amber-200" : "w-10 lg:w-12 bg-white/30 group-hover:w-14 group-hover:bg-white/60"}`} />
           </button>
         ))}
       </div>
@@ -202,7 +205,7 @@ export default function HeroCarousel() {
         className="absolute bottom-6 left-1/2 -translate-x-1/2 z-30 flex flex-col items-center gap-2"
       >
         <span className="text-[10px] tracking-[0.5em] uppercase text-white/40">Scroll</span>
-        <div className="w-px h-12 bg-gradient-to-b from-white/40 to-transparent relative overflow-hidden">
+        <div className="w-px h-12 bg-linear-to-b from-white/40 to-transparent relative overflow-hidden">
           <motion.div 
             animate={{ y: [0, 48] }}
             transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}

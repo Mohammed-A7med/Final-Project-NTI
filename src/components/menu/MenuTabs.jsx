@@ -9,7 +9,7 @@ export default function MenuTabs({ activeIndex, onSelect }) {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.55, delay: 0.3, ease: "easeOut" }}
     >
-      <div className="flex items-stretch bg-muted border border-border rounded-2xl overflow-hidden divide-x divide-border shadow-sm">
+      <div className="flex items-stretch border border-border rounded-2xl overflow-hidden divide-x divide-border shadow-sm">
         {categories.map(({ label, Icon }, i) => {
           const isActive = i === activeIndex;
           return (
@@ -17,7 +17,7 @@ export default function MenuTabs({ activeIndex, onSelect }) {
               key={label}
               onClick={() => onSelect(i)}
               className={`relative flex items-center gap-2 md:gap-3 px-3 md:px-6 py-4 flex-1 justify-center md:justify-start transition-colors duration-200 cursor-pointer ${
-                isActive ? "bg-background shadow-sm" : "hover:bg-background"
+                isActive ? "bg-card shadow-sm" : "hover:bg-card/50"
               }`}
             >
               <span

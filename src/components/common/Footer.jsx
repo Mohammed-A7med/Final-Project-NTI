@@ -39,7 +39,7 @@ export default function Footer() {
   const [email, setEmail] = useState("");
 
   return (
-    <footer className="bg-[#1a1f1a] text-white relative overflow-hidden mt-15">
+    <footer className="bg-[#1a1f1a] text-white relative overflow-hidden">
       {/* ── subtle background texture ── */}
       <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[radial-gradient(circle_at_20%_50%,#8a9d8a_0%,transparent_60%)]" />
 

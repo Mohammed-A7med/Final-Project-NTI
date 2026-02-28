@@ -13,7 +13,7 @@ export default function Rooms() {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
   return (
-      <section className="bg-background text-center">
+      <section className="text-center">
         {/* Header */}
         <div className="mb-10">
           {/* <h1 className="text-6xl font-header text-foreground font-medium">
