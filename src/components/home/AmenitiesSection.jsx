@@ -8,37 +8,43 @@ const amenities = [
     icon: <Waves className="w-8 h-8" />,
     title: "Nile View Infinity Pool",
     description: "Relax in our climate-controlled infinity pool overlooking the majestic Nile River and the West Bank mountains.",
-    delay: 0.1
+    delay: 0.1,
+    image: "https://images.unsplash.com/photo-1584132967334-10e028bd69f7?q=80&w=800&auto=format&fit=crop&fm=webp"
   },
   {
     icon: <Flower2 className="w-8 h-8" />,
     title: "Royal Spa & Wellness",
     description: "Indulge in ancient Egyptian-inspired treatments and modern therapy in our state-of-the-art wellness center.",
-    delay: 0.2
+    delay: 0.2,
+    image: "https://images.unsplash.com/photo-1600334129128-685c5582fd35?q=80&w=800&auto=format&fit=crop&fm=webp"
   },
   {
     icon: <UtensilsCrossed className="w-8 h-8" />,
     title: "Fine Dining Restaurant",
     description: "Savor a fusion of local Egyptian flavors and international cuisine prepared by our award-winning chefs.",
-    delay: 0.3
+    delay: 0.3,
+    image: "https://images.unsplash.com/photo-1559339352-11d035aa65de?q=80&w=800&auto=format&fit=crop&fm=webp"
   },
   {
     icon: <Landmark className="w-8 h-8" />,
     title: "Heritage Concierge",
     description: "Exclusive access to private tours of Luxor's ancient wonders with our expert Egyptologists.",
-    delay: 0.4
+    delay: 0.4,
+    image: "https://images.unsplash.com/photo-1445019980597-93fa8acb246c?q=80&w=800&auto=format&fit=crop&fm=webp"
   },
   {
     icon: <Anchor className="w-8 h-8" />,
     title: "Private River Transport",
     description: "Traditional feluccas and luxury motorboats available 24/7 for private crossings and sunset cruises.",
-    delay: 0.5
+    delay: 0.5,
+    image: "https://images.unsplash.com/photo-1503177119275-0aa32b3a9368?q=80&w=800&auto=format&fit=crop&fm=webp"
   },
   {
     icon: <UserCheck className="w-8 h-8" />,
     title: "24/7 Royal Butler",
     description: "Personalized service tailored to your every need, ensuring a seamless and regal stay from check-in to check-out.",
-    delay: 0.6
+    delay: 0.6,
+    image: "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?q=80&w=800&auto=format&fit=crop&fm=webp"
   }
 ];
 
@@ -122,17 +128,31 @@ export default function AmenitiesSection() {
                     delay: 0.2,
                     ease: [0.16, 1, 0.3, 1] 
                   }}
-                  className="w-full md:w-[45%] p-8 bg-card/40 backdrop-blur-md rounded-[2rem] shadow-xl border border-secondary/10 hover:border-secondary transition-all group relative z-10"
+                  className="w-full md:w-[45%] p-8 bg-card/40 backdrop-blur-md rounded-[2rem] shadow-xl border border-secondary/10 hover:border-secondary transition-colors duration-300 group relative z-10 overflow-hidden"
+                  style={{ backfaceVisibility: "hidden", transform: "translateZ(0)" }}
                 >
-                  <div className="mb-6 p-4 bg-secondary/10 rounded-2xl w-fit text-secondary group-hover:bg-secondary group-hover:text-white transition-colors duration-300">
-                    {item.icon}
+                  {/* Background Image with Overlay */}
+                  <div className="absolute inset-0 z-0 overflow-hidden">
+                    <img 
+                      src={item.image} 
+                      alt={item.title}
+                      className="w-full h-full object-cover transition-transform duration-700 blur-[1px] group-hover:scale-110 opacity-40 mix-blend-overlay grayscale group-hover:grayscale-0 group-hover:opacity-60"
+                    />
+                    <div className="absolute inset-0 bg-linear-to-t from-background via-background/40 to-transparent" />
                   </div>
-                  <h3 className="text-xl font-header font-bold mb-3 text-foreground group-hover:text-secondary transition-colors">
-                    {item.title}
-                  </h3>
-                  <p className="text-muted-foreground leading-relaxed text-sm">
-                    {item.description}
-                  </p>
+
+                  {/* Content Container */}
+                  <div className="relative z-10">
+                    <div className="mb-6 p-4 bg-secondary/10 rounded-2xl w-fit text-secondary group-hover:bg-secondary group-hover:text-white transition-colors duration-300">
+                      {item.icon}
+                    </div>
+                    <h3 className="text-xl font-header font-bold mb-3 text-foreground group-hover:text-secondary transition-colors">
+                      {item.title}
+                    </h3>
+                    <p className="text-muted-foreground leading-relaxed text-sm">
+                      {item.description}
+                    </p>
+                  </div>
                 </motion.div>
 
                 {/* 2. Central Circle (Visible on md and up) */}
