@@ -125,7 +125,27 @@ export default function RoomDetails() {
 
   // Booking State
   const [checkIn, setCheckIn] = useState(formatDate(today));
-  const [checkOut, setCheckOut] = useState(formatDate(today));
+  const [checkOut, setCheckOut] = useState(formatDate(tomorrow));
+
+  const handleDateClick = (date) => {
+    const dateStr = formatDate(date);
+    const selectedDate = new Date(dateStr);
+    const checkInDate = new Date(checkIn);
+
+    if (dateStr === checkIn) {
+      // Clicking check-in again does nothing or resets check-out
+      return;
+    }
+
+    if (selectedDate < checkInDate) {
+      // Selected date is before check-in, reset check-in
+      setCheckIn(dateStr);
+      setCheckOut(formatDate(new Date(selectedDate.getTime() + 86400000)));
+    } else {
+      // Selected date is after check-in, set as check-out
+      setCheckOut(dateStr);
+    }
+  };
 
   // Calendar logic helpers
   const currentMonthDate = new Date();
@@ -325,17 +345,26 @@ export default function RoomDetails() {
                       {[...Array(firstDayOfCurrentMonth)].map((_, i) => <div key={`p-${i}`} className="h-10" />)}
                       {[...Array(daysInCurrentMonth)].map((_, i) => {
                         const day = i + 1;
-                        const isSelected = formatDate(new Date(currentMonthDate.getFullYear(), currentMonthDate.getMonth(), day)) === checkIn ||
-                          formatDate(new Date(currentMonthDate.getFullYear(), currentMonthDate.getMonth(), day)) === checkOut;
-                        const isPast = new Date(currentMonthDate.getFullYear(), currentMonthDate.getMonth(), day) < new Date(today.getFullYear(), today.getMonth(), today.getDate());
+                        const date = new Date(currentMonthDate.getFullYear(), currentMonthDate.getMonth(), day);
+                        const dateStr = formatDate(date);
+                        const isStart = dateStr === checkIn;
+                        const isEnd = dateStr === checkOut;
+                        const isInRange = dateStr > checkIn && dateStr < checkOut;
+                        const isPast = date < new Date(today.getFullYear(), today.getMonth(), today.getDate());
+
                         return (
-                          <div key={day} className={`h-10 flex items-center justify-center text-sm font-medium rounded-lg transition-colors
-                            ${isSelected
-                              ? "bg-[#8c9e8d] text-white shadow-sm"
-                              : isPast
-                                ? "text-muted-foreground/30 pointer-events-none"
-                                : "text-muted-foreground hover:bg-muted cursor-pointer"
-                            }`}>
+                          <div
+                            key={day}
+                            onClick={() => !isPast && handleDateClick(date)}
+                            className={`h-10 flex items-center justify-center text-sm font-medium rounded-lg transition-all duration-200
+                            ${isStart || isEnd
+                                ? "bg-[#8c9e8d] text-white shadow-md scale-105 z-10"
+                                : isInRange
+                                  ? "bg-[#8c9e8d]/20 text-[#8c9e8d]"
+                                  : isPast
+                                    ? "text-muted-foreground/30 pointer-events-none"
+                                    : "text-muted-foreground hover:bg-muted cursor-pointer hover:scale-105"
+                              }`}>
                             {day}
                           </div>
                         );
@@ -353,14 +382,23 @@ export default function RoomDetails() {
                       {[...Array(firstDayOfNextMonth)].map((_, i) => <div key={`p2-${i}`} className="h-10" />)}
                       {[...Array(daysInNextMonth)].map((_, i) => {
                         const day = i + 1;
-                        const isSelected = formatDate(new Date(nextMonthDate.getFullYear(), nextMonthDate.getMonth(), day)) === checkIn ||
-                          formatDate(new Date(nextMonthDate.getFullYear(), nextMonthDate.getMonth(), day)) === checkOut;
+                        const date = new Date(nextMonthDate.getFullYear(), nextMonthDate.getMonth(), day);
+                        const dateStr = formatDate(date);
+                        const isStart = dateStr === checkIn;
+                        const isEnd = dateStr === checkOut;
+                        const isInRange = dateStr > checkIn && dateStr < checkOut;
+
                         return (
-                          <div key={day} className={`h-10 flex items-center justify-center text-sm font-medium rounded-lg transition-colors
-                            ${isSelected
-                              ? "bg-[#8c9e8d] text-white shadow-sm"
-                              : "text-muted-foreground hover:bg-muted cursor-pointer"
-                            }`}>
+                          <div
+                            key={day}
+                            onClick={() => handleDateClick(date)}
+                            className={`h-10 flex items-center justify-center text-sm font-medium rounded-lg transition-all duration-200
+                            ${isStart || isEnd
+                                ? "bg-[#8c9e8d] text-white shadow-md scale-105 z-10"
+                                : isInRange
+                                  ? "bg-[#8c9e8d]/20 text-[#8c9e8d]"
+                                  : "text-muted-foreground hover:bg-muted cursor-pointer hover:scale-105"
+                              }`}>
                             {day}
                           </div>
                         );
