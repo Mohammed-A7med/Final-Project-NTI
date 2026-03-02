@@ -1,4 +1,4 @@
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useState } from "react";
 import {
   Bed,
@@ -29,17 +29,9 @@ import {
   Droplets,
   Table,
   Loader2,
-  ChevronLeft,
   ChevronRight,
 } from "lucide-react";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
+
 import {
   Carousel,
   CarouselContent,
@@ -115,9 +107,34 @@ export default function RoomDetails() {
   const { id } = useParams();
   const room = MOCK_ROOM_DATA;
 
+  // Helper for dynamic dates
+  const today = new Date();
+  const tomorrow = new Date(today);
+  tomorrow.setDate(today.getDate() + 1);
+
+  const formatDate = (date) => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    return `${year}/${month}/${day}`;
+  };
+
   // Booking State
-  const [checkIn, setCheckIn] = useState("2026/02/23");
-  const [checkOut, setCheckOut] = useState("2026/02/24");
+  const [checkIn, setCheckIn] = useState(formatDate(today));
+  const [checkOut, setCheckOut] = useState(formatDate(today));
+
+  // Calendar logic helpers
+  const currentMonthDate = new Date();
+  const nextMonthDate = new Date(currentMonthDate.getFullYear(), currentMonthDate.getMonth() + 1, 1);
+
+  const currentMonthName = currentMonthDate.toLocaleString('en-US', { month: 'long', year: 'numeric' });
+  const nextMonthName = nextMonthDate.toLocaleString('en-US', { month: 'long', year: 'numeric' });
+
+  const daysInCurrentMonth = new Date(currentMonthDate.getFullYear(), currentMonthDate.getMonth() + 1, 0).getDate();
+  const daysInNextMonth = new Date(nextMonthDate.getFullYear(), nextMonthDate.getMonth() + 1, 0).getDate();
+
+  const firstDayOfCurrentMonth = new Date(currentMonthDate.getFullYear(), currentMonthDate.getMonth(), 1).getDay();
+  const firstDayOfNextMonth = new Date(nextMonthDate.getFullYear(), nextMonthDate.getMonth(), 1).getDay();
   const [adults, setAdults] = useState("1");
   const [children, setChildren] = useState("0");
   const [roomsCount, setRoomsCount] = useState("1");
@@ -265,9 +282,9 @@ export default function RoomDetails() {
               <h2 className="text-xl font-bold mb-8 text-foreground">Rates &amp; Availability</h2>
               <div className="bg-card border border-border rounded-2xl p-8 shadow-sm transition-colors duration-300">
                 <div className="flex items-center justify-between mb-8">
-                  <div className="flex-1 text-center font-bold text-foreground text-lg uppercase tracking-tight">February 2026</div>
+                  <div className="flex-1 text-center font-bold text-foreground text-lg uppercase tracking-tight">{currentMonthName}</div>
                   <div className="flex-1 text-center font-bold text-foreground text-lg uppercase tracking-tight relative">
-                    March 2026
+                    {nextMonthName}
                     <button className="absolute right-0 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground">
                       <ChevronRight className="w-5 h-5" />
                     </button>
@@ -282,11 +299,12 @@ export default function RoomDetails() {
                       ))}
                     </div>
                     <div className="grid grid-cols-7 gap-y-1 text-center">
-                      {[...Array(6)].map((_, i) => <div key={`p-${i}`} className="h-10" />)}
-                      {[...Array(28)].map((_, i) => {
+                      {[...Array(firstDayOfCurrentMonth)].map((_, i) => <div key={`p-${i}`} className="h-10" />)}
+                      {[...Array(daysInCurrentMonth)].map((_, i) => {
                         const day = i + 1;
-                        const isSelected = day === 23 || day === 24;
-                        const isPast = day < 23;
+                        const isSelected = formatDate(new Date(currentMonthDate.getFullYear(), currentMonthDate.getMonth(), day)) === checkIn ||
+                          formatDate(new Date(currentMonthDate.getFullYear(), currentMonthDate.getMonth(), day)) === checkOut;
+                        const isPast = new Date(currentMonthDate.getFullYear(), currentMonthDate.getMonth(), day) < new Date(today.getFullYear(), today.getMonth(), today.getDate());
                         return (
                           <div key={day} className={`h-10 flex items-center justify-center text-sm font-medium rounded-lg transition-colors
                             ${isSelected
@@ -309,12 +327,21 @@ export default function RoomDetails() {
                       ))}
                     </div>
                     <div className="grid grid-cols-7 gap-y-1 text-center">
-                      {[...Array(6)].map((_, i) => <div key={`p2-${i}`} className="h-10" />)}
-                      {[...Array(31)].map((_, i) => (
-                        <div key={i + 1} className="h-10 flex items-center justify-center text-sm font-medium text-muted-foreground hover:bg-muted cursor-pointer rounded-lg">
-                          {i + 1}
-                        </div>
-                      ))}
+                      {[...Array(firstDayOfNextMonth)].map((_, i) => <div key={`p2-${i}`} className="h-10" />)}
+                      {[...Array(daysInNextMonth)].map((_, i) => {
+                        const day = i + 1;
+                        const isSelected = formatDate(new Date(nextMonthDate.getFullYear(), nextMonthDate.getMonth(), day)) === checkIn ||
+                          formatDate(new Date(nextMonthDate.getFullYear(), nextMonthDate.getMonth(), day)) === checkOut;
+                        return (
+                          <div key={day} className={`h-10 flex items-center justify-center text-sm font-medium rounded-lg transition-colors
+                            ${isSelected
+                              ? "bg-[#8c9e8d] text-white shadow-sm"
+                              : "text-muted-foreground hover:bg-muted cursor-pointer"
+                            }`}>
+                            {day}
+                          </div>
+                        );
+                      })}
                     </div>
                   </div>
                 </div>
@@ -448,7 +475,7 @@ export default function RoomDetails() {
                       className="border-none h-11 bg-background text-foreground" />
                   </div>
 
-                <div className="pt-4 space-y-3">
+                  <div className="pt-4 space-y-3">
                     <div className="flex items-start gap-3">
                       <Checkbox id="wifi_sg" className="mt-1 border-border" checked={wifiSg} onCheckedChange={(checked) => setWifiSg(checked)} />
                       <div className="flex justify-between w-full items-center">
