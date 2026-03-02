@@ -2,11 +2,15 @@ import { NavLink } from "react-router-dom";
 import { motion } from "framer-motion";
 import NavTooltip from "./NavTooltip";
 
-export default function DesktopNav({ navLinks }) {
+export default function DesktopNav({ navLinks, onHover, onLeave }) {
   return (
     <ul className="hidden md:flex items-center gap-2 lg:gap-4 absolute left-1/2 -translate-x-1/2">
       {navLinks.map((link) => (
-        <li key={link.label}>
+        <li 
+          key={link.label}
+          onMouseEnter={() => onHover(link)}
+          onMouseLeave={onLeave}
+        >
           <NavTooltip label={link.label}>
             <NavLink
               to={link.href}
