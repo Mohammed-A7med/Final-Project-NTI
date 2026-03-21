@@ -1,5 +1,3 @@
-import sauna from '../../assets/wellness/saunas.jpg'
-import poolImage from '../../assets/wellness/poolImage.jpg'
 const HOURS = [
   { label: 'Pool & Fitness', time: '07.00 – 20.00 h' },
   { label: 'Earlier upon request', time: '5:00h' },
