@@ -1,8 +1,8 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter } from 'react-router-dom';
 
-import AuthLayout from "@/layouts//AuthLayout";
-import MainLayout from "@/layouts/MainLayout.jsx";
-import NotFound from "@/pages/NotFound/NotFound";
+import AuthLayout from '@/layouts//AuthLayout';
+import MainLayout from '@/layouts/MainLayout.jsx';
+import NotFound from '@/pages/NotFound/NotFound';
 
 // Public Pages
 import About from '@/pages/About/About';
@@ -30,7 +30,7 @@ import Restaurant from "../pages/Services/Restaurant.jsx";
 
 export const routes = createBrowserRouter([
   {
-    path: "/",
+    path: '/',
     element: <MainLayout />,
     errorElement: <NotFound />,
     children: [
@@ -53,14 +53,14 @@ export const routes = createBrowserRouter([
   },
 
   {
-    path: "/auth",
+    path: '/auth',
     element: <AuthLayout />,
     errorElement: <NotFound />,
     children: [
-      { path: "login", element: <Login /> },
-      { path: "register", element: <Register /> },
-      { path: "forgot-password", element: <ForgotPassword /> },
-      { path: "reset-password", element: <ResetPassword /> },
+      { path: 'login', element: <Login /> },
+      { path: 'register', element: <Register /> },
+      { path: 'forgot-password', element: <ForgotPassword /> },
+      { path: 'reset-password', element: <ResetPassword /> },
     ],
   },
 
