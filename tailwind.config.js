@@ -3,13 +3,40 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        serifCustom: ['Philosopher', 'serif'],
-        sansCustom: ['Source Sans 3', 'sans-serif'],
+        header: ["Philosopher", "sans-serif"],
+        main: ["Comfortaa", "sans-serif"],
       },
       colors: {
-        cardBeige: '#f0eeeb',
-        primaryDark: '#1a1a1a',
-        accentGreen: '#6b8f71',
+        background: "var(--background)",
+        foreground: "var(--foreground)",
+        primary: {
+          DEFAULT: "var(--primary)",
+          foreground: "var(--primary-foreground)",
+        },
+        secondary: {
+          DEFAULT: "var(--secondary)",
+          foreground: "var(--secondary-foreground)",
+        },
+        card: {
+          DEFAULT: "var(--card)",
+          foreground: "var(--card-foreground)",
+        },
+        popover: {
+          DEFAULT: "var(--popover)",
+          foreground: "var(--popover-foreground)",
+        },
+        muted: {
+          DEFAULT: "var(--muted)",
+          foreground: "var(--muted-foreground)",
+        },
+        accent: {
+          DEFAULT: "var(--accent)",
+          foreground: "var(--accent-foreground)",
+        },
+        destructive: "var(--destructive)",
+        border: "var(--border)",
+        input: "var(--input)",
+        ring: "var(--ring)",
       },
     },
   },

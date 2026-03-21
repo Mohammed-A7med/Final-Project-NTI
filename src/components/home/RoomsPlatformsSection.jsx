@@ -25,14 +25,14 @@ const platforms = [
 
 export default function RoomsPlatformsSection() {
   return (
-    <section className="py-10 px-4 sm:px-6 bg-[var(--color-background)] overflow-hidden">
-      <div className="max-w-7xl mx-auto">
-        <div className="pt-15 border-t border-[var(--color-border)]/50">
-          <h2 className="text-3xl md:text-4xl font-[family-name:var(--font-header)] text-[var(--color-foreground)] text-center mb-16 font-bold">
+    <section id="platforms" className="py-10 mb-20 overflow-hidden">
+      <div className="">
+        <div className="pt-15 ">
+          <h2 className="text-3xl md:text-4xl font-header text-foreground text-center mb-16 font-bold">
             Book Rooms On Our Affiliate Platforms
           </h2>
           
-          <div className="flex flex-wrap justify-center items-center gap-x-12 gap-y-12 md:gap-x-20 md:gap-y-16 max-w-6xl mx-auto transition-all duration-500">
+          <div className="flex flex-wrap justify-center items-center gap-x-12 gap-y-12 md:gap-x-20 md:gap-y-16 transition-all duration-500">
             {platforms.map((platform, index) => (
               <motion.div
                 key={platform.name}
