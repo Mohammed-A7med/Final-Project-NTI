@@ -1,5 +1,14 @@
-import { configureStore } from '@reduxjs/toolkit'
+import { configureStore } from '@reduxjs/toolkit';
+import themeReducer from './slices/themeSlice';
+import authReducer from './slices/authSlice'
+import cartReducer from './slices/cartSlice';
 
 export const store = configureStore({
-  reducer: {},
-})
+  reducer: {
+    theme: themeReducer,
+    auth: authReducer,
+    cart: cartReducer,
+  },
+});
+
+
