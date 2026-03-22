@@ -21,7 +21,7 @@ const RoomSchema = new Schema(
 
     roomType: {
       type: String,
-      enum: ["single", "double", "suite"],
+      enum: ["single", "double", "twin", "deluxe", "family"],
       required: true,
     },
 
@@ -73,6 +73,8 @@ const RoomSchema = new Schema(
 
     rating: {
       type: Number,
+      min: 0,
+      max: 5,
       default: 0,
     },
 
