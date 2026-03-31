@@ -7,14 +7,14 @@ import axiosInstance from '../../services/axiosInstance';
 
 /**
  * @desc  Fetch all menu items
- *        GET /api/menu
+ *        GET /api/menu/get-all-items
  */
 export const fetchAllMenuItems = createAsyncThunk(
   'menu/fetchAllMenuItems',
   async (_, { rejectWithValue }) => {
     try {
-      const { data } = await axiosInstance.get('/menu');
-      return data.data.menuItems;
+      const { data } = await axiosInstance.get('/menu/get-all-items');
+      return data.data.items || [];
     } catch (err) {
       return rejectWithValue(
         err.response?.data?.message || 'Failed to load menu'
@@ -25,16 +25,16 @@ export const fetchAllMenuItems = createAsyncThunk(
 
 /**
  * @desc  Fetch menu items by category
- *        GET /api/menu?category=:category
+ *        GET /api/menu/get-all-items?category=:category
  */
 export const fetchMenuByCategory = createAsyncThunk(
   'menu/fetchMenuByCategory',
   async (category, { rejectWithValue }) => {
     try {
-      const { data } = await axiosInstance.get('/menu', {
+      const { data } = await axiosInstance.get('/menu/get-all-items', {
         params: { category },
       });
-      return data.data.menuItems;
+      return data.data.items || [];
     } catch (err) {
       return rejectWithValue(
         err.response?.data?.message || 'Failed to load menu category'
@@ -45,14 +45,14 @@ export const fetchMenuByCategory = createAsyncThunk(
 
 /**
  * @desc  Fetch a single menu item by id
- *        GET /api/menu/:id
+ *        GET /api/menu/getById/:id
  */
 export const fetchMenuItemById = createAsyncThunk(
   'menu/fetchMenuItemById',
   async (id, { rejectWithValue }) => {
     try {
-      const { data } = await axiosInstance.get(`/menu/${id}`);
-      return data.data.menuItem;
+      const { data } = await axiosInstance.get(`/menu/getById/${id}`);
+      return data.data.item;
     } catch (err) {
       return rejectWithValue(
         err.response?.data?.message || 'Menu item not found'
