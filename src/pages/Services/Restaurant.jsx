@@ -1,3 +1,5 @@
+import { useEffect, useMemo } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { NavLink, Link } from "react-router-dom";
 import {
   Breadcrumb,
@@ -10,54 +12,9 @@ import {
 import { Clock, Mail, MapPin, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import RestaurantBooking from "@/components/restaurant/RestaurantBooking";
+import { fetchAllMenuItems, selectMenuItems, selectListLoading } from "@/services/menu/menuSlice";
 
-const menuItems = [
-  {
-    id: 1,
-    image:
-      "https://sailing.thimpress.com/demo-mountain-hotel/wp-content/uploads/sites/27/2025/06/berry-cake-with-milk-cream-blueberry-jam-blue-ceramic-plate-isolated-white-background-1.png",
-    imageAlt: "Image food",
-    title: "Salted Caramel Tart",
-    desc: "Salted caramel custard tart, vanilla ice-cream.",
-    price: "$16",
-  },
-  {
-    id: 2,
-    image:
-      "https://sailing.thimpress.com/demo-mountain-hotel/wp-content/uploads/sites/27/2025/06/berry-cake-with-milk-cream-blueberry-jam-blue-ceramic-plate-isolated-white-background-1-1.png",
-    imageAlt: "Image food",
-    title: "Salted Caramel Tart",
-    desc: "Salted caramel custard tart, vanilla ice-cream.",
-    price: "$16",
-  },
-  {
-    id: 3,
-    image:
-      "https://sailing.thimpress.com/demo-mountain-hotel/wp-content/uploads/sites/27/2025/06/berry-cake-with-milk-cream-blueberry-jam-blue-ceramic-plate-isolated-white-background-1-2.png",
-    imageAlt: "Image food",
-    title: "Salted Caramel Tart",
-    desc: "Salted caramel custard tart, vanilla ice-cream.",
-    price: "$16",
-  },
-  {
-    id: 4,
-    image:
-      "https://sailing.thimpress.com/demo-mountain-hotel/wp-content/uploads/sites/27/2025/06/berry-cake-with-milk-cream-blueberry-jam-blue-ceramic-plate-isolated-white-background-1-3.png",
-    imageAlt: "Image food",
-    title: "Salted Caramel Tart",
-    desc: "Salted caramel custard tart, vanilla ice-cream.",
-    price: "$16",
-  },
-  {
-    id: 5,
-    image:
-      "https://sailing.thimpress.com/demo-mountain-hotel/wp-content/uploads/sites/27/2025/06/berry-cake-with-milk-cream-blueberry-jam-blue-ceramic-plate-isolated-white-background-1.png",
-    imageAlt: "Image food",
-    title: "Salted Caramel Tart",
-    desc: "Salted caramel custard tart, vanilla ice-cream.",
-    price: "$16",
-  },
-];
+
 
 const slides = [
   {
@@ -106,6 +63,27 @@ const slides = [
 ];
 
 export default function Restaurant() {
+  const dispatch = useDispatch();
+  const menuItems = useSelector(selectMenuItems) || [];
+  const listLoading = useSelector(selectListLoading);
+
+  useEffect(() => {
+    dispatch(fetchAllMenuItems());
+  }, [dispatch]);
+
+  // Filter 5 items for each category
+  const desserts = useMemo(() => {
+    return menuItems.filter((item) => item.category === "Desserts").slice(0, 5);
+  }, [menuItems]);
+
+  const mainCourses = useMemo(() => {
+    return menuItems.filter((item) => item.category === "Restaurant").slice(0, 5);
+  }, [menuItems]);
+
+  const drinks = useMemo(() => {
+    return menuItems.filter((item) => item.category === "Drinks").slice(0, 5);
+  }, [menuItems]);
+
   const heroSlide = slides.find((s) => s.id === 1);
   const secondSlideImg1 = slides.find((s) => s.id === 2);
   const secondSlideImg2 = slides.find((s) => s.id === 3);
@@ -233,32 +211,42 @@ export default function Restaurant() {
               <div className=" px-4 flex flex-col m-2">
                 {/* frist section  */}
                 <div className="w-full py-3">
-                  {menuItems.map((item) => (
-                    <div
-                      key={item.id}
-                      className="group flex items-center gap-4 md:gap-4 p-4 border-b border-border/50 last:border-0 transition-all hover:bg-primary/2 rounded-xl"
-                    >
-                      {/* food img*/}
-                      <div className="shrink-0 rounded-full overflow-hidden border-2 border-border/20 group-hover:border-primary transition-all w-16 h-16 md:w-20 md:h-20 shadow-sm">
-                        <img
-                          src={item.image}
-                          alt={item.imageAlt}
-                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                        />
-                      </div>
-
-                      {/* desc*/}
-                      <div className="grow">
-                        <div className="flex justify-between items-baseline mb-1">
-                          <h3 className="text-xl md:text-2xl font-header text-foreground group-hover:text-primary transition-colors font-bold">
-                            {item.title}
-                          </h3>
-                          <span className="text-lg md:text-xl font-header text-primary font-bold">{item.price}</span>
+                  {listLoading ? (
+                    <p className="text-center text-muted-foreground">Loading desserts...</p>
+                  ) : desserts.length > 0 ? (
+                    desserts.map((item) => (
+                      <div
+                        key={item.id || item._id}
+                        className="group flex items-center gap-4 md:gap-4 p-4 border-b border-border/50 last:border-0 transition-all hover:bg-primary/2 rounded-xl"
+                      >
+                        {/* food img*/}
+                        <div className="shrink-0 rounded-full overflow-hidden border-2 border-border/20 group-hover:border-primary transition-all w-16 h-16 md:w-20 md:h-20 shadow-sm">
+                          <img
+                            src={item.image}
+                            alt={item.name}
+                            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                          />
                         </div>
-                        <p className="text-muted-foreground text-sm md:text-base italic leading-relaxed">{item.desc}</p>
+
+                        {/* desc*/}
+                        <div className="grow">
+                          <div className="flex justify-between items-baseline mb-1">
+                            <h3 className="text-xl md:text-2xl font-header text-foreground group-hover:text-primary transition-colors font-bold">
+                              {item.name}
+                            </h3>
+                            <span className="text-lg md:text-xl font-header text-primary font-bold">
+                              ${item.price}
+                            </span>
+                          </div>
+                          <p className="text-muted-foreground text-sm md:text-base italic leading-relaxed">
+                            {item.description}
+                          </p>
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    ))
+                  ) : (
+                    <p className="text-center text-muted-foreground py-4">No desserts available yet.</p>
+                  )}
                 </div>
 
                 {/* button*/}
@@ -276,41 +264,52 @@ export default function Restaurant() {
               <div className=" px-4 flex flex-col m-2">
                 {/* frist section  */}
                 <div className="w-full py-3">
-                  {menuItems.map((item) => (
-                    <div
-                      key={item.id}
-                      className="group flex items-center gap-4 md:gap-4 p-4 border-b border-border/50 last:border-0 transition-all hover:bg-primary/2 rounded-xl"
-                    >
-                      {/* food img*/}
-                      <div className="shrink-0 rounded-full overflow-hidden border-2 border-border/20 group-hover:border-primary transition-all w-16 h-16 md:w-20 md:h-20 shadow-sm">
-                        <img
-                          src={item.image}
-                          alt={item.imageAlt}
-                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                        />
-                      </div>
-
-                      {/* desc*/}
-                      <div className="grow">
-                        <div className="flex justify-between items-baseline mb-1">
-                          <h3 className="text-xl md:text-2xl font-header text-foreground group-hover:text-primary transition-colors font-bold">
-                            {item.title}
-                          </h3>
-                          <span className="text-lg md:text-xl font-header text-primary font-bold">{item.price}</span>
+                  {listLoading ? (
+                    <p className="text-center text-muted-foreground">Loading main course...</p>
+                  ) : mainCourses.length > 0 ? (
+                    mainCourses.map((item) => (
+                      <div
+                        key={item.id || item._id}
+                        className="group flex items-center gap-4 md:gap-4 p-4 border-b border-border/50 last:border-0 transition-all hover:bg-primary/2 rounded-xl"
+                      >
+                        {/* food img*/}
+                        <div className="shrink-0 rounded-full overflow-hidden border-2 border-border/20 group-hover:border-primary transition-all w-16 h-16 md:w-20 md:h-20 shadow-sm">
+                          <img
+                            src={item.image}
+                            alt={item.name}
+                            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                          />
                         </div>
-                        <p className="text-muted-foreground text-sm md:text-base italic leading-relaxed">{item.desc}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
 
-                {/* button*/}
+                        {/* desc*/}
+                        <div className="grow">
+                          <div className="flex justify-between items-baseline mb-1">
+                            <h3 className="text-xl md:text-2xl font-header text-foreground group-hover:text-primary transition-colors font-bold">
+                              {item.name}
+                            </h3>
+                            <span className="text-lg md:text-xl font-header text-primary font-bold">
+                              ${item.price}
+                            </span>
+                          </div>
+                          <p className="text-muted-foreground text-sm md:text-base italic leading-relaxed">
+                            {item.description}
+                          </p>
+                        </div>
+                      </div>
+                    ))
+                  ) : (
+                    <p className="text-center text-muted-foreground py-4">No main courses available yet.</p>
+                  )}
+                   {/* button*/}
                 <div className="mt-8 flex justify-center lg:justify-start">
                   <Button asChild variant="palmSecondary" size="lg">
                     <a href="#table-booking">Reserve Now</a>
                   </Button>
                 </div>
               </div>
+                </div>
+
+
 
               {/* right part photo*/}
               <div className="    relative m-2 ">
@@ -352,32 +351,42 @@ export default function Restaurant() {
               <div className=" px-4 flex flex-col m-2">
                 {/* frist section  */}
                 <div className="w-full py-3">
-                  {menuItems.map((item) => (
-                    <div
-                      key={item.id}
-                      className="group flex items-center gap-4 md:gap-4 p-4 border-b border-border/50 last:border-0 transition-all hover:bg-primary/2 rounded-xl"
-                    >
-                      {/* food img*/}
-                      <div className="shrink-0 rounded-full overflow-hidden border-2 border-border/20 group-hover:border-primary transition-all w-16 h-16 md:w-20 md:h-20 shadow-sm">
-                        <img
-                          src={item.image}
-                          alt={item.imageAlt}
-                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                        />
-                      </div>
-
-                      {/* desc*/}
-                      <div className="grow">
-                        <div className="flex justify-between items-baseline mb-1">
-                          <h3 className="text-xl md:text-2xl font-header text-foreground group-hover:text-primary transition-colors font-bold">
-                            {item.title}
-                          </h3>
-                          <span className="text-lg md:text-xl font-header text-primary font-bold">{item.price}</span>
+                  {listLoading ? (
+                    <p className="text-center text-muted-foreground">Loading drinks...</p>
+                  ) : drinks.length > 0 ? (
+                    drinks.map((item) => (
+                      <div
+                        key={item.id || item._id}
+                        className="group flex items-center gap-4 md:gap-4 p-4 border-b border-border/50 last:border-0 transition-all hover:bg-primary/2 rounded-xl"
+                      >
+                        {/* food img*/}
+                        <div className="shrink-0 rounded-full overflow-hidden border-2 border-border/20 group-hover:border-primary transition-all w-16 h-16 md:w-20 md:h-20 shadow-sm">
+                          <img
+                            src={item.image}
+                            alt={item.name}
+                            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                          />
                         </div>
-                        <p className="text-muted-foreground text-sm md:text-base italic leading-relaxed">{item.desc}</p>
+
+                        {/* desc*/}
+                        <div className="grow">
+                          <div className="flex justify-between items-baseline mb-1">
+                            <h3 className="text-xl md:text-2xl font-header text-foreground group-hover:text-primary transition-colors font-bold">
+                              {item.name}
+                            </h3>
+                            <span className="text-lg md:text-xl font-header text-primary font-bold">
+                              ${item.price}
+                            </span>
+                          </div>
+                          <p className="text-muted-foreground text-sm md:text-base italic leading-relaxed">
+                            {item.description}
+                          </p>
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    ))
+                  ) : (
+                    <p className="text-center text-muted-foreground py-4">No drinks available yet.</p>
+                  )}
                 </div>
 
                 {/* button*/}
@@ -432,7 +441,7 @@ export default function Restaurant() {
                     </li>
                   </ul>
                 </div>
-                {/* زر الحجز الملون */}
+                {/* Booking Button*/}
                 <Button
                   asChild
                   variant="palmPrimary"
