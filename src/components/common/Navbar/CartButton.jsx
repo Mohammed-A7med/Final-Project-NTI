@@ -4,15 +4,30 @@ import { ShoppingCart } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useMatch } from "react-router-dom";
 import NavTooltip from "./NavTooltip";
-import { toggleCart, selectCartCount, selectCartIsOpen } from "@/store/slices/cartSlice";
+import {
+  toggleCart,
+  selectCartCount,
+  selectCartIsOpen,
+  selectRestaurantMenuCartTotalQty,
+  selectPendingActivityBookings,
+  selectPendingRestaurantBookings,
+} from "@/store/slices/cartSlice";
 
 function CartButton({ itemCount: propCount }) {
   const dispatch = useDispatch();
+  const isHydrating = useSelector((state) => state.auth.isHydrating);
   const reduxCount = useSelector(selectCartCount);
   const isOpen = useSelector(selectCartIsOpen);
   const isCartPage = useMatch("/cart");
+  const restaurantQty = useSelector(selectRestaurantMenuCartTotalQty);
+  const pendingActivityBookings = useSelector(selectPendingActivityBookings);
 
-  const itemCount = propCount !== undefined ? propCount : reduxCount;
+  const pendingRestaurantBookings = useSelector(selectPendingRestaurantBookings);
+
+  const roomLineCount = isHydrating ? 0 : propCount !== undefined ? propCount : reduxCount;
+  const activityQty = pendingActivityBookings ? pendingActivityBookings.length : 0;
+  const restaurantOrdersQty = pendingRestaurantBookings ? pendingRestaurantBookings.length : 0;
+  const itemCount = roomLineCount + restaurantQty + activityQty + restaurantOrdersQty;
 
   return (
     <NavTooltip label="Cart">
@@ -21,14 +36,15 @@ function CartButton({ itemCount: propCount }) {
         onClick={() => dispatch(toggleCart())}
         aria-label="Shopping Cart"
         className={`
-          relative flex items-center justify-center w-8 h-8 md:w-10 md:h-10 rounded-full
+          relative flex items-center justify-center w-9 h-9 md:w-11 md:h-11 rounded-full
           transition-all duration-300 hover:bg-primary/20 cursor-pointer
+          focus:outline-none focus-visible:outline-none focus-visible:ring-0
           ${(isOpen || isCartPage)
             ? "text-primary bg-primary/20 shadow-inner border border-primary/20"
             : "text-white/60 bg-primary/5 border border-white/10"}
         `}
       >
-        <ShoppingCart className="w-4 h-4 md:w-[18px] md:h-[18px]" />
+        <ShoppingCart className="w-[18px] h-[18px] md:w-5 md:h-5" />
 
         {/* Badge */}
         <AnimatePresence>

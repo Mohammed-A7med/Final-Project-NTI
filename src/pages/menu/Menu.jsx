@@ -1,43 +1,19 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 // import MenuHeader from "../../components/menu/MenuHeader";
 import MenuTabs from "../../components/menu/MenuTabs";
 import MenuGrid from "../../components/menu/MenuGrid";
 import MenuReservationHero from "../../components/menu/MenuReservationHero";
-import { Loader2 } from "lucide-react";
-import menuApi from "../../services/menuApi";
+import { MenuPageSkeleton } from "@/components/menu/loading/MenuPageSkeleton";
+import { useMenuGroupedQuery } from "@/hooks/useCatalogQueries";
 
 export default function MenuPage() {
-  const [activeIndex, setActiveIndex] = useState(0); 
-  const [categories, setCategories] = useState([]);
-  const [groupedItems, setGroupedItems] = useState({});
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    const fetchMenu = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-        
-        // Fetch the menu data grouped by category directly from your endpoint
-        const rawData = await menuApi.getGroupedMenu();
-        
-        const dataPayload = rawData?.data || {};
-        
-        // Ensure valid fallback arrays
-        setCategories(dataPayload.categories || []);
-        setGroupedItems(dataPayload.categoryMenuItems || {});
-
-      } catch (err) {
-        console.error("API error fetching grouped menu:", err);
-        setError(err?.response?.data?.message || err.message || "Failed to fetch menu items from server.");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchMenu();
-  }, []);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const { data, isLoading: loading, error: queryError } = useMenuGroupedQuery();
+  const categories = data?.categories ?? [];
+  const groupedItems = data?.groupedItems ?? {};
+  const error = queryError
+    ? queryError.message || "Failed to fetch menu items from server."
+    : null;
 
   // Determine current active category and its items
   const activeCategory = categories[activeIndex] || null;
@@ -49,10 +25,7 @@ export default function MenuPage() {
       {/* <MenuHeader /> */}
       
       {loading ? (
-        <div className="flex flex-col items-center justify-center py-20 gap-4">
-          <Loader2 className="w-10 h-10 animate-spin text-primary" />
-          <p className="text-muted-foreground font-medium">Loading delicious menu...</p>
-        </div>
+        <MenuPageSkeleton />
       ) : error ? (
         <div className="flex flex-col items-center justify-center py-20 gap-4">
           <p className="text-red-500 font-medium">{error}</p>

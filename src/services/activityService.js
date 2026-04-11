@@ -1,6 +1,7 @@
 import axios from "axios";
 
 import axiosInstance from "@/services/axiosInstance";
+import { normalizePagination } from "@/lib/pagination/normalizePagination";
 
 const resolveImage = (image) =>
   typeof image === "string" ? image : image?.secure_url || "";
@@ -46,10 +47,39 @@ const mapSchedule = (schedule) => ({
   notes: schedule.notes ?? "",
 });
 
-export async function fetchActivities() {
+export async function fetchActivities(options = {}) {
+  const {
+    page,
+    limit,
+    category,
+    search,
+    sort,
+    withPagination = false,
+  } = options;
+
   try {
-    const { data } = await axiosInstance.get("/activity");
-    return (data?.data?.activities ?? []).map(mapActivity);
+    const params = {};
+
+    if (page) params.page = page;
+    if (limit) {
+      params.limit = limit;
+    } else if (!withPagination) {
+      params.limit = 100;
+    }
+    if (category) params.category = category;
+    if (search) params.search = search;
+    if (sort) params.sort = sort;
+
+    const { data } = await axiosInstance.get("/activity", { params });
+    
+    const activities = (data?.data?.activities ?? []).map(mapActivity);
+    const pagination = normalizePagination(data?.data, page ?? 1, limit ?? 10);
+
+    if (withPagination) {
+      return { activities, pagination };
+    }
+
+    return activities;
   } catch (error) {
     if (axios.isAxiosError(error)) {
       throw new Error(error.response?.data?.message || error.message);
@@ -74,11 +104,14 @@ export async function fetchActivityById(activityId) {
 
 export async function fetchActivitySchedules(activityId) {
   try {
-    const endpoint = activityId
-      ? `/activity/${activityId}/schedules`
-      : "/activity-schedules";
+    const isGlobal = !activityId;
+    const endpoint = isGlobal
+      ? "/activity-schedules"
+      : `/activity/${activityId}/schedules`;
 
-    const { data } = await axiosInstance.get(endpoint);
+    const { data } = await axiosInstance.get(endpoint, {
+      params: isGlobal ? { limit: 100 } : {},
+    });
     return (data?.data?.schedules ?? []).map(mapSchedule);
   } catch (error) {
     if (axios.isAxiosError(error)) {

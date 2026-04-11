@@ -1,10 +1,14 @@
 import { memo } from 'react';
 import { motion } from 'framer-motion';
+import { useSelector } from 'react-redux';
 import ThemeToggle from '../ThemeToggle';
 import LanguageToggle from '../LanguageToggle';
 import LoginButton from '../LoginButton';
 import CartButton from '../CartButton';
 import WishlistButton from '../WishlistButton';
+import NotificationButton from '../NotificationButton';
+
+const MotionDiv = motion.div;
 
 const actionVariants = {
   hidden: { y: 20, opacity: 0 },
@@ -16,27 +20,42 @@ const actionVariants = {
 };
 
 function NavActions({ activeMenu, onHover, onLeave }) {
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+
   return (
     <div className="hidden md:flex items-center gap-2 lg:gap-3">
-      <motion.div variants={actionVariants}>
-        <WishlistButton />
-      </motion.div>
-      <motion.div variants={actionVariants}>
-        <CartButton />
-      </motion.div>
-      <motion.div variants={actionVariants}>
-        <LanguageToggle
-          activeMenu={activeMenu}
-          onHover={onHover}
-          onLeave={onLeave}
-        />
-      </motion.div>
-      <motion.div variants={actionVariants}>
-        <ThemeToggle />
-      </motion.div>
-      <motion.div variants={actionVariants}>
+      {isAuthenticated && (
+        <MotionDiv variants={actionVariants}>
+          <NotificationButton />
+        </MotionDiv>
+      )}
+      {isAuthenticated && (
+        <MotionDiv variants={actionVariants}>
+          <WishlistButton />
+        </MotionDiv>
+      )}
+      {isAuthenticated && (
+        <MotionDiv variants={actionVariants}>
+          <CartButton />
+        </MotionDiv>
+      )}
+      {!isAuthenticated && (
+        <MotionDiv variants={actionVariants}>
+          <LanguageToggle
+            activeMenu={activeMenu}
+            onHover={onHover}
+            onLeave={onLeave}
+          />
+        </MotionDiv>
+      )}
+      {!isAuthenticated && (
+        <MotionDiv variants={actionVariants}>
+          <ThemeToggle />
+        </MotionDiv>
+      )}
+      <MotionDiv variants={actionVariants}>
         <LoginButton />
-      </motion.div>
+      </MotionDiv>
     </div>
   );
 }

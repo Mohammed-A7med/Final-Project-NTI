@@ -1,142 +1,378 @@
-import { useState } from "react";
-import { useSelector } from "react-redux";
-import { Navigate } from "react-router-dom";
-import { motion } from "framer-motion";
+import { useEffect, useMemo, useState, useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Navigate, useLocation } from "react-router-dom";
+import { Calendar, ShoppingCart, Ticket, UtensilsCrossed } from "lucide-react";
+import { toast } from "react-toastify";
+
+import useAxiosPrivate from "@/hooks/useAxiosPrivate";
 import {
-  User,
-  Mail,
-  Globe,
-  Phone,
-  Calendar,
-  Shield,
-  BadgeCheck,
-  Lock,
-} from "lucide-react";
-import ChangePassword from "@/pages/Auth/ChangePassword";
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 30 },
-  visible: (i) => ({
-    opacity: 1,
-    y: 0,
-    transition: { delay: i * 0.08, type: "spring", stiffness: 200, damping: 20 },
-  }),
-};
-
-function InfoCard({ icon: Icon, label, value, index }) {
-  if (!value) return null;
-  return (
-    <motion.div
-      custom={index}
-      variants={fadeUp}
-      initial="hidden"
-      animate="visible"
-      className="flex items-center gap-4 p-4 rounded-2xl bg-card/60 backdrop-blur-sm border border-border/40 hover:border-primary/30 transition-colors"
-    >
-      <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-primary/10 text-primary shrink-0">
-        <Icon size={20} />
-      </div>
-      <div className="min-w-0 flex-1">
-        <p className="text-xs text-muted-foreground uppercase tracking-wider">{label}</p>
-        <p className="text-sm font-medium text-foreground truncate">{value}</p>
-      </div>
-    </motion.div>
-  );
-}
+  cancelActivityBooking,
+  selectActivityBookings,
+  selectActivityBookingsError,
+  selectActivityBookingsLoading,
+} from "@/services/activityBookings/activityBookingsSlice";
+import {
+  cancelBooking,
+  selectBookings,
+  selectListError as selectRoomBookingsError,
+  selectListLoading as selectRoomBookingsLoading,
+} from "@/services/booking/bookingSlice";
+import {
+  cancelTableBooking,
+  selectTableBookings,
+  selectTableBookingsError,
+  selectTableBookingsLoading,
+} from "@/services/restaurantBookings/restaurantBookingsSlice";
+import {
+  selectCartCount,
+  selectCartItems,
+  selectCartRequiresAttention,
+  selectCartTotal,
+  selectRestaurantMenuCart,
+  selectRestaurantMenuCartTotalQty,
+  selectPendingRestaurantBookings,
+  selectPendingActivityBookings,
+} from "@/store/slices/cartSlice";
+import {
+  selectWishlistCount,
+  selectWishlistItems,
+} from "@/store/slices/wishlistSlice";
+import { setCredentials } from "@/store/slices/authSlice";
+import { refreshUserSnapshot } from "@/services/userSnapshot";
+import {
+  buildProfileStats,
+  formatCurrency,
+  isActivityBookingCancellable,
+  isRoomBookingCancellable,
+  isTableBookingCancellable,
+} from "@/components/profile/profileUtils";
+import ProfileHero from "@/components/profile/ProfileHero";
+import ProfileContentSections from "@/components/profile/ProfileContentSections";
+import {
+  AccountDetailsModal,
+  EditProfileModal,
+} from "@/components/profile/ProfileAccountModals";
+import { ProfilePageSkeleton } from "@/components/profile/loading/ProfilePageSkeleton";
 
 export default function Profile() {
-  const { user, isAuthenticated, isHydrating } = useSelector((s) => s.auth);
+  const dispatch = useDispatch();
+  const axiosPrivate = useAxiosPrivate();
+  const location = useLocation();
+  const { user, isAuthenticated, isHydrating } = useSelector((state) => state.auth);
+  const wishlistItems = useSelector(selectWishlistItems);
+  const wishlistCount = useSelector(selectWishlistCount);
+  const cartItems = useSelector(selectCartItems);
+  const cartCount = useSelector(selectCartCount);
+  const cartTotal = useSelector(selectCartTotal);
+  const cartRequiresAttention = useSelector(selectCartRequiresAttention);
+  const restaurantMenuTotalQty = useSelector(selectRestaurantMenuCartTotalQty);
+  const restaurantMenuCart = useSelector(selectRestaurantMenuCart);
+  const roomBookings = useSelector(selectBookings);
+  const roomBookingsLoading = useSelector(selectRoomBookingsLoading);
+  const roomBookingsError = useSelector(selectRoomBookingsError);
+  const activityBookings = useSelector(selectActivityBookings);
+  const activityBookingsLoading = useSelector(selectActivityBookingsLoading);
+  const activityBookingsError = useSelector(selectActivityBookingsError);
+  const tableBookings = useSelector(selectTableBookings);
+  const tableBookingsLoading = useSelector(selectTableBookingsLoading);
+   const tableBookingsError = useSelector(selectTableBookingsError);
+  const pendingRestaurantBookings = useSelector(selectPendingRestaurantBookings);
+  const pendingActivityBookings = useSelector(selectPendingActivityBookings);
+  const [pendingCancelKey, setPendingCancelKey] = useState("");
+  const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isProfileSnapshotLoading, setIsProfileSnapshotLoading] = useState(true);
+  const [highlightedSectionId, setHighlightedSectionId] = useState("");
+  const hasScrolledToRecentBooking = useRef(false);
+  const pendingPaymentSyncRef = useRef(false);
 
-  const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
-  if (isHydrating) return null;
-  // const { user, isAuthenticated } = useSelector((s) => s.auth);
+  const PENDING_PAYMENT_SYNC_KEY = "pendingPaymentSync";
 
-  if (!isAuthenticated) return <Navigate to="/auth/login" replace />;
+  // Auto-scroll to recent booking functionality
+  useEffect(() => {
+    const hasHashTarget = Boolean(location.hash?.trim());
+    if (hasHashTarget) return;
+    if (!isAuthenticated || isProfileSnapshotLoading || hasScrolledToRecentBooking.current) return;
 
-  const memberSince = user?.createdAt
-    ? new Date(user.createdAt).toLocaleDateString("en-US", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-      })
-    : null;
+    // Check if user has any recent bookings (created in the last 5 minutes)
+    const now = new Date();
+    const fiveMinutesAgo = new Date(now.getTime() - 5 * 60 * 1000);
+    
+    const recentRoomBookings = roomBookings.filter(booking => 
+      new Date(booking.createdAt || booking.bookedAt) > fiveMinutesAgo
+    );
+    const recentActivityBookings = activityBookings.filter(booking => 
+      new Date(booking.createdAt) > fiveMinutesAgo
+    );
+    const recentTableBookings = tableBookings.filter(booking => 
+      new Date(booking.createdAt) > fiveMinutesAgo
+    );
 
-  const infoItems = [
-    { icon: Mail, label: "Email", value: user?.email },
-    { icon: Globe, label: "Country", value: user?.country !== "N/A" ? user?.country : null },
-    { icon: Phone, label: "Phone", value: user?.phoneNumber },
-    { icon: User, label: "Gender", value: user?.gender ? user.gender.charAt(0).toUpperCase() + user.gender.slice(1) : null },
-    { icon: Calendar, label: "Date of Birth", value: user?.DOB ? new Date(user.DOB).toLocaleDateString() : null },
-    { icon: Calendar, label: "Member Since", value: memberSince },
-    { icon: Shield, label: "Role", value: user?.role ? user.role.charAt(0).toUpperCase() + user.role.slice(1) : null },
+    const hasRecentBookings = recentRoomBookings.length > 0 || 
+                           recentActivityBookings.length > 0 || 
+                           recentTableBookings.length > 0;
+
+    if (hasRecentBookings) {
+      // Wait a bit for the page to render, then scroll
+      const timer = setTimeout(() => {
+        // Try to find booking sections in order of priority
+        const selectors = [
+          '#room-bookings-section',
+          '#activity-bookings-section', 
+          '#table-bookings-section'
+        ];
+        
+        for (const selector of selectors) {
+          const element = document.querySelector(selector);
+          if (element) {
+            element.scrollIntoView({ 
+              behavior: 'smooth', 
+              block: 'start',
+              inline: 'nearest'
+            });
+            hasScrolledToRecentBooking.current = true;
+            break;
+          }
+        }
+      }, 500); // Small delay to ensure content is rendered
+
+      return () => clearTimeout(timer);
+    }
+  }, [
+    location.hash,
+    isAuthenticated, 
+    isProfileSnapshotLoading, 
+    roomBookings, 
+    activityBookings, 
+    tableBookings
+  ]);
+
+  useEffect(() => {
+    if (!isAuthenticated) return;
+
+    let isMounted = true;
+    setIsProfileSnapshotLoading(true);
+
+    const refreshProfileSnapshot = async () => {
+      try {
+        await refreshUserSnapshot({ dispatch, axiosPrivate });
+      } catch (error) {
+        if (isMounted) {
+          console.error("Failed to refresh the user snapshot on profile open:", error);
+        }
+      } finally {
+        if (isMounted) {
+          setIsProfileSnapshotLoading(false);
+        }
+      }
+    };
+
+    void refreshProfileSnapshot();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [axiosPrivate, dispatch, isAuthenticated]);
+
+  useEffect(() => {
+    if (!isAuthenticated || pendingPaymentSyncRef.current) return;
+    const raw = window.sessionStorage.getItem(PENDING_PAYMENT_SYNC_KEY);
+    const pending = raw ? (() => { try { return JSON.parse(raw); } catch { return null; } })() : null;
+    const sessionId = pending?.sessionId;
+    const createdAt = Number(pending?.createdAt || 0);
+    if (!sessionId) return;
+    // Don't keep retrying forever.
+    if (createdAt && Date.now() - createdAt > 10 * 60 * 1000) {
+      window.sessionStorage.removeItem(PENDING_PAYMENT_SYNC_KEY);
+      return;
+    }
+
+    pendingPaymentSyncRef.current = true;
+    let cancelled = false;
+
+    const poll = async () => {
+      try {
+        const maxAttempts = 30; // ~60s
+        for (let attempt = 0; attempt < maxAttempts; attempt += 1) {
+          if (cancelled) return;
+          const res = await axiosPrivate.get(`/payment/checkout-session/${encodeURIComponent(sessionId)}`);
+          const status = res?.data?.data?.status;
+          if (status === "fulfilled") {
+            window.sessionStorage.removeItem(PENDING_PAYMENT_SYNC_KEY);
+            await refreshUserSnapshot({ dispatch, axiosPrivate });
+            toast.success("Reservation synced. Your booking should be visible now.");
+            return;
+          }
+          if (status === "failed" || status === "expired" || status === "cancelled") {
+            window.sessionStorage.removeItem(PENDING_PAYMENT_SYNC_KEY);
+            toast.error("Payment sync failed. Contact support if you were charged.");
+            return;
+          }
+          await new Promise((r) => setTimeout(r, 2000));
+        }
+      } catch (e) {
+        // Silent: this is best-effort.
+      } finally {
+        pendingPaymentSyncRef.current = false;
+      }
+    };
+
+    void poll();
+    return () => {
+      cancelled = true;
+    };
+  }, [axiosPrivate, dispatch, isAuthenticated]);
+
+  useEffect(() => {
+    if (!isAuthenticated || isHydrating || isProfileSnapshotLoading) return;
+
+    const targetId = location.hash?.replace("#", "").trim();
+    if (!targetId) return;
+
+    hasScrolledToRecentBooking.current = true;
+
+    const targetElement = document.getElementById(targetId);
+    if (!targetElement) return;
+
+    const timer = window.setTimeout(() => {
+      targetElement.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+        inline: "nearest",
+      });
+      setHighlightedSectionId(targetId);
+    }, 120);
+
+    const clearTimer = window.setTimeout(() => {
+      setHighlightedSectionId((current) => (current === targetId ? "" : current));
+    }, 2200);
+
+    return () => {
+      window.clearTimeout(timer);
+      window.clearTimeout(clearTimer);
+    };
+  }, [isAuthenticated, isHydrating, isProfileSnapshotLoading, location.hash]);
+
+  const activeRoomBookingsCount = useMemo(
+    () => roomBookings.filter(isRoomBookingCancellable).length,
+    [roomBookings],
+  );
+  const activeActivityBookingsCount = useMemo(
+    () => activityBookings.filter(isActivityBookingCancellable).length,
+    [activityBookings],
+  );
+  const activeTableBookingsCount = useMemo(
+    () => tableBookings.filter(isTableBookingCancellable).length,
+    [tableBookings],
+  );
+
+  const stats = buildProfileStats({
+    wishlistCount,
+    cartCount,
+    cartRequiresAttention,
+    restaurantMenuTotalQty,
+    activeRoomBookingsCount,
+    activeActivityBookingsCount,
+    activeTableBookingsCount,
+  });
+
+  const snapshotCards = [
+    {
+      icon: ShoppingCart,
+      label: "Cart Value",
+      value: formatCurrency(cartTotal),
+      subtitle: cartRequiresAttention
+        ? "Some cart items need review before checkout."
+        : restaurantMenuTotalQty > 0
+          ? "Room total shown here; restaurant dishes live in the same cart (nav icon → Restaurant tab)."
+          : "Your current ready-to-checkout total.",
+    },
+    {
+      icon: UtensilsCrossed,
+      label: "Dining Plans",
+      value: tableBookings.length,
+      subtitle: "Restaurant reservations and waitlist requests.",
+    },
+    {
+      icon: Ticket,
+      label: "Activity Bookings",
+      value: activityBookings.length,
+      subtitle: "Experiences currently attached to your account.",
+    },
+    {
+      icon: Calendar,
+      label: "Total Room Bookings",
+      value: roomBookings.length,
+      subtitle: "Every stay on your account, including past and completed visits.",
+    },
   ];
 
+  const runCancelAction = async ({ key, action, successMessage, fallbackMessage }) => {
+    setPendingCancelKey(key);
+    try {
+      await dispatch(action).unwrap();
+      toast.success(successMessage);
+    } catch (error) {
+      toast.error(typeof error === "string" ? error : error?.message || fallbackMessage);
+    } finally {
+      setPendingCancelKey("");
+    }
+  };
+
+  if (isHydrating) return <ProfilePageSkeleton />;
+  if (!isAuthenticated) return <Navigate to="/auth/login" replace />;
+  if (isProfileSnapshotLoading) return <ProfilePageSkeleton />;
+
   return (
-    <section className="max-w-3xl mx-auto py-16 px-4">
-      <motion.div
-        initial={{ opacity: 0, y: 40 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ type: "spring", stiffness: 150, damping: 20 }}
-        className="flex flex-col items-center gap-4 mb-12"
-      >
-        <div className="relative">
-          {user?.image ? (
-            <img
-              src={user.image}
-              alt={user.userName}
-              className="w-28 h-28 rounded-full object-cover border-4 border-primary/20 shadow-xl"
-              referrerPolicy="no-referrer"
-            />
-          ) : (
-            <div className="w-28 h-28 rounded-full bg-primary/10 border-4 border-primary/20 flex items-center justify-center shadow-xl">
-              <User size={48} className="text-primary" />
-            </div>
-          )}
-          {user?.provider === "google" && (
-            <div className="absolute -bottom-1 -right-1 w-8 h-8 rounded-full bg-card border-2 border-border flex items-center justify-center">
-              <BadgeCheck size={16} className="text-primary" />
-            </div>
-          )}
-        </div>
-
-        <div className="text-center">
-          <h1 className="text-2xl font-bold text-foreground">{user?.userName}</h1>
-          <p className="text-sm text-muted-foreground mt-1">
-            {user?.provider === "google" ? "Signed in with Google" : "Email & Password account"}
-          </p>
-        </div>
-      </motion.div>
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        {infoItems.map((item, i) => (
-          <InfoCard key={item.label} {...item} index={i} />
-        ))}
-        
-        {/* Change Password Trigger Card */}
-        {user?.provider !== "google" && (
-          <motion.button
-            custom={infoItems.length}
-            variants={fadeUp}
-            initial="hidden"
-            animate="visible"
-            onClick={() => setIsPasswordModalOpen(true)}
-            className="flex items-center gap-4 p-4 rounded-2xl bg-primary/5 border border-primary/20 hover:bg-primary/10 hover:border-primary/40 transition-all text-left"
-          >
-            <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-primary text-primary-foreground shrink-0">
-              <Lock size={20} />
-            </div>
-            <div>
-              <p className="text-xs text-primary uppercase font-bold tracking-wider">Security</p>
-              <p className="text-sm font-medium text-foreground">Change Password</p>
-            </div>
-          </motion.button>
-        )}
-      </div>
-
-      {/* The Reusable Modal */}
-      <ChangePassword 
-        isOpen={isPasswordModalOpen} 
-        onClose={() => setIsPasswordModalOpen(false)} 
+    <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+      <ProfileHero
+        user={user}
+        onOpenDetails={() => setIsDetailsModalOpen(true)}
+        onOpenEdit={() => setIsEditModalOpen(true)}
+      />
+      <ProfileContentSections
+        highlightedSectionId={highlightedSectionId}
+        stats={stats}
+        snapshotCards={snapshotCards}
+        wishlistItems={wishlistItems}
+        wishlistCount={wishlistCount}
+        cartItems={cartItems}
+        cartCount={cartCount}
+        cartTotal={cartTotal}
+        cartRequiresAttention={cartRequiresAttention}
+        restaurantMenuTotalQty={restaurantMenuTotalQty}
+        restaurantMenuCart={restaurantMenuCart}
+        roomBookings={roomBookings}
+        roomBookingsLoading={roomBookingsLoading}
+        roomBookingsError={roomBookingsError}
+        activityBookings={activityBookings}
+        activityBookingsLoading={activityBookingsLoading}
+        activityBookingsError={activityBookingsError}
+        tableBookings={tableBookings}
+        tableBookingsLoading={tableBookingsLoading}
+        tableBookingsError={tableBookingsError}
+        pendingRestaurantBookings={pendingRestaurantBookings}
+        pendingActivityBookings={pendingActivityBookings}
+        pendingCancelKey={pendingCancelKey}
+        axiosPrivate={axiosPrivate}
+        cancelBooking={cancelBooking}
+        cancelActivityBooking={cancelActivityBooking}
+        cancelTableBooking={cancelTableBooking}
+        runCancelAction={runCancelAction}
+      />
+      <AccountDetailsModal
+        isOpen={isDetailsModalOpen}
+        onClose={() => setIsDetailsModalOpen(false)}
+        user={user}
+      />
+      <EditProfileModal
+        isOpen={isEditModalOpen}
+        onClose={() => setIsEditModalOpen(false)}
+        user={user}
+        axiosPrivate={axiosPrivate}
+        onProfileUpdated={(updatedUser) =>
+          dispatch(setCredentials({ user: updatedUser, skipCollectionsSync: true }))
+        }
       />
     </section>
   );

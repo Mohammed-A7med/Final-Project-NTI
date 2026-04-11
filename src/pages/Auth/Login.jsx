@@ -23,25 +23,43 @@ export default function Login() {
     handleSubmit,
     formState: { isSubmitting, errors },
   } = useForm({
-    defaultValues: { email: "mohamedahmedkhalaf68@gmail.com", password: "moAhmed123" },
+    defaultValues: { email: location.state?.email ?? "", password: "" },
     resolver: zodResolver(loginSchema),
   });
 
   const onSubmit = async (formData) => {
     try {
-      await axiosInstance.post("/auth/login", formData);
-      const profileResponse = await axiosInstance.get("/auth/account");
-
+      const response = await axiosInstance.post("/auth/login", formData);
+      const authData = response?.data?.data ?? {};
+      const accessToken = authData?.accessToken ?? authData?.token?.accessToken ?? null;
+      const refreshToken = authData?.refreshToken ?? authData?.token?.refreshToken ?? null;
+      
       dispatch(
         setCredentials({
-          user: profileResponse?.data?.data?.user ?? null,
+          user: authData?.user ?? null,
+          token: accessToken,
+          refreshToken,
         }),
       );
+
+      if (!accessToken) {
+        throw new Error("Login succeeded without access token. Please try again.");
+      }
 
       toast.success("Signed in successfully.");
       navigate(from, { replace: true });
     } catch (error) {
-      toast.error(error.response?.data?.message || "Login failed. Please try again.");
+      const message = error.response?.data?.message || "Login failed. Please try again.";
+      const shouldConfirmEmail = /verify|confirm/i.test(message);
+
+      if (shouldConfirmEmail) {
+        navigate("/auth/confirm-email", {
+          replace: true,
+          state: { email: formData.email },
+        });
+      }
+
+      toast.error(message);
     }
   };
 

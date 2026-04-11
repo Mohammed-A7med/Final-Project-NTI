@@ -1,109 +1,202 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
-import { Separator } from '@/components/ui/separator';
-import { selectCartItems, selectCartTotal } from '@/store/slices/cartSlice';
+import React from "react";
+import { useSelector } from "react-redux";
+
+import { Separator } from "@/components/ui/separator";
+import { 
+  selectCartItems, 
+  selectCartTotal,
+  selectPendingRestaurantBookings,
+  selectPendingActivityBookings,
+  selectPendingRestaurantTotal,
+  selectPendingActivityTotal
+} from "@/store/slices/cartSlice";
+import {
+  calculateCartItemTotal,
+  formatBookingDateLabel,
+  isCartItemReady,
+} from "@/utils/roomBooking";
+import {
+  formatDateOnly,
+  getRestaurantBookingLocationLabel,
+  getRestaurantBookingModeLabel,
+} from "@/components/profile/profileUtils";
 
 const OrderSummary = ({ selectedMethod, onMethodChange }) => {
-  const orderItems = useSelector(selectCartItems);
-  const total = useSelector(selectCartTotal);
+  const roomItems = useSelector(selectCartItems);
+  const restaurantBookings = useSelector(selectPendingRestaurantBookings);
+  const activityBookings = useSelector(selectPendingActivityBookings);
+  
+  const roomTotal = useSelector(selectCartTotal);
+  const restaurantTotal = useSelector(selectPendingRestaurantTotal);
+  const activityTotal = useSelector(selectPendingActivityTotal);
+  
+  const grandTotal = roomTotal + restaurantTotal + activityTotal;
 
-  if (!orderItems || orderItems.length === 0) {
+  const hasInvalidBookings = roomItems.some((item) => !isCartItemReady(item));
+  const paymentOptions = [
+    {
+      id: "cash",
+      label: "Cash",
+      description: "Reserve now and pay with cash when you arrive at the hotel.",
+    },
+    {
+      id: "card",
+      label: "Visa",
+      description: "Reserve now and pay by Visa card at the front desk on arrival.",
+    },
+  ];
+
+  const isEmpty = roomItems.length === 0 && restaurantBookings.length === 0 && activityBookings.length === 0;
+
+  if (isEmpty) {
     return (
-      <div className="bg-card/50 p-6 rounded-2xl border border-border">
-        <h2 className="text-2xl font-header text-foreground mb-6">Your Order</h2>
-        <p className="text-muted-foreground text-center py-8">Your cart is empty.</p>
+      <div className="rounded-2xl border border-border bg-card/50 p-6">
+        <h2 className="mb-6 text-2xl font-header text-foreground">Your Order</h2>
+        <p className="py-8 text-center text-muted-foreground">Your cart is empty.</p>
       </div>
     );
   }
 
   return (
-    <div className="bg-card/50 p-6 rounded-2xl border border-border">
-      <h2 className="text-2xl font-header text-foreground mb-6">Your Order</h2>
-      
-      <div className="flex justify-between text-sm font-medium text-muted-foreground mb-4">
+    <div className="rounded-2xl border border-border bg-card/50 p-6 text-foreground">
+      <h2 className="mb-6 text-2xl font-header text-foreground">Your Order</h2>
+
+      <div className="mb-4 flex justify-between text-sm font-medium text-muted-foreground">
         <span>Product</span>
         <span>Total</span>
       </div>
-      
+
       <div className="space-y-6">
-        {orderItems.map((item) => (
-          <div key={item.id} className="flex justify-between items-start gap-4">
+        {/* Room Bookings */}
+        {roomItems.map((item) => (
+          <div key={item.id} className="flex items-start justify-between gap-4">
             <div className="space-y-1">
-              <h3 className="text-sm font-medium text-foreground">
-                {item.name} <span className="text-muted-foreground/60">× {item.quantity}</span>
-              </h3>
-              <p className="text-xs text-muted-foreground">
-                <span className="font-medium">Date:</span> {item.date || 'TBD'}
+              <h3 className="text-sm font-medium">{item.name}</h3>
+              <p className="text-[11px] text-muted-foreground">
+                <span className="font-medium text-foreground/70">Date:</span>{" "}
+                {formatBookingDateLabel(item.checkInDate)} - {formatBookingDateLabel(item.checkOutDate)}
               </p>
-              <p className="text-xs text-muted-foreground">
-                <span className="font-medium">Details:</span> {item.details || '1 Adult'}
+              <p className="text-[11px] text-muted-foreground">
+                <span className="font-medium text-foreground/70">Details:</span>{" "}
+                {item.adults || 1} adult(s), {item.children || 0} children, {item.roomsCount || 1} room(s)
               </p>
             </div>
-            <span className="text-sm font-medium text-foreground italic">
-              ${(item.price * item.quantity).toFixed(2)}
+            <span className="text-sm font-medium italic">
+              ${calculateCartItemTotal(item).toFixed(2)}
+            </span>
+          </div>
+        ))}
+
+        {/* Restaurant Bookings */}
+        {restaurantBookings.map((booking) => (
+          <div key={booking.id} className="flex items-start justify-between gap-4">
+            <div className="space-y-1">
+              <h3 className="text-sm font-medium">
+                Restaurant: {getRestaurantBookingModeLabel(booking.bookingMode)}
+              </h3>
+              <p className="text-[11px] text-muted-foreground">
+                <span className="font-medium text-foreground/70">Date:</span> {formatDateOnly(booking.date)} at {booking.time}
+              </p>
+              <p className="text-[11px] text-muted-foreground">
+                <span className="font-medium text-foreground/70">Service:</span> {getRestaurantBookingLocationLabel(booking)}
+              </p>
+              <p className="text-[11px] text-muted-foreground">
+                <span className="font-medium text-foreground/70">Order:</span> {booking.lineItems?.length || 0} items
+              </p>
+            </div>
+            <span className="text-sm font-medium italic">
+              ${(booking.lineItems?.reduce((s, li) => s + (li.price * li.qty), 0) || 0).toFixed(2)}
+            </span>
+          </div>
+        ))}
+
+        {/* Activity Bookings */}
+        {activityBookings.map((booking) => (
+          <div key={booking.id} className="flex items-start justify-between gap-4">
+            <div className="space-y-1">
+              <h3 className="text-sm font-medium">Activity: {booking.activityTitle}</h3>
+              <p className="text-[11px] text-muted-foreground">
+                <span className="font-medium text-foreground/70">Date:</span> {formatDateOnly(booking.date)}
+              </p>
+              <p className="text-[11px] text-muted-foreground">
+                <span className="font-medium text-foreground/70">Guests:</span> {booking.guests} person(s)
+              </p>
+            </div>
+            <span className="text-sm font-medium italic">
+              ${(booking.price * booking.guests).toFixed(2)}
             </span>
           </div>
         ))}
       </div>
 
-      <Separator className="my-6 bg-border" />
+      <Separator className="my-6 bg-border/60" />
 
       <div className="space-y-4">
-        <div className="flex justify-between items-center font-medium">
-          <span className="text-foreground">Subtotal</span>
-          <span className="text-foreground italic">${total.toFixed(2)}</span>
+        <div className="flex items-center justify-between font-medium">
+          <span className="text-muted-foreground">Subtotal</span>
+          <span className="italic">${grandTotal.toFixed(2)}</span>
         </div>
-        <div className="flex justify-between items-center font-bold text-lg">
+        <div className="flex items-center justify-between text-lg font-bold">
           <span className="text-foreground">Total</span>
-          <span className="text-foreground italic">${total.toFixed(2)}</span>
+          <span className="italic text-primary">${grandTotal.toFixed(2)}</span>
         </div>
       </div>
 
       <div className="mt-8 space-y-4">
-        {/* Check Payments */}
-        <div 
-          className="flex items-center gap-3 cursor-pointer group"
-          onClick={() => onMethodChange('check')}
-        >
-            <div className={`w-4 h-4 rounded-full border flex items-center justify-center transition-all ${selectedMethod === 'check' ? 'border-primary bg-primary' : 'border-border'}`}>
-                {selectedMethod === 'check' && <div className="w-1.5 h-1.5 rounded-full bg-white" />}
-            </div>
-            <span className={`text-sm font-medium transition-colors ${selectedMethod === 'check' ? 'text-foreground' : 'text-muted-foreground'}`}>Check payments</span>
-        </div>
-        
-        {selectedMethod === 'check' && (
-          <div className="bg-muted p-4 rounded-lg relative transition-all animate-in fade-in slide-in-from-top-1">
-              <div className="absolute -top-2 left-4 w-4 h-4 bg-muted rotate-45" />
-              <p className="text-xs text-muted-foreground leading-relaxed">
-                  Please send a check to Store Name, Store Street, Store Town, Store State / County, Store Postcode.
-              </p>
+        {hasInvalidBookings ? (
+          <div className="rounded-2xl border border-destructive/25 bg-destructive/10 p-4 text-sm text-destructive">
+            Return to the cart and fix unavailable or incomplete room dates before placing your reservation.
           </div>
-        )}
+        ) : null}
 
-        {/* Stripe */}
-        <div 
-          className="flex items-center justify-between cursor-pointer group"
-          onClick={() => onMethodChange('stripe')}
-        >
-            <div className="flex items-center gap-3">
-                <div className={`w-4 h-4 rounded-full border flex items-center justify-center transition-all ${selectedMethod === 'stripe' ? 'border-primary bg-primary' : 'border-border'}`}>
-                    {selectedMethod === 'stripe' && <div className="w-1.5 h-1.5 rounded-full bg-white" />}
-                </div>
-                <span className={`text-sm font-medium transition-colors ${selectedMethod === 'stripe' ? 'text-foreground' : 'text-muted-foreground'}`}>Stripe</span>
+        <div className="rounded-2xl border border-border bg-muted/25 p-4">
+          <div className="flex items-center gap-3">
+            <div className="flex h-4 w-4 items-center justify-center rounded-full border border-primary bg-primary">
+              <div className="h-1.5 w-1.5 rounded-full bg-white" />
             </div>
-            <div className="flex gap-1 items-center grayscale opacity-70 group-hover:grayscale-0 group-hover:opacity-100 dark:invert dark:opacity-40 hover:dark:opacity-100 dark:grayscale-0 transition-all">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/b/ba/Stripe_Logo%2C_revised_2016.svg" alt="Stripe" className="h-4" />
-            </div>
-        </div>
-        
-        {selectedMethod === 'stripe' && (
-          <div className="bg-muted p-4 rounded-lg relative transition-all animate-in fade-in slide-in-from-top-1">
-              <div className="absolute -top-2 left-4 w-4 h-4 bg-muted rotate-45" />
-              <p className="text-xs text-muted-foreground leading-relaxed">
-                  Pay via Stripe; you can pay with your credit card if you don't have a Stripe account.
+            <div>
+              <p className="text-sm font-semibold text-foreground">Check payments</p>
+              <p className="text-xs text-muted-foreground">
+                Your booking will be confirmed now, and payment will be collected at check-in.
               </p>
+            </div>
           </div>
-        )}
+
+          <div className="mt-4 space-y-3 border-t border-border/70 pt-4">
+            {paymentOptions.map((option) => (
+              <button
+                key={option.id}
+                type="button"
+                onClick={() => onMethodChange(option.id)}
+                className={`w-full rounded-xl border px-4 py-3 text-left transition ${
+                  selectedMethod === option.id
+                    ? "border-primary bg-primary/8"
+                    : "border-border bg-background/70 hover:border-primary/30"
+                }`}
+              >
+                <div className="flex items-start gap-3">
+                  <div
+                    className={`mt-0.5 flex h-4 w-4 items-center justify-center rounded-full border transition-all ${
+                      selectedMethod === option.id ? "border-primary bg-primary" : "border-border"
+                    }`}
+                  >
+                    {selectedMethod === option.id && <div className="h-1.5 w-1.5 rounded-full bg-white" />}
+                  </div>
+                  <div className="space-y-1">
+                    <p
+                      className={`text-sm font-medium ${
+                        selectedMethod === option.id ? "text-foreground" : "text-muted-foreground"
+                      }`}
+                    >
+                      {option.label}
+                    </p>
+                    <p className="text-xs leading-relaxed text-muted-foreground">{option.description}</p>
+                  </div>
+                </div>
+              </button>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );

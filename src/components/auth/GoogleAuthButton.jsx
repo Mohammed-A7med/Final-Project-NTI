@@ -12,21 +12,38 @@ export default function GoogleAuthButton() {
   const dispatch = useDispatch();
   const isDark = useSelector(selectIsDark);
   const [error, setError] = useState("");
+  const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+
+  if (!clientId) {
+    return (
+      <p className="text-center text-xs text-muted-foreground">
+        Google sign-in is unavailable right now.
+      </p>
+    );
+  }
 
   const handleSuccess = async (credentialResponse) => {
     setError("");
 
     try {
-      await axiosInstance.post("/auth/login-google", {
+      const response = await axiosInstance.post("/auth/login-google", {
         idToken: credentialResponse.credential,
       });
-      const profileResponse = await axiosInstance.get("/auth/account");
+      const authData = response?.data?.data ?? {};
+      const accessToken = authData?.accessToken ?? authData?.token?.accessToken ?? null;
+      const refreshToken = authData?.refreshToken ?? authData?.token?.refreshToken ?? null;
 
       dispatch(
         setCredentials({
-          user: profileResponse?.data?.data?.user ?? null,
+          user: authData?.user ?? null,
+          token: accessToken,
+          refreshToken,
         }),
       );
+
+      if (!accessToken) {
+        throw new Error("Google login succeeded without access token. Please try again.");
+      }
 
       toast.success("Signed in with Google successfully.");
       navigate("/", { replace: true });
@@ -41,10 +58,11 @@ export default function GoogleAuthButton() {
     <div className="flex flex-col items-center gap-2">
       <GoogleLogin
         onSuccess={handleSuccess}
-        onError={() => setError("Google sign-in was cancelled.")}
+        onError={() => setError("Google sign-in is unavailable right now.")}
         size="large"
         width={200}
         text="continue_with"
+        locale="en"
         shape="rectangular"
         theme={isDark ? "filled_black" : "outline"}
       />

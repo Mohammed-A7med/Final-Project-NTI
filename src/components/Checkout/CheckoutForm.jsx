@@ -1,49 +1,162 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import { Button } from '@/components/ui/button';
 import { toast } from 'react-toastify';
+import axiosInstance from '@/services/axiosInstance';
 
-const CheckoutForm = ({ amount, paymentMethod, resetForm, onSuccess, getValues, handleSubmitHook }) => {
+const buildCheckoutPayload = ({
+  checkoutItems,
+  restaurantBookings,
+  activityBookings,
+  customerEmail,
+  bookingNotes,
+}) => ({
+  items: Array.isArray(checkoutItems)
+    ? checkoutItems.map((item) => ({
+        roomId: item.roomId,
+        checkInDate: item.checkInDate,
+        checkOutDate: item.checkOutDate,
+        guests: item.guests || 1,
+      }))
+    : [],
+  restaurantBookings: Array.isArray(restaurantBookings)
+    ? restaurantBookings.map((booking) => {
+        const normalizedBooking = {
+          bookingMode: booking.bookingMode,
+          date: booking.date,
+          time: booking.time,
+          guests: Number(booking.guests) || 1,
+          lineItems: Array.isArray(booking.lineItems)
+            ? booking.lineItems.map((lineItem) => ({
+                menuItemId: lineItem.menuItemId,
+                qty: Number(lineItem.qty) || 0,
+                name: lineItem.name,
+                price: Number(lineItem.price) || 0,
+                image: lineItem.image || '',
+              }))
+            : [],
+          lineItemsTotal: Number(booking.lineItemsTotal) || 0,
+        };
+
+        if (booking.bookingMode === 'room_service') {
+          normalizedBooking.roomNumber = Number(booking.roomNumber) || null;
+        }
+
+        if (booking.bookingMode === 'table_only' || booking.bookingMode === 'dine_in') {
+          normalizedBooking.number = Number(booking.number) || null;
+        }
+
+        return normalizedBooking;
+      })
+    : [],
+  activityBookings: Array.isArray(activityBookings)
+    ? activityBookings.map((booking) => ({
+        activityId: booking.activityId,
+        activityTitle: booking.activityTitle,
+        scheduleId: booking.scheduleId,
+        scheduleDate: booking.scheduleDate,
+        startTime: booking.startTime,
+        endTime: booking.endTime,
+        guests: booking.guests,
+        contactPhone: booking.contactPhone,
+        pricingType: booking.pricingType,
+        price: booking.price,
+        notes: booking.notes || '',
+        activityImage: booking.activityImage || '',
+      }))
+    : [],
+  customerEmail,
+  bookingNotes,
+});
+
+const getErrorMessage = (err) => {
+  const statusCode = err?.response?.status;
+  const validationDetails = err?.response?.data?.details;
+  const firstValidationMessage =
+    Array.isArray(validationDetails) && validationDetails.length > 0
+      ? validationDetails[0]?.message
+      : null;
+  const apiMessage = err?.response?.data?.message;
+
+  if (statusCode === 401) {
+    return 'Please login before continuing to checkout.';
+  }
+
+  return firstValidationMessage || apiMessage || 'An error occurred while processing your order. Please try again.';
+};
+
+const CheckoutForm = ({
+  paymentMethod,
+  resetForm,
+  onSuccess,
+  onError,
+  getValues,
+  handleSubmitHook,
+  checkoutItems,
+  restaurantBookings,
+  activityBookings,
+  onBeforeStripeRedirect,
+}) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
+  const hasRooms = Array.isArray(checkoutItems) && checkoutItems.length > 0;
+  const hasRestaurant = Array.isArray(restaurantBookings) && restaurantBookings.length > 0;
+  const hasActivities = Array.isArray(activityBookings) && activityBookings.length > 0;
+  const isCartEmpty = !hasRooms && !hasRestaurant && !hasActivities;
+
   const onSubmit = async () => {
+    if (isCartEmpty) {
+      const message = 'Your cart is empty. Please add at least one booking before checkout.';
+      setError(message);
+      toast.error(message);
+      return;
+    }
+
     setLoading(true);
     setError(null);
 
     try {
-      if (paymentMethod === 'stripe') {
-        // 2a. Create Stripe Checkout Session
-        const response = await axios.post('/create-checkout-session', {
-          amount: amount * 100, // Amount in cents
+      const data = getValues();
+
+      if (paymentMethod === 'card') {
+        onBeforeStripeRedirect(data);
+        const payload = buildCheckoutPayload({
+          checkoutItems,
+          restaurantBookings,
+          activityBookings,
+          customerEmail: data.email,
+          bookingNotes: data.orderNotes || '',
         });
 
-        if (response.data?.url) {
-          window.location.href = response.data.url;
-        } else {
+        const response = await axiosInstance.post('/payment/create-checkout-session', payload);
+
+        const checkoutStatus = response?.data?.data?.status;
+        const redirectUrl = response?.data?.data?.url;
+        const sessionId = response?.data?.data?.sessionId;
+
+        if (!redirectUrl && checkoutStatus === 'fulfilled' && sessionId) {
+          window.location.href = `/cart/checkout?payment=success&method=card&session_id=${encodeURIComponent(sessionId)}`;
+          return;
+        }
+
+        if (!redirectUrl) {
           throw new Error('Failed to retrieve checkout URL');
         }
-      } else {
-        // 2b. Handle Check Payments
-        // In a real app, this would call /create-order or similar
-        // For now, we'll simulate a slight delay
-        await new Promise(resolve => setTimeout(resolve, 1500));
-        
-        // Capture data before reset
-        const data = getValues();
-        
-        // Reset the form on success
-        resetForm();
-        
-        // Notify parent of success with captured data
-        onSuccess(data);
-        
-        toast.success('Order placed successfully! Please send your check to the address provided.');
+
+        window.location.href = redirectUrl;
+        return;
       }
+
+      await new Promise(resolve => setTimeout(resolve, 1200));
+      await onSuccess(data);
+      resetForm();
     } catch (err) {
-      setError('An error occurred while processing your order. Please try again.');
+      await onError?.(err);
+      const fallbackMessage = getErrorMessage(err);
+
+      setError(fallbackMessage);
       console.error('Order error:', err);
-      toast.error('Processing failed');
+      toast.error(fallbackMessage);
     } finally {
       setLoading(false);
     }
@@ -59,7 +172,7 @@ const CheckoutForm = ({ amount, paymentMethod, resetForm, onSuccess, getValues, 
       
       <Button
         type="submit"
-        disabled={loading}
+        disabled={loading || isCartEmpty}
         variant="palmPrimary"
         className="w-full h-12 rounded-md font-bold transition-all shadow-lg hover:shadow-primary/20 tracking-wider uppercase text-sm"
       >
@@ -71,7 +184,7 @@ const CheckoutForm = ({ amount, paymentMethod, resetForm, onSuccess, getValues, 
             </svg>
             Processing...
           </div>
-        ) : (paymentMethod === 'stripe' ? 'Pay with Stripe' : 'Place Order')}
+        ) : (paymentMethod === 'card' ? 'Pay with Visa' : 'Reserve Now, Pay on Arrival')}
       </Button>
 
       <p className="text-[11px] text-center text-muted-foreground mt-4 leading-relaxed">

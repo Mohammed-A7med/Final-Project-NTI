@@ -1,30 +1,25 @@
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 import { LogIn, User, LogOut, Settings, UserCircle } from "lucide-react";
 import { NavLink, useNavigate, useMatch } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { useSelector, useDispatch } from "react-redux";
 import NavTooltip from "./NavTooltip";
+import LanguageToggle from "./LanguageToggle";
+import ThemeToggle from "./ThemeToggle";
 import { logout } from "@/store/slices/authSlice";
 import { toast } from "react-toastify";
 import axiosInstance from "@/services/axiosInstance";
+
+const MotionDiv = motion.div;
 
 export default function LoginButton() {
   const { isAuthenticated, user } = useSelector((s) => s.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
-  const timeoutRef = useRef(null);
+  const containerRef = useRef(null);
   const isProfilePage = useMatch("/profile");
   const isSettingsPage = useMatch("/settings");
-
-  const handleEnter = useCallback(() => {
-    if (timeoutRef.current) clearTimeout(timeoutRef.current);
-    setOpen(true);
-  }, []);
-
-  const handleLeave = useCallback(() => {
-    timeoutRef.current = setTimeout(() => setOpen(false), 200);
-  }, []);
 
   const handleLogout = useCallback(async () => {
     try {
@@ -32,27 +27,50 @@ export default function LoginButton() {
     } catch {
       // Clear frontend auth state even if the server logout request fails.
     } finally {
+      navigate("/", { replace: true });
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("refreshToken");
+      localStorage.removeItem("user");
       dispatch(logout());
       setOpen(false);
       toast.success("You've been logged out.");
-      navigate("/");
     }
   }, [dispatch, navigate]);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (!containerRef.current?.contains(event.target)) {
+        setOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  useEffect(() => {
+    if (!open) return;
+    const handleScrollClose = () => setOpen(false);
+    window.addEventListener("scroll", handleScrollClose, { passive: true });
+    return () => window.removeEventListener("scroll", handleScrollClose);
+  }, [open]);
 
   if (!isAuthenticated) {
     return (
       <NavTooltip label="Login">
         <NavLink
           to="/auth/login"
+          aria-label="Login"
           className={({ isActive }) => `
-            flex items-center justify-center w-8 h-8 md:w-10 md:h-10 rounded-full border border-white/10
+            flex items-center justify-center w-9 h-9 md:w-11 md:h-11 rounded-full border border-white/10
             transition-all duration-300 hover:bg-primary/20
+            focus:outline-none focus-visible:outline-none focus-visible:ring-0
             ${isActive ? "text-primary bg-primary/20 shadow-inner border border-primary/20" : "text-white/60 bg-primary/5"}
           `}
         >
-          <motion.div>
-            <LogIn className="w-4 h-4 md:w-4.5 md:h-4.5" />
-          </motion.div>
+          <MotionDiv>
+            <LogIn className="w-[18px] h-[18px] md:w-5 md:h-5" />
+          </MotionDiv>
         </NavLink>
       </NavTooltip>
     );
@@ -65,39 +83,43 @@ export default function LoginButton() {
 
   return (
     <div
+      ref={containerRef}
       className="relative"
-      onMouseEnter={handleEnter}
-      onMouseLeave={handleLeave}
     >
-      <button
-        className={`flex items-center justify-center w-8 h-8 md:w-10 md:h-10 rounded-full border transition-all duration-300 hover:bg-primary/20 overflow-hidden bg-primary/5 cursor-pointer
-          ${(isProfilePage || isSettingsPage)
-            ? "text-primary bg-primary/20 shadow-inner border-primary/20"
-            : "border-white/10"
-          }
-        `}
-        onClick={() => setOpen((p) => !p)}
-      >
-        {user?.image ? (
-          <img
-            src={user.image}
-            alt={user.userName}
-            className="w-full h-full object-cover rounded-full"
-            referrerPolicy="no-referrer"
-          />
-        ) : (
-          <User className="w-4 h-4 md:w-4.5 md:h-4.5 text-white/60" />
-        )}
-      </button>
+      <NavTooltip label="User">
+        <button
+          className={`flex items-center justify-center w-9 h-9 md:w-11 md:h-11 rounded-full border transition-all duration-300 hover:bg-primary/20 overflow-hidden bg-primary/5 cursor-pointer
+            focus:outline-none focus-visible:outline-none focus-visible:ring-0
+            ${(isProfilePage || isSettingsPage)
+              ? "text-primary bg-primary/20 shadow-inner border-primary/20"
+              : "border-white/10"
+            }
+          `}
+          onClick={() => setOpen((p) => !p)}
+          aria-expanded={open}
+          aria-label="Open user menu"
+        >
+          {user?.image ? (
+            <img
+              src={user.image}
+              alt={user.userName}
+              className="w-full h-full object-cover rounded-full"
+              referrerPolicy="no-referrer"
+            />
+          ) : (
+            <User className="w-[18px] h-[18px] md:w-5 md:h-5 text-white/60" />
+          )}
+        </button>
+      </NavTooltip>
 
       <AnimatePresence>
         {open && (
-          <motion.div
-            initial={{ opacity: 0, y: 15, scale: 0.95 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 10, scale: 0.95 }}
+          <MotionDiv
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 10 }}
             transition={{ type: "spring", damping: 25, stiffness: 200 }}
-            className="absolute right-0 top-full mt-4 w-64 bg-card/90 backdrop-blur-2xl border border-border/50 rounded-2xl shadow-2xl overflow-hidden z-50"
+            className="absolute right-0 top-full mt-4 w-64 bg-card/90 backdrop-blur-2xl border border-border/50 rounded-2xl shadow-2xl overflow-hidden z-[60]"
           >
             <div className="px-4 py-3 border-b border-border/30">
               <p className="text-sm font-semibold text-foreground truncate">
@@ -125,6 +147,8 @@ export default function LoginButton() {
                   {item.label}
                 </NavLink>
               ))}
+              <LanguageToggle embedded />
+              <ThemeToggle mobile menuCard />
             </div>
 
             <div className="p-2 border-t border-border/30">
@@ -136,7 +160,7 @@ export default function LoginButton() {
                 Logout
               </button>
             </div>
-          </motion.div>
+          </MotionDiv>
         )}
       </AnimatePresence>
     </div>

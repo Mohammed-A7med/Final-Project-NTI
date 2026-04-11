@@ -1,5 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import themeReducer from "./slices/themeSlice";
+import localeReducer from "./slices/localeSlice";
 import authReducer from "./slices/authSlice";
 import cartReducer from "./slices/cartSlice";
 import uiReducer from "./slices/uiSlice";
@@ -11,10 +12,12 @@ import menuReducer from "@/services/menu/menuSlice";
 import userReducer from "@/services/user/userSlice";
 import bookingReducer from "@/services/booking/bookingSlice";
 import restaurantBookingsReducer from "@/services/restaurantBookings/restaurantBookingsSlice";
+import { userCollectionsListenerMiddleware } from "./userCollectionsSync";
 
 export const store = configureStore({
   reducer: {
     theme: themeReducer,
+    locale: localeReducer,
     auth: authReducer,
     cart: cartReducer,
     ui: uiReducer,
@@ -27,4 +30,6 @@ export const store = configureStore({
     booking: bookingReducer,
     restaurantBookings: restaurantBookingsReducer,
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().prepend(userCollectionsListenerMiddleware.middleware),
 });
