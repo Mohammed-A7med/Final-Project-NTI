@@ -6,12 +6,19 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { X } from 'lucide-react';
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
+import { Button } from '@/components/ui/button';
 import OrderSummary from '@/components/Checkout/OrderSummary';
 import CheckoutForm from '@/components/Checkout/CheckoutForm';
 import OrderReceived from '@/components/Checkout/OrderReceived';
 import BillingDetails from '@/components/Checkout/BillingDetails';
 import { checkoutSchema } from './checkoutSchema';
 import { selectCartItems, selectCartTotal, clearCart } from '@/store/slices/cartSlice';
+import { 
+  createBooking, 
+  selectBookingLoading, 
+  selectBookingError 
+} from '@/services/booking/bookingSlice';
+import { toast } from 'react-toastify';
 
 const Checkout = () => {
   const dispatch = useDispatch();
@@ -21,6 +28,9 @@ const Checkout = () => {
   const [paymentMethod, setPaymentMethod] = useState('check');
   const [orderReceived, setOrderReceived] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const isBookingLoading = useSelector(selectBookingLoading);
+  const bookingError = useSelector(selectBookingError);
 
   // Prevention of scroll when modal is open
   useEffect(() => {
@@ -102,17 +112,43 @@ const Checkout = () => {
                   handleSubmitHook={handleSubmit}
                   getValues={getValues}
                   paymentMethod={paymentMethod}
-                  onSuccess={(data) => {
-                    setOrderReceived({
-                      ...data,
-                      orderNumber: Math.floor(10000 + Math.random() * 90000).toString(),
-                      date: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }),
-                      items: cartItems,
-                      total: cartTotal,
-                      paymentMethod: paymentMethod === 'check' ? 'Check payments' : 'Stripe'
-                    });
-                    setIsModalOpen(true);
-                    dispatch(clearCart());
+                  onSuccess={async (data) => {
+                    // Process bookings for any rooms in the cart
+                    const bookingPromises = cartItems
+                      .filter(item => item.checkInDate)
+                      .map(item => {
+                        const bookingData = {
+                          roomId: item.id,
+                          checkInDate: item.checkInDate,
+                          checkOutDate: item.checkOutDate,
+                          guests: item.guests || 1,
+                          paymentMethod: paymentMethod === 'check' ? 'cash' : 'online',
+                          specialRequests: data.orderNotes || "Booked from Website"
+                        };
+                        return dispatch(createBooking(bookingData)).unwrap();
+                      });
+
+                    try {
+                      if (bookingPromises.length > 0) {
+                        await Promise.all(bookingPromises);
+                        toast.success('Your room(s) have been reserved successfully!');
+                      }
+
+                      setOrderReceived({
+                        ...data,
+                        orderNumber: Math.floor(10000 + Math.random() * 90000).toString(),
+                        date: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }),
+                        items: cartItems,
+                        total: cartTotal,
+                        paymentMethod: paymentMethod === 'check' ? 'Check payments' : 'Stripe'
+                      });
+                      setIsModalOpen(true);
+                      dispatch(clearCart());
+                    } catch (err) {
+                      console.error('Booking failed:', err);
+                      toast.error('Reservation failed. Please check your details and try again.');
+                      // We don't clear the cart if booking failed so they can try again
+                    }
                   }}
                   resetForm={reset}
                 />
@@ -140,12 +176,14 @@ const Checkout = () => {
               className="bg-background w-full max-w-5xl max-h-[90vh] overflow-y-auto rounded-3xl shadow-2xl relative z-10 custom-scrollbar"
             >
               <div className="sticky top-0 right-0 z-20 flex justify-end p-6 bg-linear-to-b from-background via-background/80 to-transparent pointer-events-none">
-                <button 
+                <Button 
                   onClick={() => setIsModalOpen(false)}
-                  className="p-2 bg-muted/50 hover:bg-muted rounded-full transition-colors pointer-events-auto shadow-sm border border-border cursor-pointer"
+                  variant="ghost"
+                  size="icon"
+                  className="bg-muted/50 hover:bg-muted border border-border pointer-events-auto shadow-sm"
                 >
                   <X className="w-5 h-5 text-muted-foreground" />
-                </button>
+                </Button>
               </div>
 
               <div className="px-8 pb-12 md:px-16 md:pb-20 -mt-12">

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Slider } from "@/components/ui/slider";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
@@ -6,33 +6,60 @@ import { Label } from "@/components/ui/label";
 import { Star } from "lucide-react";
 
 const roomTypes = [
-  { id: 17, label: "Deluxe Room", count: 13 },
-  { id: 19, label: "Double Room", count: 11 },
-  { id: 20, label: "Family Room", count: 15 },
-  { id: 23, label: "Single Room", count: 7 },
-  { id: 24, label: "Twin Room", count: 5 },
+  { value: "deluxe", label: "Deluxe Room" },
+  { value: "double", label: "Double Room" },
+  { value: "family", label: "Family Room" },
+  { value: "single", label: "Single Room" },
+  { value: "twin", label: "Twin Room" },
 ];
 
-const ratings = [
-  { value: 1, count: 1 },
-  { value: 2, count: 0 },
-  { value: 3, count: 0 },
-  { value: 4, count: 3 },
-  { value: 5, count: 2 },
-];
+const ratingValues = [1, 2, 3, 4, 5];
 
 const defaultState = {
-  price: [5, 1000],
+  price: [0, 1000],
   roomTypes: [],
   ratings: [],
   unrated: false,
 };
 
-export default function RoomFilter({ onFilter }) {
+export default function RoomFilter({ rooms = [], onFilter }) {
   const [price, setPrice] = useState(defaultState.price);
   const [selectedTypes, setSelectedTypes] = useState([]);
   const [selectedRatings, setSelectedRatings] = useState([]);
   const [unrated, setUnrated] = useState(false);
+
+  const roomTypeCounts = useMemo(() => {
+    const tally = (rooms || []).reduce((acc, room) => {
+      const t = (room.roomType || "").toLowerCase();
+      if (!t) return acc;
+      acc[t] = (acc[t] || 0) + 1;
+      return acc;
+    }, {});
+
+    return roomTypes.map((type) => ({
+      ...type,
+      count: tally[type.value] || 0,
+    }));
+  }, [rooms]);
+
+  const ratingCounts = useMemo(() => {
+    const tally = (rooms || []).reduce((acc, room) => {
+      const r = Number(room.rating) || 0;
+      if (r >= 1 && r <= 5) {
+        acc[r] = (acc[r] || 0) + 1;
+      }
+      return acc;
+    }, {});
+
+    return ratingValues.map((value) => ({
+      value,
+      count: tally[value] || 0,
+    }));
+  }, [rooms]);
+
+  const unratedCount = useMemo(() => {
+    return (rooms || []).filter((room) => !room.rating || Number(room.rating) === 0).length;
+  }, [rooms]);
 
   const toggleItem = (setter, value) =>
     setter((prev) =>
@@ -44,6 +71,7 @@ export default function RoomFilter({ onFilter }) {
     setSelectedTypes([]);
     setSelectedRatings([]);
     setUnrated(false);
+    onFilter?.(defaultState);
   };
 
   const handleFilter = () => {
@@ -84,17 +112,17 @@ export default function RoomFilter({ onFilter }) {
           Room Types
         </h4>
         <ul className="space-y-2.5">
-          {roomTypes.map((type) => (
-            <li key={type.id} className="flex items-center justify-between">
+          {roomTypeCounts.map((type) => (
+            <li key={type.value} className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <Checkbox
                   className="border rounded-xs"
-                  id={`type-${type.id}`}
-                  checked={selectedTypes.includes(type.id)}
-                  onCheckedChange={() => toggleItem(setSelectedTypes, type.id)}
+                  id={`type-${type.value}`}
+                  checked={selectedTypes.includes(type.value)}
+                  onCheckedChange={() => toggleItem(setSelectedTypes, type.value)}
                 />
                 <Label
-                  htmlFor={`type-${type.id}`}
+                  htmlFor={`type-${type.value}`}
                   className="text-sm text-stone-600 cursor-pointer"
                 >
                   {type.label}
@@ -114,7 +142,7 @@ export default function RoomFilter({ onFilter }) {
           Rating
         </h4>
         <ul className="space-y-2.5">
-          {ratings.map(({ value, count }) => (
+          {ratingCounts.map(({ value, count }) => (
             <li key={value} className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <Checkbox
@@ -129,14 +157,14 @@ export default function RoomFilter({ onFilter }) {
                 >
                   {Array.from({ length: value }).map((_, i) => (
                     <Star
-                      key={i}
+                      key={`filled-${value}-${i}`}
                       size={13}
                       className="fill-amber-400 text-amber-400"
                     />
                   ))}
                   {Array.from({ length: 5 - value }).map((_, i) => (
                     <Star
-                      key={i}
+                      key={`empty-${value}-${i}`}
                       size={13}
                       className="text-stone-200 fill-stone-200"
                     />
@@ -163,7 +191,7 @@ export default function RoomFilter({ onFilter }) {
                 Unrated
               </Label>
             </div>
-            <span className="text-xs text-stone-400">17</span>
+            <span className="text-xs text-stone-400">{unratedCount}</span>
           </li>
         </ul>
       </div>

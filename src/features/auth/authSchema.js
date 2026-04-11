@@ -70,10 +70,10 @@ export const registerSchema = z
 // Reset Password Schema
 export const resetPasswordSchema = z
   .object({
-    otp: z
+    code: z
       .string({ required_error: "OTP is required" })
       .trim()
-      .regex(/^\d{6}$/, "OTP must be exactly 6 digits"),
+      .regex(/^\d{4}$/, "OTP must be exactly 4 digits"),
 
     password: z
       .string()
@@ -85,3 +85,27 @@ export const resetPasswordSchema = z
     message: "Passwords do not match",
     path: ["confirmPassword"],
   });
+
+// Change Password Schema
+export const changePasswordSchema = z
+  .object({
+    oldPassword: passwordValidator,
+    newPassword: passwordValidator,
+    confirmPassword: z
+      .string()
+      .min(1, { message: "Confirm password is required" }),
+  })
+  .refine((data) => data.newPassword === data.confirmPassword, {
+    message: "Passwords do not match",
+    path: ["confirmPassword"],
+  })
+  .refine((data) => data.oldPassword !== data.newPassword, {
+    message: "New password must be different from old password",
+    path: ["newPassword"],
+  });
+
+// Confirm Email Schema
+export const ConfirmEmailSchema = z.object({
+  email: emailValidator,
+  code: z.string().min(4, { message: "OTP is required" }),
+});

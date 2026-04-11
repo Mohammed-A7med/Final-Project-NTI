@@ -23,16 +23,25 @@ export default function PasswordField({
           id={id}
           type={showPassword ? "text" : "password"}
           placeholder={placeholder}
-          className="bg-background border-border focus:ring-2 focus:ring-primary pr-12 md:py-6"
+          className="pr-12 md:py-6"
           {...register}
         />
 
         <button
+          onMouseDown={(e) => e.preventDefault()}
+          onMouseUp={(e) => e.preventDefault()}
           type="button"
           onClick={() => setShowPassword((prev) => !prev)}
-          className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-primary transition"
+          className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-primary transition bg-transparent focus:outline-primary"
         >
-          {showPassword ? <Eye size={18} /> : <EyeOff size={18} />}
+          <span className="sr-only">
+            {showPassword ? "hide password" : "show password"}
+          </span>
+          {showPassword ? (
+            <Eye className="focus:border-0" size={18} />
+          ) : (
+            <EyeOff size={18} />
+          )}
         </button>
       </div>
 
